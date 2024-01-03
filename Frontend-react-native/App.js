@@ -4,6 +4,7 @@ import {
   View,
   Animated,
   Dimensions,
+  SafeAreaView,
 } from "react-native";
 import Header from "./app/components/Header";
 import SelectorBtn from "./app/components/login_methods/form_components/SelectorBtn";
@@ -43,7 +44,7 @@ export default function App() {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header
         leftHeading="Welcome "
         rightHeading="Back"
@@ -93,7 +94,7 @@ export default function App() {
           <SignUpForm />
         </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 

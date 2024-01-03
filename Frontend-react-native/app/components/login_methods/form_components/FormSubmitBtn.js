@@ -1,8 +1,8 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-export default FormSubmitBtn = ({ label }) => {
+export default FormSubmitBtn = ({ label, onPress }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={{ fontSize: 18, color: "#fff" }}>{label}</Text>
     </TouchableOpacity>
   );

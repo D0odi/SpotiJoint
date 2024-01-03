@@ -1,11 +1,30 @@
 import { Text, TextInput, StyleSheet } from "react-native";
+import { Controller } from "react-hook-form";
 
-export default FormInput = ({ placeholder, label }) => {
+export default FormInput = ({ control, placeholder, name, label }) => {
   return (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput placeholder={placeholder} style={styles.input} />
-    </>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { onChange, value, onBlur } }) => (
+        <>
+          <Text style={styles.label}>{label}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={placeholder}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        </>
+      )}
+      rules={{
+        required: {
+          value: true,
+          message: "Field is required!",
+        },
+      }}
+    />
   );
 };
 
