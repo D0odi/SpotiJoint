@@ -1,3 +1,4 @@
+import client from "../../api/client";
 import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
@@ -5,42 +6,53 @@ import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 
 const LoginForm = () => {
-  const { control, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { control, handleSubmit, reset } = useForm();
+
+  const onSubmit = async (data) => {
+    await client
+      .post("/login", {
+        ...data,
+      })
+      .then((res) => {
+        console.log(res.data);
+        reset();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <FormContainer>
       <FormInput
-        placeholder="example@gmail.com"
-        name="email"
         control={control}
+        placeholder="example@email.com"
+        name="email"
         label="Email"
+        rules={{
+          required: "Email is required",
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Email must be valid",
+          },
+        }}
       />
       <FormInput
-        placeholder="************"
-        name="password"
         control={control}
+        placeholder="***********"
+        name="password"
         label="Password"
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 4,
+            message: "Password must be at least 4 characters long",
+          },
+        }}
       />
       <FormSubmitBtn label={"Login"} onPress={handleSubmit(onSubmit)} />
     </FormContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontWeight: "bold",
-    paddingBottom: 3,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#1b1b33",
-    height: 45,
-    borderRadius: 8,
-    fontSize: 16,
-    paddingLeft: 10,
-    marginBottom: 15,
-  },
-});
 
 export default LoginForm;

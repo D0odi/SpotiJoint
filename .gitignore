@@ -1,0 +1,7 @@
+Backend-node/.env
+Backend-node/node_modules/
+Backend-node/build/
+
+Frontend-react-native/.env
+Frontend-react-native/node_modules/
+Frontend-react-native/build/

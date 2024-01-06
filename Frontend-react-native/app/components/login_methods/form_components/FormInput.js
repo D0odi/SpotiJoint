@@ -1,16 +1,27 @@
 import { Text, TextInput, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 
-export default FormInput = ({ control, placeholder, name, label }) => {
+export default FormInput = ({
+  control,
+  rules = {},
+  placeholder,
+  name,
+  label,
+}) => {
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, value, onBlur } }) => (
+      render={({
+        field: { onChange, value, onBlur },
+        fieldState: { error },
+      }) => (
         <>
-          <Text style={styles.label}>{label}</Text>
+          <Text
+            style={[styles.label, { color: error ? "red" : "#1b1b33" }]}
+          >{`${error ? error.message : label}`}</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { borderColor: error ? "red" : "#1b1b33" }]}
             placeholder={placeholder}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -18,12 +29,7 @@ export default FormInput = ({ control, placeholder, name, label }) => {
           />
         </>
       )}
-      rules={{
-        required: {
-          value: true,
-          message: "Field is required!",
-        },
-      }}
+      rules={rules}
     />
   );
 };
@@ -32,6 +38,7 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     paddingBottom: 3,
+    color: "#1b1b33",
   },
   input: {
     borderWidth: 1,
