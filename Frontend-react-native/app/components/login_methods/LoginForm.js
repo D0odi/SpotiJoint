@@ -5,21 +5,25 @@ import FormSubmitBtn from "./form_components/FormSubmitBtn";
 import { useForm } from "react-hook-form";
 import { StyleSheet } from "react-native";
 
-const LoginForm = () => {
+const LoginForm = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    await client
-      .post("/login", {
+    try {
+      const res = await client.post("/login", {
         ...data,
-      })
-      .then((res) => {
-        console.log(res.data);
-        reset();
-      })
-      .catch((err) => {
-        console.log(err);
       });
+
+      if (res.data.success) {
+        console.log(res.data.token);
+        navigation.navigate("UserProfile");
+      } else {
+        console.log(res.data.message);
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -2,22 +2,38 @@ import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
 import { useForm } from "react-hook-form";
+import { CommonActions } from "@react-navigation/native";
 import client from "../../api/client";
 
-const SignUpForm = () => {
+const SignUpForm = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
   const onSubmit = async (data) => {
     console.log(data);
-    await client
-      .post("/signup", {
-        ...data,
-      })
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      const response = await client.post("/sign-up", { ...data });
+
+      if (response.data.success) {
+        console.log(data.email, data.password);
+        const signInRes = await client.post("/login", {
+          email: data.email,
+          password: data.password,
+        });
+
+        if (signInRes.data.success) {
+          const navigateAction = CommonActions.navigate({
+            name: "AvatarUpload",
+            params: {
+              token: signInRes.data.token,
+            },
+          });
+          navigation.dispatch(navigateAction);
+        } else {
+          console.log(signInRes.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

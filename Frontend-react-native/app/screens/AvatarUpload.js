@@ -1,12 +1,14 @@
 import { TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { CommonActions } from "@react-navigation/native";
 import { useState } from "react";
-import client from "../../api/client";
+import client from "../api/client";
 
-export default ImageUplaod = () => {
+export default AvatarUplaod = (props) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(0);
+  const { token } = props.route.params;
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -23,7 +25,7 @@ export default ImageUplaod = () => {
     }
   };
 
-  const uploadAvatar = async () => {
+  const uploadImage = async () => {
     const formData = new FormData();
     formData.append("profile", {
       name: new Date() + "_profile",
@@ -31,19 +33,23 @@ export default ImageUplaod = () => {
       type: "image/jpg",
     });
 
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk4YzNlNzYxZDY4OTllYjVkMjg1N2EiLCJpYXQiOjE3MDQ1MTc3MDcsImV4cCI6MTcwNDYwNDEwN30.68hzlSFAgSyLk9EwfVtpv9A6RTRZGwMcwmeHUtJQ2D0
+    console.log(token);
+
     try {
       const res = await client.post("/upload-profile-pic", formData, {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
-          Auth: "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk4YzNlNzYxZDY4OTllYjVkMjg1N2EiLCJpYXQiOjE3MDQ1MTc3MDcsImV4cCI6MTcwNDYwNDEwN30.68hzlSFAgSyLk9EwfVtpv9A6RTRZGwMcwmeHUtJQ2D0",
+          Auth: `JWT ${token}`,
         },
-        // onUploadProgress: (loaded, total) => {
-        //   setImage(loaded / total);
-        // },
       });
 
-      console.log(res.data);
+      if (res.data.success) {
+        props.navigation.dispatch(
+          CommonActions.reset({ index: 0, routes: [{ name: "UserProfile" }] })
+        );
+      }
     } catch (error) {
       console.log(error);
     }
@@ -82,12 +88,16 @@ export default ImageUplaod = () => {
             </Text>
           )}
         </TouchableOpacity>
-        <TouchableOpacity onPress={{}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigator;
+          }}
+        >
           <Text style={styles.skipBtn}>Skip</Text>
         </TouchableOpacity>
         {image ? (
           <TouchableOpacity
-            onPress={uploadAvatar}
+            onPress={uploadImage}
             style={{
               backgroundColor: "rgba(27, 27, 51, 0.7)",
               paddingVertical: 10,
