@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { CommonActions } from "@react-navigation/native";
 import { useState } from "react";
 import client from "../api/client";
+import global from "../styles";
 
 export default AvatarUplaod = (props) => {
   const [image, setImage] = useState(null);
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: global.background,
   },
   content: {
     alignItems: "center",

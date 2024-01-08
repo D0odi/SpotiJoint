@@ -11,6 +11,7 @@ import SignUpForm from "../components/login/SignUpForm";
 import LoginForm from "../components/login/LoginForm";
 import { useEffect, useRef } from "react";
 import axios from "axios";
+import global from "../styles";
 
 const { width } = Dimensions.get("window");
 
@@ -48,12 +49,12 @@ export default LoginScreen = ({ navigation }) => {
 
   const loginColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: ["rgba(27,27,51,1)", "#rgba(27,27,51,0.5)"],
+    outputRange: ["rgba(27,27,51,1)", "#rgba(27,27,51,0.6)"],
   });
 
   const signUpColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: ["rgba(27,27,51,0.5)", "#rgba(27,27,51,1)"],
+    outputRange: ["rgba(27,27,51,0.6)", "#rgba(27,27,51,1)"],
   });
 
   return (
@@ -114,7 +115,7 @@ export default LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: global.background,
     paddingTop: 90,
   },
   borderLeft: {

@@ -14,6 +14,7 @@ const {
 } = require("../middleware/validations/user.js");
 const { isAuth } = require("../middleware/auth.js");
 const User = require("../models/user.js");
+const { retrieveUsers } = require("../controllers/db.js");
 
 const router = express.Router();
 const storage = multer.diskStorage({});
@@ -41,5 +42,6 @@ router.post(
   upload.single("profile"),
   uplaodProfilePicture
 );
+router.get("/users", isAuth, retrieveUsers);
 
 module.exports = router;

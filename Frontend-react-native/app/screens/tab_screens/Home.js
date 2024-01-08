@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useAuthRequest } from "expo-auth-session";
 import { useEffect } from "react";
 import { SPOTIFY_CLIENT_ID } from "@env";
+import global from "../../styles";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -31,7 +32,7 @@ export default Home = () => {
   }, [response]);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
           promptAsync();
@@ -42,3 +43,12 @@ export default Home = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: global.background,
+  },
+});
