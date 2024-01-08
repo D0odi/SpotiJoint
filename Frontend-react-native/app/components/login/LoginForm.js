@@ -1,3 +1,4 @@
+import { CommonActions } from "@react-navigation/native";
 import client from "../../api/client";
 import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
@@ -8,15 +9,29 @@ import { StyleSheet } from "react-native";
 const LoginForm = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
 
-  const onSubmit = async (data) => {
+  // data
+  const onSubmit = async () => {
     try {
       const res = await client.post("/login", {
-        ...data,
+        // ...data
+        email: "l@gmail.com",
+        password: "1234",
       });
 
+      console.log(res.data);
+
       if (res.data.success) {
-        console.log(res.data.token);
-        navigation.navigate("UserProfile");
+        // console.log(res.data.token);
+        const avatarUri = res.data.user.avatar ? res.data.user.avatar : "";
+        const navigateAction = CommonActions.navigate({
+          name: "UserDomain",
+          params: {
+            imageUri: avatarUri,
+            name: res.data.user.name,
+            nickname: res.data.user.nickname,
+          },
+        });
+        navigation.dispatch(navigateAction);
       } else {
         console.log(res.data.message);
         reset();
@@ -54,7 +69,8 @@ const LoginForm = ({ navigation }) => {
           },
         }}
       />
-      <FormSubmitBtn label={"Login"} onPress={handleSubmit(onSubmit)} />
+      {/* handleSubmit(onSubmit) */}
+      <FormSubmitBtn label={"Login"} onPress={onSubmit} />
     </FormContainer>
   );
 };

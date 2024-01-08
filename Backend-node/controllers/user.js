@@ -44,6 +44,7 @@ exports.loginUser = async (req, res) => {
     name: user.name,
     email: user.email,
     avatar: user.avatar ? user.avatar : "",
+    nickname: user.nickname,
   };
 
   res.json({

@@ -5,10 +5,10 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import Header from "../components/login_methods/Header";
-import SelectorBtn from "../components/login_methods/form_components/SelectorBtn";
-import SignUpForm from "../components/login_methods/SignUpForm";
-import LoginForm from "../components/login_methods/LoginForm";
+import Header from "../components/login/Header";
+import SelectorBtn from "../components/login/form_components/SelectorBtn";
+import SignUpForm from "../components/login/SignUpForm";
+import LoginForm from "../components/login/LoginForm";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 

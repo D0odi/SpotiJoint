@@ -7,8 +7,7 @@ import client from "../api/client";
 
 export default AvatarUplaod = (props) => {
   const [image, setImage] = useState(null);
-  const [uploading, setUploading] = useState(0);
-  const { token } = props.route.params;
+  const { token, name, nickname } = props.route.params;
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -33,9 +32,6 @@ export default AvatarUplaod = (props) => {
       type: "image/jpg",
     });
 
-    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk4YzNlNzYxZDY4OTllYjVkMjg1N2EiLCJpYXQiOjE3MDQ1MTc3MDcsImV4cCI6MTcwNDYwNDEwN30.68hzlSFAgSyLk9EwfVtpv9A6RTRZGwMcwmeHUtJQ2D0
-    console.log(token);
-
     try {
       const res = await client.post("/upload-profile-pic", formData, {
         headers: {
@@ -47,7 +43,15 @@ export default AvatarUplaod = (props) => {
 
       if (res.data.success) {
         props.navigation.dispatch(
-          CommonActions.reset({ index: 0, routes: [{ name: "UserProfile" }] })
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: "UserDomain",
+                params: { imageUri: image, name: name, nickname: nickname },
+              },
+            ],
+          })
         );
       }
     } catch (error) {
@@ -90,7 +94,7 @@ export default AvatarUplaod = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigator;
+            props.navigation.navigate("UserDomain");
           }}
         >
           <Text style={styles.skipBtn}>Skip</Text>

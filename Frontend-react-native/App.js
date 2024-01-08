@@ -1,9 +1,12 @@
 import React from "react";
+import "react-native-gesture-handler";
 import LoginScreen from "./app/screens/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AvatarUpload from "./app/screens/AvatarUpload";
-import UserProfile from "./app/screens/UserProfile";
+import { SafeAreaView } from "react-native-safe-area-context";
+import UserDomain from "./app/screens/UserDomain";
+
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -11,15 +14,17 @@ const StackNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={LoginScreen} name="LoginScreen" />
       <Stack.Screen component={AvatarUpload} name="AvatarUpload" />
-      <Stack.Screen component={UserProfile} name="UserProfile" />
+      <Stack.Screen component={UserDomain} name="UserDomain" />
     </Stack.Navigator>
   );
 };
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
