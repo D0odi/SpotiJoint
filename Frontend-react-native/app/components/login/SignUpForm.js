@@ -26,6 +26,7 @@ const SignUpForm = ({ navigation }) => {
               token: signInRes.data.token,
               name: signInRes.data.user.name,
               nickname: signInRes.data.user.nickname,
+              _id: signInRes.data.user._id,
             },
           });
           navigation.dispatch(navigateAction);

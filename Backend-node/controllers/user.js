@@ -45,6 +45,7 @@ exports.loginUser = async (req, res) => {
     email: user.email,
     avatar: user.avatar ? user.avatar : "",
     nickname: user.nickname,
+    _id: user._id,
   };
 
   res.json({
@@ -80,4 +81,8 @@ exports.uplaodProfilePicture = async (req, res) => {
       .json({ success: false, message: "Server error, try after some time" });
     console.log("Error while uploading profile avatar", error.message);
   }
+};
+
+exports.followUser = async (req, res) => {
+  const { target_email } = req.body;
 };

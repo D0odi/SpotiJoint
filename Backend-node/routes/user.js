@@ -43,5 +43,6 @@ router.post(
   uplaodProfilePicture
 );
 router.get("/users", isAuth, retrieveUsers);
+router.get("/users/:id", isAuth, async (req, res) => {});
 
 module.exports = router;

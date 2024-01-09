@@ -25,7 +25,7 @@ const debounce = (func, wait) => {
 export default Search = ({ route }) => {
   const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
-  const token = route.params.token;
+  const { token, _id } = route.params;
 
   const handleTextInputChange = (text) => {
     setInput(text);

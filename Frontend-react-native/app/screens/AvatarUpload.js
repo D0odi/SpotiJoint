@@ -8,7 +8,7 @@ import global from "../styles";
 
 export default AvatarUplaod = (props) => {
   const [image, setImage] = useState(null);
-  const { token, name, nickname } = props.route.params;
+  const { token, name, nickname, _id } = props.route.params;
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,6 +54,7 @@ export default AvatarUplaod = (props) => {
                   name: name,
                   nickname: nickname,
                   token: token,
+                  _id: _id,
                 },
               },
             ],
