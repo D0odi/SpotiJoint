@@ -49,7 +49,12 @@ export default AvatarUplaod = (props) => {
             routes: [
               {
                 name: "UserDomain",
-                params: { imageUri: image, name: name, nickname: nickname },
+                params: {
+                  imageUri: image,
+                  name: name,
+                  nickname: nickname,
+                  token: token,
+                },
               },
             ],
           })

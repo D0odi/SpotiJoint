@@ -3,7 +3,7 @@ import { TouchableWithoutFeedback, View, Text, Animated } from "react-native";
 export default SelectorBtn = ({ text, backgroundColor, style, onPress }) => {
   const styles = {
     container: {
-      height: 45,
+      height: 39,
       width: "50%",
       backgroundColor,
       justifyContent: "center",
@@ -11,7 +11,7 @@ export default SelectorBtn = ({ text, backgroundColor, style, onPress }) => {
     },
     text: {
       color: "white",
-      fontSize: 16,
+      fontSize: 13,
     },
   };
 

@@ -9,7 +9,7 @@ export default Header = ({
   rightHeaderOpacity,
 }) => {
   return (
-    <View style={{ height: 80 }}>
+    <View style={{ height: 60 }}>
       <View
         style={{
           flexDirection: "row",
@@ -44,12 +44,12 @@ export default Header = ({
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#1b1b00",
   },
   sub_header: {
-    fontSize: 18,
+    fontSize: 15,
     color: "#1b1b33",
     textAlign: "center",
   },

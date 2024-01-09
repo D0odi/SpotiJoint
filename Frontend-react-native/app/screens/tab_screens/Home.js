@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useAuthRequest } from "expo-auth-session";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SPOTIFY_CLIENT_ID } from "@env";
 import global from "../../styles";
+import { set } from "react-hook-form";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -10,6 +11,7 @@ const discovery = {
 };
 
 export default Home = () => {
+  const [token, setToken] = useState(null);
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: SPOTIFY_CLIENT_ID,
@@ -20,7 +22,7 @@ export default Home = () => {
         "user-read-currently-playing",
       ],
       usePKCE: false,
-      redirectUri: "exp://localhost:8081/--/spotify-auth-callback",
+      redirectUri: "exp://100.64.1.230:8081/--/spotify-auth-callback",
     },
     discovery
   );
@@ -28,6 +30,7 @@ export default Home = () => {
   useEffect(() => {
     if (response?.type === "success") {
       console.log(response);
+      setToken(response);
     }
   }, [response]);
 
@@ -38,7 +41,7 @@ export default Home = () => {
           promptAsync();
         }}
       >
-        <Text>{SPOTIFY_CLIENT_ID}</Text>
+        <Text>{token ? token : SPOTIFY_CLIENT_ID}</Text>
       </TouchableOpacity>
     </View>
   );

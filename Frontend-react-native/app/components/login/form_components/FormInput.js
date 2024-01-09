@@ -1,5 +1,6 @@
 import { Text, TextInput, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
+import global from "../../../styles.js";
 
 export default FormInput = ({
   control,
@@ -18,10 +19,10 @@ export default FormInput = ({
       }) => (
         <>
           <Text
-            style={[styles.label, { color: error ? "red" : "#1b1b33" }]}
+            style={[styles.label, { color: error ? "red" : global.font }]}
           >{`${error ? error.message : label}`}</Text>
           <TextInput
-            style={[styles.input, { borderColor: error ? "red" : "#1b1b33" }]}
+            style={[styles.input, { borderColor: error ? "red" : global.font }]}
             placeholder={placeholder}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -43,10 +44,10 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#1b1b33",
-    height: 45,
+    height: 35,
     borderRadius: 8,
-    fontSize: 16,
+    fontSize: 13,
     paddingLeft: 10,
-    marginBottom: 15,
+    marginBottom: 13,
   },
 });

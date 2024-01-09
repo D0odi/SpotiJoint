@@ -1,6 +1,5 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Home from "./tab_screens/Home";
 import Notifications from "./tab_screens/Notifications";
@@ -8,13 +7,11 @@ import Search from "./tab_screens/Search";
 import Profile from "./tab_screens/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import global from "../styles";
-
-const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 export default UserDomain = ({ route, navigation }) => {
-  const { imageUri, name, nickname } = route.params;
-  const iconSize = 30;
+  const { imageUri, name, nickname, token } = route.params;
+  const iconSize = 25;
 
   return (
     <Tab.Navigator
@@ -26,7 +23,7 @@ export default UserDomain = ({ route, navigation }) => {
           left: 10,
           right: 10,
           elevation: 0,
-          height: 70,
+          height: 50,
           borderRadius: 15,
           ...styles.shadow,
         },
@@ -36,20 +33,10 @@ export default UserDomain = ({ route, navigation }) => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: () => (
-            <Ionicons name="home" color={global.font} size={iconSize} />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Notifications"
-        component={Notifications}
-        options={{
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Ionicons
-              name="notifications"
-              color={global.font}
+              name="home"
+              color={focused ? global.light_swamp : global.font}
               size={iconSize}
             />
           ),
@@ -59,9 +46,28 @@ export default UserDomain = ({ route, navigation }) => {
       <Tab.Screen
         name="Search"
         component={Search}
+        initialParams={{ token: token }}
         options={{
-          tabBarIcon: () => (
-            <Ionicons name="search" color={global.font} size={iconSize} />
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="search"
+              color={focused ? global.light_swamp : global.font}
+              size={iconSize}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="notifications"
+              color={focused ? global.light_swamp : global.font}
+              size={iconSize}
+            />
           ),
           headerShown: false,
         }}
@@ -71,25 +77,25 @@ export default UserDomain = ({ route, navigation }) => {
         component={Profile}
         options={{
           tabBarIcon: ({ focused }) => (
-            <View
+            <TouchableOpacity
               style={{
-                padding: 1,
-                borderColor: focused ? global.light_swamp : "white",
-                borderWidth: 2,
+                padding: 2,
+                borderColor: global.light_swamp,
+                borderWidth: focused ? 2 : 0,
                 borderRadius: 100,
               }}
             >
               <Image
                 style={{
-                  height: 35,
-                  width: 35,
+                  height: 26,
+                  width: 26,
                   borderRadius: 100,
-                  borderColor: global.dark_swamp,
+                  borderColor: focused ? "white" : global.font,
                   borderWidth: 1.5,
                 }}
                 source={{ uri: imageUri }}
               ></Image>
-            </View>
+            </TouchableOpacity>
           ),
           headerShown: false,
         }}

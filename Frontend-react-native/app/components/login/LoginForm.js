@@ -29,6 +29,7 @@ const LoginForm = ({ navigation }) => {
             imageUri: avatarUri,
             name: res.data.user.name,
             nickname: res.data.user.nickname,
+            token: res.data.token,
           },
         });
         navigation.dispatch(navigateAction);

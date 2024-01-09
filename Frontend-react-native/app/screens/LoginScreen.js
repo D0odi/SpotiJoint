@@ -12,6 +12,7 @@ import LoginForm from "../components/login/LoginForm";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import global from "../styles";
+import { SafeAreaView } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -58,7 +59,7 @@ export default LoginScreen = ({ navigation }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header
         leftHeading="Welcome "
         rightHeading="Back"
@@ -108,7 +109,7 @@ export default LoginScreen = ({ navigation }) => {
           <SignUpForm navigation={navigation} />
         </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: global.background,
-    paddingTop: 90,
+    paddingTop: 50,
   },
   borderLeft: {
     borderTopLeftRadius: 8,

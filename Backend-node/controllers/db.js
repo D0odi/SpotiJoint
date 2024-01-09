@@ -2,7 +2,18 @@ const User = require("../models/user");
 
 exports.retrieveUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    const searchQuery = req.query.search;
+
+    let query = {};
+    if (searchQuery) {
+      query = {
+        $or: [
+          { name: { $regex: searchQuery, $options: "i" } },
+          { nickname: { $regex: searchQuery, $options: "i" } },
+        ],
+      };
+    }
+    const users = await User.find(query).select("name nickname avatar");
 
     if (!users) return res.json({ success: false, message: "No users found!" });
     else
