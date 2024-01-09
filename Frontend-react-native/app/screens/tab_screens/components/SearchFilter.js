@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { View, Text } from "react-native";
+import UserCard from "./UserCard";
 
 export default SearchFilter = ({ input, data, setInput }) => {
   return (
@@ -8,11 +9,7 @@ export default SearchFilter = ({ input, data, setInput }) => {
         data={data}
         renderItem={({ item }) => {
           if (item.name.toLowerCase().includes(input.toLowerCase())) {
-            return (
-              <View style={{ padding: 10 }}>
-                <Text>{item.name}</Text>
-              </View>
-            );
+            return <UserCard item={item} />;
           }
         }}
         estimatedItemSize={10}

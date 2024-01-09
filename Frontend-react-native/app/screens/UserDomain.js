@@ -10,7 +10,7 @@ import global from "../styles";
 const Tab = createBottomTabNavigator();
 
 export default UserDomain = ({ route, navigation }) => {
-  const { imageUri, name, nickname, token } = route.params;
+  const { imageUri, name, nickname, token, _id } = route.params;
   const iconSize = 25;
 
   return (
@@ -46,7 +46,7 @@ export default UserDomain = ({ route, navigation }) => {
       <Tab.Screen
         name="Search"
         component={Search}
-        initialParams={{ token: token }}
+        initialParams={{ token: token, _id: _id }}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons

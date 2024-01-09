@@ -30,6 +30,7 @@ const LoginForm = ({ navigation }) => {
             name: res.data.user.name,
             nickname: res.data.user.nickname,
             token: res.data.token,
+            _id: res.data.user._id,
           },
         });
         navigation.dispatch(navigateAction);
