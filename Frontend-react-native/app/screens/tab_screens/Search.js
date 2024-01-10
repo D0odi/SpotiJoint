@@ -49,7 +49,7 @@ export default Search = ({ route }) => {
         },
       }
     );
-    console.log(response.data);
+    setUsers(response.data);
   };
 
   return (

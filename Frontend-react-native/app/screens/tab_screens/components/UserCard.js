@@ -8,9 +8,7 @@ export default UserCard = ({ name, nickname, _id, avatar }) => {
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <View style={{ width: 20, height: 20 }}>
-        <Image source={require("../../../../assets/icon.png")} />
-      </View>
+      <View style={{ width: 20, height: 20 }}></View>
       <View style={{ justifyContent: "center", flex: 1 }}>
         <Text>{name}</Text>
         <Text>{nickname}</Text>

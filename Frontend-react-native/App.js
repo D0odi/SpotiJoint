@@ -10,12 +10,18 @@ import global from "./app/styles";
 
 const Stack = createStackNavigator();
 
+const linking = {
+  prefixes: ["sjoint://", "https://sjoint.com"],
+  config: {
+    screens: {
+      UserDomain: "spotify-auth-callback",
+    },
+  },
+};
+
 const StackNavigator = () => {
   return (
-    <Stack.Navigator
-      style={{ backgroundColor: global.background }}
-      screenOptions={{ headerShown: false }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={LoginScreen} name="LoginScreen" />
       <Stack.Screen component={AvatarUpload} name="AvatarUpload" />
       <Stack.Screen component={UserDomain} name="UserDomain" />
@@ -26,7 +32,7 @@ const StackNavigator = () => {
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: global.background }}>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <StackNavigator />
       </NavigationContainer>
     </SafeAreaView>

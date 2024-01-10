@@ -3,7 +3,6 @@ import { useAuthRequest } from "expo-auth-session";
 import { useEffect, useState } from "react";
 import { SPOTIFY_CLIENT_ID } from "@env";
 import global from "../../styles";
-import { set } from "react-hook-form";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -11,7 +10,7 @@ const discovery = {
 };
 
 export default Home = () => {
-  const [token, setToken] = useState(null);
+  const [oauthToken, setOauthToken] = useState(null);
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: SPOTIFY_CLIENT_ID,
@@ -22,7 +21,7 @@ export default Home = () => {
         "user-read-currently-playing",
       ],
       usePKCE: false,
-      redirectUri: "exp://100.64.1.230:8081/--/spotify-auth-callback",
+      redirectUri: "sjoint://spotify-auth-callback",
     },
     discovery
   );
@@ -41,7 +40,7 @@ export default Home = () => {
           promptAsync();
         }}
       >
-        <Text>{token ? token : SPOTIFY_CLIENT_ID}</Text>
+        <Text>{oauthToken ? oauthToken : SPOTIFY_CLIENT_ID}</Text>
       </TouchableOpacity>
     </View>
   );
