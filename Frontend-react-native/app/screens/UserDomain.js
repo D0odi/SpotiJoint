@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 
 export default UserDomain = ({ route, navigation }) => {
   const { imageUri, name, nickname, token, _id } = route.params;
-  const iconSize = 25;
+  const iconSize = 27;
 
   return (
     <Tab.Navigator
@@ -23,7 +23,7 @@ export default UserDomain = ({ route, navigation }) => {
           left: 10,
           right: 10,
           elevation: 0,
-          height: 50,
+          height: 55,
           borderRadius: 15,
           ...styles.shadow,
         },
@@ -80,21 +80,27 @@ export default UserDomain = ({ route, navigation }) => {
             <TouchableOpacity
               style={{
                 padding: 2,
-                borderColor: global.light_swamp,
-                borderWidth: focused ? 2 : 0,
                 borderRadius: 100,
               }}
             >
-              <Image
+              <View
                 style={{
-                  height: 26,
-                  width: 26,
-                  borderRadius: 100,
-                  borderColor: focused ? "white" : global.font,
-                  borderWidth: 1.5,
+                  backgroundColor: focused
+                    ? global.light_swamp
+                    : global.background,
+                  padding: 5,
+                  borderRadius: 10,
                 }}
-                source={{ uri: imageUri }}
-              ></Image>
+              >
+                <Image
+                  style={{
+                    height: 26,
+                    width: 26,
+                    borderRadius: 100,
+                  }}
+                  source={{ uri: imageUri }}
+                ></Image>
+              </View>
             </TouchableOpacity>
           ),
           headerShown: false,
