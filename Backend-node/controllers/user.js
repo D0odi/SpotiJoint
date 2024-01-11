@@ -92,10 +92,6 @@ exports.uplaodProfilePicture = async (req, res) => {
   }
 };
 
-exports.followUser = async (req, res) => {
-  const { target_email } = req.body;
-};
-
 exports.getTokens = async (req, res) => {
   const { code } = req.body;
   const user = req.user;

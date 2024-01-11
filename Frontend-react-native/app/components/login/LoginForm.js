@@ -14,7 +14,7 @@ const LoginForm = ({ navigation }) => {
     try {
       const res = await client.post("/login", {
         // ...data
-        email: "exx@gmail.com",
+        email: "1@gmail.com",
         password: "1234",
       });
 
