@@ -9,6 +9,7 @@ exports.createUser = async (req, res) => {
   const user = await User({
     avatar: "",
     friends: [],
+    friends_requests: [],
     spotify_refresh_token: "",
     name,
     nickname,
@@ -50,6 +51,8 @@ exports.loginUser = async (req, res) => {
     avatar: user.avatar ? user.avatar : "",
     nickname: user.nickname,
     _id: user._id,
+    friends: user.friends,
+    friends_requests: user.friends_requests,
   };
 
   res.json({
@@ -120,8 +123,8 @@ exports.getTokens = async (req, res) => {
     );
     const { access_token, refresh_token } = response.data;
 
-    console.log("Access token", access_token);
-    console.log("Refresh token", refresh_token);
+    // console.log("Access token", access_token);
+    // console.log("Refresh token", refresh_token);
 
     const dbResponse = await User.findByIdAndUpdate(user._id, {
       spotify_refresh_token: refresh_token,
@@ -129,6 +132,7 @@ exports.getTokens = async (req, res) => {
 
     res.json({
       success: true,
+      message: "Token exchange successful",
       access_token: access_token,
     });
   } catch (error) {
