@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import UserCard from "./UserCard";
 import global from "../../../styles";
 
-export default SearchFilter = ({ input, users, setInput }) => {
+export default SearchFilter = ({ input, users, token }) => {
   return (
     <View style={{ flex: 1, backgroundColor: global.background }}>
       <FlashList
@@ -14,7 +14,7 @@ export default SearchFilter = ({ input, users, setInput }) => {
             item.name.toLowerCase().includes(input.toLowerCase())
           ) {
             console.log(item);
-            return <UserCard {...item} />;
+            return <UserCard {...item} token={token} />;
           }
         }}
         estimatedItemSize={10}

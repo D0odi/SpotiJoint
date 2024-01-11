@@ -25,7 +25,7 @@ const debounce = (func, wait) => {
 export default Search = ({ route }) => {
   const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
-  const { token, _id } = route.params;
+  const { token } = route.params;
 
   const handleTextInputChange = (text) => {
     setInput(text);
@@ -65,7 +65,7 @@ export default Search = ({ route }) => {
           onChangeText={(text) => handleTextInputChange(text)}
         />
       </View>
-      <SearchFilter input={input} users={users} setInput={setInput} />
+      <SearchFilter input={input} users={users} token={token} />
     </View>
   );
 };

@@ -7,6 +7,7 @@ const {
   loginUser,
   uplaodProfilePicture,
   getTokens,
+  addFriend,
 } = require("../controllers/user.js");
 const {
   userValidation_signup,
@@ -45,5 +46,6 @@ router.post(
 );
 router.get("/users", isAuth, retrieveUsers);
 router.post("/exchange", isAuth, getTokens);
+router.post("/add-friend", isAuth, addFriend);
 
 module.exports = router;

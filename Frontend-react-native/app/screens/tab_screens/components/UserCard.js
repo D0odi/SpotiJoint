@@ -2,12 +2,34 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import global from "../../../styles";
+import client from "../../../api/client";
 
-export default UserCard = ({ name, nickname, _id, avatar }) => {
+export default UserCard = ({ name, nickname, _id, avatar, token }) => {
   const [clicked, setClicked] = useState(false);
-  const handlePress = (name) => {
+
+  const sendFriendRequest = async () => {
+    try {
+      const res = await client.post(
+        "/add-friend",
+        {
+          _id: _id,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            Auth: `JWT ${token}`,
+          },
+        }
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePress = () => {
     setClicked(true);
-    console.log(name);
+    sendFriendRequest();
   };
 
   return (
