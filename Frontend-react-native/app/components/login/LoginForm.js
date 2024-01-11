@@ -10,12 +10,12 @@ const LoginForm = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
 
   // data
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       const res = await client.post("/login", {
         // ...data
-        email: data.email ? data.email : "l@gmail.com",
-        password: data.password ? data.password : "1234",
+        email: "exx@gmail.com",
+        password: "1234",
       });
 
       console.log(res.data);
@@ -72,7 +72,7 @@ const LoginForm = ({ navigation }) => {
         }}
       />
       {/* handleSubmit(onSubmit) */}
-      <FormSubmitBtn label={"Login"} onPress={handleSubmit(onSubmit)} />
+      <FormSubmitBtn label={"Login"} onPress={onSubmit} />
     </FormContainer>
   );
 };

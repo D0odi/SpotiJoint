@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
+const qs = require("qs");
 const cloudinary = require("../helper/imageUpload");
 
 exports.createUser = async (req, res) => {
@@ -7,6 +9,7 @@ exports.createUser = async (req, res) => {
   const user = await User({
     avatar: "",
     friends: [],
+    spotify_refresh_token: "",
     name,
     nickname,
     email,
@@ -86,4 +89,53 @@ exports.uplaodProfilePicture = async (req, res) => {
 
 exports.followUser = async (req, res) => {
   const { target_email } = req.body;
+};
+
+exports.getTokens = async (req, res) => {
+  const { code } = req.body;
+  const user = req.user;
+
+  console.log("User", user);
+  console.log("Code", code);
+
+  const requestBody = {
+    grant_type: "authorization_code",
+    code: code,
+    redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+    client_id: process.env.SPOTIFY_CLIENT_ID,
+    client_secret: process.env.SPOTIFY_CLIENT_SECRET,
+  };
+
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  };
+
+  try {
+    const response = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      qs.stringify(requestBody),
+      config
+    );
+    const { access_token, refresh_token } = response.data;
+
+    console.log("Access token", access_token);
+    console.log("Refresh token", refresh_token);
+
+    const dbResponse = await User.findByIdAndUpdate(user._id, {
+      spotify_refresh_token: refresh_token,
+    });
+
+    res.json({
+      success: true,
+      access_token: access_token,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Token exchange failed",
+      error: error.message,
+    });
+  }
 };

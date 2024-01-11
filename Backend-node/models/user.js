@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   avatar: String,
+  friends: Array,
+  spotify_refresh_token: String,
   name: {
     type: String,
     required: true,

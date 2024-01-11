@@ -32,6 +32,7 @@ export default UserDomain = ({ route, navigation }) => {
       <Tab.Screen
         name="Home"
         component={Home}
+        initialParams={{ token: token }}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons

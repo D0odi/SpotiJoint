@@ -6,6 +6,7 @@ const {
   createUser,
   loginUser,
   uplaodProfilePicture,
+  getTokens,
 } = require("../controllers/user.js");
 const {
   userValidation_signup,
@@ -43,6 +44,6 @@ router.post(
   uplaodProfilePicture
 );
 router.get("/users", isAuth, retrieveUsers);
-router.get("/users/:id", isAuth, async (req, res) => {});
+router.post("/exchange", isAuth, getTokens);
 
 module.exports = router;
