@@ -1,16 +1,20 @@
 import { FlashList } from "@shopify/flash-list";
 import { View, Text } from "react-native";
 import UserCard from "./UserCard";
+import global from "../../../styles";
 
-export default SearchFilter = ({ input, data, setInput }) => {
-  console.log(data.data);
+export default SearchFilter = ({ input, users, setInput }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: global.background }}>
       <FlashList
-        data={data.data}
+        data={users}
         renderItem={({ item }) => {
-          if (item.name.toLowerCase().includes(input.toLowerCase())) {
-            return <UserCard item={item} />;
+          if (
+            input != "" &&
+            item.name.toLowerCase().includes(input.toLowerCase())
+          ) {
+            console.log(item);
+            return <UserCard {...item} />;
           }
         }}
         estimatedItemSize={10}

@@ -49,7 +49,7 @@ export default Search = ({ route }) => {
         },
       }
     );
-    setUsers(response.data);
+    setUsers(response.data.data);
   };
 
   return (
@@ -65,7 +65,7 @@ export default Search = ({ route }) => {
           onChangeText={(text) => handleTextInputChange(text)}
         />
       </View>
-      <SearchFilter input={input} data={users} setInput={setInput} />
+      <SearchFilter input={input} users={users} setInput={setInput} />
     </View>
   );
 };

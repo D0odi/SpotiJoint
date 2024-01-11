@@ -6,6 +6,7 @@ exports.createUser = async (req, res) => {
   const { name, nickname, email, password } = req.body;
   const user = await User({
     avatar: "",
+    friends: [],
     name,
     nickname,
     email,

@@ -5,6 +5,7 @@ import { CommonActions } from "@react-navigation/native";
 import { useState } from "react";
 import client from "../api/client";
 import global from "../styles";
+import axios from "axios";
 
 export default AvatarUplaod = (props) => {
   const [image, setImage] = useState(null);
@@ -25,12 +26,12 @@ export default AvatarUplaod = (props) => {
     }
   };
 
-  const uploadImage = async () => {
+  const uploadImage = async (uri, generated) => {
     const formData = new FormData();
     formData.append("profile", {
       name: new Date() + "_profile",
-      uri: image,
-      type: "image/jpg",
+      uri: uri,
+      type: generated ? "image/png" : "image/jpeg",
     });
 
     try {
@@ -50,7 +51,7 @@ export default AvatarUplaod = (props) => {
               {
                 name: "UserDomain",
                 params: {
-                  imageUri: image,
+                  imageUri: uri,
                   name: name,
                   nickname: nickname,
                   token: token,
@@ -100,15 +101,18 @@ export default AvatarUplaod = (props) => {
           )}
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("UserDomain");
-          }}
+          onPress={() =>
+            uploadImage(
+              `https://ui-avatars.com/api/?name=${name}?format=png`,
+              true
+            )
+          }
         >
           <Text style={styles.skipBtn}>Skip</Text>
         </TouchableOpacity>
         {image ? (
           <TouchableOpacity
-            onPress={uploadImage}
+            onPress={() => uploadImage(image, false)}
             style={{
               backgroundColor: "rgba(27, 27, 51, 0.7)",
               paddingVertical: 10,
