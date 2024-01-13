@@ -14,104 +14,110 @@ export default UserDomain = ({ route, navigation }) => {
   const iconSize = 27;
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          position: "absolute",
-          bottom: 10,
-          left: 10,
-          right: 10,
-          elevation: 0,
-          height: 55,
-          borderRadius: 15,
-          ...styles.shadow,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        initialParams={{ token: token }}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="home"
-              color={focused ? global.light_swamp : global.font}
-              size={iconSize}
-            />
-          ),
-          headerShown: false,
+    <View style={styles.container}>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 10,
+            left: 10,
+            right: 10,
+            elevation: 0,
+            height: 55,
+            borderRadius: 15,
+            ...styles.shadow,
+          },
         }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={Search}
-        initialParams={{ token: token, _id: _id }}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="search"
-              color={focused ? global.light_swamp : global.font}
-              size={iconSize}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Notifications"
-        component={Notifications}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name="notifications"
-              color={focused ? global.light_swamp : global.font}
-              size={iconSize}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TouchableOpacity
-              style={{
-                padding: 2,
-                borderRadius: 100,
-              }}
-            >
-              <View
+      >
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          initialParams={{ token: token }}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
+                name="home"
+                color={focused ? global.spotify_green : global.spotify_black}
+                size={iconSize}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          initialParams={{ token: token, _id: _id }}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
+                name="search"
+                color={focused ? global.spotify_green : global.spotify_black}
+                size={iconSize}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Notifications"
+          component={Notifications}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
+                name="notifications"
+                color={focused ? global.spotify_green : global.spotify_black}
+                size={iconSize}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: ({ focused }) => (
+              <TouchableOpacity
                 style={{
-                  backgroundColor: focused
-                    ? global.light_swamp
-                    : global.background,
-                  padding: 5,
-                  borderRadius: 10,
+                  padding: 2,
+                  borderRadius: 100,
                 }}
               >
-                <Image
+                <View
                   style={{
-                    height: 26,
-                    width: 26,
-                    borderRadius: 100,
+                    backgroundColor: focused
+                      ? global.spotify_green
+                      : global.background,
+                    padding: 5,
+                    borderRadius: 10,
                   }}
-                  source={{ uri: imageUri }}
-                ></Image>
-              </View>
-            </TouchableOpacity>
-          ),
-          headerShown: false,
-        }}
-      />
-    </Tab.Navigator>
+                >
+                  <Image
+                    style={{
+                      height: 26,
+                      width: 26,
+                      borderRadius: 100,
+                    }}
+                    source={{ uri: imageUri }}
+                  ></Image>
+                </View>
+              </TouchableOpacity>
+            ),
+            headerShown: false,
+          }}
+        />
+      </Tab.Navigator>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: global.background,
+  },
   shadow: {
     shadowColor: "black",
     shadowOffset: {

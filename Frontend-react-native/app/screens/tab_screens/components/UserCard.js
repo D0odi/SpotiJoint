@@ -59,10 +59,16 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
         />
       </View>
       <View style={{ justifyContent: "center", flex: 1 }}>
-        <Text style={{ fontSize: 14, color: global.font, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 14,
+            color: global.spotify_black,
+            fontWeight: "bold",
+          }}
+        >
           {name}
         </Text>
-        <Text style={{ fontSize: 11, color: global.font_light }}>
+        <Text style={{ fontSize: 11, color: global.spotify_black_light }}>
           {nickname}
         </Text>
       </View>

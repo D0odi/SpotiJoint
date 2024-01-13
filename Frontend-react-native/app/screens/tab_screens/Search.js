@@ -8,24 +8,25 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import client from "../../api/client";
 import { set } from "react-hook-form";
 
-const debounce = (func, wait) => {
-  let timeout;
-
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-};
-
 export default Search = ({ route }) => {
   const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
+  const [time, setTime] = useState(Date.now());
   const { token, _id } = route.params;
+
+  const debounce = (func, wait) => {
+    let timeout;
+
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
 
   const handleTextInputChange = (text) => {
     setInput(text);
@@ -34,6 +35,10 @@ export default Search = ({ route }) => {
 
   const debouncedRetrieveUsers = useCallback(
     debounce(async (text) => {
+      if (text === "") {
+        setUsers([]);
+        return;
+      }
       await retrieveUsers(text);
     }, 500),
     [retrieveUsers]
@@ -49,8 +54,12 @@ export default Search = ({ route }) => {
         },
       }
     );
-    console.log(response.data.data);
-    setUsers(response.data.data);
+    console.log("HERE ", response.data.filtered_users);
+    const updatedUsers = response.data.filtered_users.map((user) => ({
+      ...user,
+      version: (user.version || 0) + 1,
+    }));
+    setUsers(updatedUsers);
   };
 
   return (
@@ -61,12 +70,21 @@ export default Search = ({ route }) => {
         </View>
         <TextInput
           placeholder="Search"
-          placeholderTextColor={global.font}
+          placeholderTextColor={global.spotify_black}
           style={styles.search_input}
           onChangeText={(text) => handleTextInputChange(text)}
         />
       </View>
-      <SearchFilter input={input} users={users} token={token} _id={_id} />
+      <View style={{ flex: 1, backgroundColor: global.background }}>
+        <FlashList
+          data={users}
+          renderItem={({ item }) => {
+            return <UserCard {...item} token={token} />;
+          }}
+          keyExtractor={(item) => item._id + "_" + item.version}
+          estimatedItemSize={10}
+        />
+      </View>
     </View>
   );
 };
@@ -75,12 +93,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: global.background,
-    paddingHorizontal: 10,
-    paddingTop: 10,
+    padding: 10,
   },
   search_bar: {
     marginBottom: 10,
-    height: 50,
+    height: 45,
     borderRadius: 15,
     backgroundColor: "#fff",
     alignContent: "center",

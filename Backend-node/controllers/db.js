@@ -1,6 +1,6 @@
 const User = require("../models/user");
 
-exports.retrieveUsers = async (req, res) => {
+exports.retrieveUsers = async (req, res, next) => {
   try {
     const searchQuery = req.query.search;
 
@@ -13,15 +13,13 @@ exports.retrieveUsers = async (req, res) => {
         ],
       };
     }
-    const users = await User.find(query).select("name nickname avatar");
+    const users = await User.find(query).select(
+      "name nickname avatar friends_req_in friends_req_out friends"
+    );
 
     if (!users) return res.json({ success: false, message: "No users found!" });
-    else
-      res.json({
-        success: true,
-        message: "Users retrieved successfully",
-        data: users,
-      });
+    else req.users = users;
+    next();
   } catch (error) {
     console.log("Error while retrieving users!", error.message);
     res.json({ success: false, message: "Error while retrieving users!" });
