@@ -19,9 +19,7 @@ const discovery = {
 
 export default Home = ({ route }) => {
   const { token } = route.params;
-  const [token_s, setToken_s] = useState(
-    "BQDs1Gq-XMFt7DsKdRFrjksZoUpzuw9frFrXotfTkpaXAEOCgQHY6wxrIg7SqMc0dtFzW417rJ47UB54yXIpHOzmTa_hSaFD03FuDIltP2SeHmTWov7Gls4nZvxjETKwOYkuWa_jDikwZb-c4K-RKRSz20e4BPHH5OflHTMWKGL9UonmaSpjT0DjmEcc2TZa5GF0BZ-nl_PS5rZjx7H2_cT1yO_7Yx2IOhN72A"
-  );
+  const [token_s, setToken_s] = useState(null);
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Code,

@@ -4,7 +4,7 @@ import { useState } from "react";
 import global from "../../../styles";
 import client from "../../../api/client";
 
-export default UserCard = ({ name, nickname, _id, avatar, token }) => {
+export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
   const [clicked, setClicked] = useState(false);
 
   const sendFriendRequest = async () => {
@@ -21,7 +21,6 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
           },
         }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -52,9 +51,9 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
         <Image
           source={{ uri: avatar }}
           style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
+            width: 35,
+            height: 35,
+            borderRadius: 10,
           }}
         />
       </View>

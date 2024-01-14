@@ -3,10 +3,10 @@ import global from "../../styles";
 import React, { useState, useCallback } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { FlashList } from "@shopify/flash-list";
-import SearchFilter from "./components/SearchFilter";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import client from "../../api/client";
 import { set } from "react-hook-form";
+import UserCardSearch from "./components/UserCardSearch";
 
 export default Search = ({ route }) => {
   const [users, setUsers] = useState([]);
@@ -51,6 +51,7 @@ export default Search = ({ route }) => {
         headers: {
           Accept: "application/json",
           Auth: `JWT ${token}`,
+          Filter: "search-screen",
         },
       }
     );
@@ -75,11 +76,17 @@ export default Search = ({ route }) => {
           onChangeText={(text) => handleTextInputChange(text)}
         />
       </View>
-      <View style={{ flex: 1, backgroundColor: global.background }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: global.background,
+          marginBottom: 65,
+        }}
+      >
         <FlashList
           data={users}
           renderItem={({ item }) => {
-            return <UserCard {...item} token={token} />;
+            return <UserCardSearch {...item} token={token} />;
           }}
           keyExtractor={(item) => item._id + "_" + item.version}
           estimatedItemSize={10}

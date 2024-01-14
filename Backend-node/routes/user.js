@@ -8,7 +8,7 @@ const {
   uplaodProfilePicture,
   getTokens,
   addFriend,
-  filterFriends,
+  applyFilter,
 } = require("../controllers/user.js");
 const {
   userValidation_signup,
@@ -45,8 +45,17 @@ router.post(
   upload.single("profile"),
   uplaodProfilePicture
 );
-router.get("/users", isAuth, retrieveUsers, filterFriends);
+router.get("/users", isAuth, retrieveUsers, applyFilter);
 router.post("/exchange", isAuth, getTokens);
 router.post("/add-friend", isAuth, addFriend);
+router.get("/friend-request", isAuth, (req, res) => {
+  const user = req.user;
+  const { friends_req_in } = user;
+  res.json({
+    success: true,
+    message: "Friend requests recieved",
+    friend_reqests: friends_req_in,
+  });
+});
 
 module.exports = router;

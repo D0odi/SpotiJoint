@@ -164,31 +164,49 @@ exports.addFriend = async (req, res) => {
   }
 };
 
-exports.filterFriends = async (req, res) => {
+exports.applyFilter = async (req, res) => {
   const users = req.users;
   const user = req.user;
   const friends = user.friends;
   const friends_req_in = user.friends_req_in;
   const friends_req_out = user.friends_req_out;
 
-  console.log("Friends", friends);
-  console.log("Friends req in", friends_req_in);
-  console.log("Friends req out", friends_req_out);
-  console.log("Users", users);
-  console.log("User", user);
+  let filteredUsers;
 
-  const filteredUsers = users.filter((dbUser) => {
-    if (
-      dbUser._id.toString() === user._id.toString() ||
-      friends.includes(dbUser._id.toString()) ||
-      friends_req_in.includes(dbUser._id.toString()) ||
-      friends_req_out.includes(dbUser._id.toString())
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  });
+  if (!req.headers.filter)
+    return res.json({
+      success: false,
+      message: "Filter type not provided",
+    });
+
+  const filterType = req.headers.filter;
+
+  if (filterType === "search-screen") {
+    filteredUsers = users.filter((dbUser) => {
+      if (
+        dbUser._id.toString() === user._id.toString() ||
+        friends.includes(dbUser._id.toString()) ||
+        friends_req_in.includes(dbUser._id.toString()) ||
+        friends_req_out.includes(dbUser._id.toString())
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  } else if (filterType === "notifications-screen") {
+    filteredUsers = users.filter((dbUser) => {
+      return (
+        friends_req_in.includes(dbUser._id.toString()) &&
+        dbUser._id.toString() !== user._id.toString()
+      );
+    });
+  } else {
+    res.json({
+      success: false,
+      message: "Invalid filter type",
+    });
+  }
 
   res.json({ success: true, filtered_users: filteredUsers });
 };

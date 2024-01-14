@@ -63,6 +63,7 @@ export default UserDomain = ({ route, navigation }) => {
         <Tab.Screen
           name="Notifications"
           component={Notifications}
+          initialParams={{ token: token }}
           options={{
             tabBarIcon: ({ focused }) => (
               <Ionicons
