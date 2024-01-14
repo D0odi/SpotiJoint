@@ -1,4 +1,5 @@
 import { Animated, StyleSheet, Text, View } from "react-native";
+import global from "../../styles";
 
 export default Header = ({
   leftHeading,
@@ -46,11 +47,11 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     fontWeight: "bold",
-    color: "#1b1b00",
+    color: global.blue,
   },
   sub_header: {
     fontSize: 15,
-    color: "#1b1b33",
+    color: global.blue,
     textAlign: "center",
   },
 });

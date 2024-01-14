@@ -37,12 +37,12 @@ export default LoginScreen = ({ navigation }) => {
 
   const loginColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: [global.spotify_black, global.spotify_black_50],
+    outputRange: [global.blue, global.blue_50],
   });
 
   const signUpColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: [global.spotify_black_50, global.spotify_black],
+    outputRange: [global.blue_50, global.blue],
   });
 
   return (

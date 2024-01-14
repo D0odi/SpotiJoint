@@ -52,9 +52,6 @@ export default Notifications = ({ route }) => {
                   style={{
                     flexDirection: "row",
                     flex: 1,
-                    backgroundColor: "white",
-                    borderRadius: 15,
-                    marginVertical: 3,
                     padding: 5,
                   }}
                 >
@@ -84,7 +81,7 @@ export default Notifications = ({ route }) => {
                     <Text
                       style={{
                         fontSize: 14,
-                        color: global.spotify_black,
+                        color: global.blue,
                         fontWeight: "bold",
                       }}
                     >
@@ -93,7 +90,7 @@ export default Notifications = ({ route }) => {
                     <Text
                       style={{
                         fontSize: 11,
-                        color: global.spotify_black_light,
+                        color: global.blue_50,
                       }}
                     >
                       Wants to connect
@@ -110,12 +107,16 @@ export default Notifications = ({ route }) => {
                     >
                       <View
                         style={{
-                          backgroundColor: global.blue_light,
+                          backgroundColor: global.green_50,
                           borderRadius: 10,
                           padding: 6,
                         }}
                       >
-                        <Ionicons name={"checkmark-outline"} size={20} />
+                        <Ionicons
+                          name={"checkmark"}
+                          size={20}
+                          color={"white"}
+                        />
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -134,7 +135,7 @@ export default Notifications = ({ route }) => {
                           padding: 6,
                         }}
                       >
-                        <Ionicons name={"close-outline"} size={20} />
+                        <Ionicons name={"close"} size={20} color={"white"} />
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -152,12 +153,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: global.background,
+    padding: 10,
   },
   notifications: {
     flex: 1,
-    padding: 10,
+    padding: 5,
     marginBottom: 65,
-    backgroundColor: global.background,
+    backgroundColor: global.spotify_white,
     borderRadius: 15,
   },
 });

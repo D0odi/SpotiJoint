@@ -11,6 +11,18 @@ db.getCollection("users").updateMany(
   { $set: { friends: [], friends_req_in: [], friends_req_out: [] } }
 );
 
+// Update user avatars
+// db.getCollection("users")
+//   .find()
+//   .forEach(function (user) {
+//     var name = user.name;
+//     var avatar = `https://api.multiavatar.com/${name}.png`;
+//     db.getCollection("users").updateOne(
+//       { _id: user._id },
+//       { $set: { avatar: avatar } }
+//     );
+//   });
+
 // add notifications
 
 // "65a05cff8e0ea05a1f6d3d11",

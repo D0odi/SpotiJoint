@@ -67,7 +67,7 @@ export default Search = ({ route }) => {
     <View style={styles.container}>
       <View style={[styles.search_bar, styles.shadow]}>
         <View style={{ justifyContent: "center", marginHorizontal: 10 }}>
-          <Ionicons name="search" size={20} color={global.background_darker} />
+          <Ionicons name="search" size={22} color={global.blue} />
         </View>
         <TextInput
           placeholder="Search"
@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   search_bar: {
-    marginBottom: 10,
+    marginBottom: 5,
     height: 45,
     borderRadius: 15,
-    backgroundColor: "#fff",
+    backgroundColor: global.spotify_white,
     alignContent: "center",
     flexDirection: "row",
   },

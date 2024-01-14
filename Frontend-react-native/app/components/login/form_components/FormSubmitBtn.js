@@ -12,7 +12,7 @@ export default FormSubmitBtn = ({ label, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     height: 40,
-    backgroundColor: global.spotify_black,
+    backgroundColor: global.blue,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",

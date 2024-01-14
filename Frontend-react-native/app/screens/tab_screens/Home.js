@@ -110,7 +110,6 @@ export default Home = ({ route }) => {
                 style={styles.avatar}
                 source={{ uri: userInfo_s.avatar }}
               />
-              <View style={styles.dot} />
               <Text style={[styles.name, styles.text_info]}>
                 {userInfo_s.name}
               </Text>
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     flex: 1,
-    backgroundColor: global.spotify_black,
+    backgroundColor: global.background,
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 15,
@@ -186,10 +185,11 @@ const styles = StyleSheet.create({
   text_info: {
     fontSize: 13,
     fontWeight: "bold",
-    color: global.spotify_white,
+    color: global.spotify_black,
   },
   name: {
     textAlign: "right",
+    marginLeft: 10,
   },
   location: {
     textAlign: "left",
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 2.5,
-    backgroundColor: global.spotify_white,
+    backgroundColor: global.spotify_black_light,
     marginHorizontal: 10,
   },
 });

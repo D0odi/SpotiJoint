@@ -36,7 +36,6 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
       style={{
         flexDirection: "row",
         flex: 1,
-        backgroundColor: "white",
         borderRadius: 15,
         marginVertical: 3,
       }}
@@ -61,15 +60,13 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
         <Text
           style={{
             fontSize: 14,
-            color: global.spotify_black,
+            color: global.spotify_blue,
             fontWeight: "bold",
           }}
         >
           {name}
         </Text>
-        <Text style={{ fontSize: 11, color: global.spotify_black_light }}>
-          {nickname}
-        </Text>
+        <Text style={{ fontSize: 11, color: global.blue_50 }}>{nickname}</Text>
       </View>
       <TouchableOpacity
         style={{
@@ -77,7 +74,7 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
           alignItems: "center",
           width: 50,
           height: 50,
-          marginRight: 5,
+          marginRight: 10,
         }}
         onPress={() => {
           handlePress(name);
@@ -87,14 +84,17 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
       >
         <View
           style={{
-            backgroundColor: global.background,
+            backgroundColor: clicked ? global.background : global.green_50,
             borderRadius: 10,
             padding: 6,
+            borderWidth: 1.5,
+            borderColor: global.green_50,
           }}
         >
           <Ionicons
-            name={clicked ? "checkmark-outline" : "person-add"}
+            name={clicked ? "checkmark" : "person-add"}
             size={20}
+            color={clicked ? global.green_50 : global.spotify_white}
           />
         </View>
       </TouchableOpacity>

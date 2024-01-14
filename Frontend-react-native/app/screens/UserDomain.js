@@ -19,6 +19,7 @@ export default UserDomain = ({ route, navigation }) => {
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
+            backgroundColor: global.spotify_white,
             position: "absolute",
             bottom: 10,
             left: 10,
@@ -38,7 +39,7 @@ export default UserDomain = ({ route, navigation }) => {
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name="home"
-                color={focused ? global.spotify_green : global.spotify_black}
+                color={focused ? global.green_50 : global.blue}
                 size={iconSize}
               />
             ),
@@ -53,7 +54,7 @@ export default UserDomain = ({ route, navigation }) => {
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name="search"
-                color={focused ? global.spotify_green : global.spotify_black}
+                color={focused ? global.green_50 : global.blue}
                 size={iconSize}
               />
             ),
@@ -68,7 +69,7 @@ export default UserDomain = ({ route, navigation }) => {
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name="notifications"
-                color={focused ? global.spotify_green : global.spotify_black}
+                color={focused ? global.green_50 : global.blue}
                 size={iconSize}
               />
             ),
@@ -80,16 +81,11 @@ export default UserDomain = ({ route, navigation }) => {
           component={Profile}
           options={{
             tabBarIcon: ({ focused }) => (
-              <TouchableOpacity
-                style={{
-                  padding: 2,
-                  borderRadius: 100,
-                }}
-              >
+              <TouchableOpacity>
                 <View
                   style={{
                     backgroundColor: focused
-                      ? global.spotify_green
+                      ? global.green_50
                       : global.background,
                     padding: 5,
                     borderRadius: 10,
@@ -99,7 +95,6 @@ export default UserDomain = ({ route, navigation }) => {
                     style={{
                       height: 26,
                       width: 26,
-                      borderRadius: 100,
                     }}
                     source={{ uri: imageUri }}
                   ></Image>

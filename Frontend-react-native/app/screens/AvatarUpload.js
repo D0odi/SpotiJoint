@@ -102,10 +102,7 @@ export default AvatarUplaod = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
-            uploadImage(
-              `https://ui-avatars.com/api/?name=${name}?format=png`,
-              true
-            )
+            uploadImage(`https://api.multiavatar.com/${name}.png`, true)
           }
         >
           <Text style={styles.skipBtn}>Skip</Text>
