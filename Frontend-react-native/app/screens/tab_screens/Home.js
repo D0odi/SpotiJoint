@@ -39,6 +39,7 @@ export default Home = ({ route }) => {
   );
 
   const getAccessToken = async (code) => {
+    console.log("code:", code);
     const res = await client.post(
       "/exchange",
       {
@@ -52,13 +53,14 @@ export default Home = ({ route }) => {
       }
     );
 
+    console.log(code);
+
     return res.data.access_token;
   };
 
   useEffect(() => {
     const fetchAccessToken = async () => {
       if (response?.type === "success") {
-        console.log(response.params);
         const { code } = response.params;
         try {
           const access_token = await getAccessToken(code);

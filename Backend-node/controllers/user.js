@@ -88,16 +88,12 @@ exports.uplaodProfilePicture = async (req, res) => {
     res
       .status(500)
       .json({ success: false, message: "Server error, try after some time" });
-    console.log("Error while uploading profile avatar", error.message);
   }
 };
 
 exports.getTokens = async (req, res) => {
   const { code } = req.body;
   const user = req.user;
-
-  console.log("User", user);
-  console.log("Code", code);
 
   const requestBody = {
     grant_type: "authorization_code",
@@ -120,9 +116,6 @@ exports.getTokens = async (req, res) => {
       config
     );
     const { access_token, refresh_token } = response.data;
-
-    // console.log("Access token", access_token);
-    // console.log("Refresh token", refresh_token);
 
     const dbResponse = await User.findByIdAndUpdate(user._id, {
       spotify_refresh_token: refresh_token,
@@ -153,8 +146,6 @@ exports.addFriend = async (req, res) => {
     const incomingUpdate = await User.findByIdAndUpdate(_id, {
       $push: { friends_req_in: user._id.toString() },
     });
-    console.log("Outgoing update", outgoingUpdate);
-    console.log("Incoming update", incomingUpdate);
     res.json({
       success: true,
       message: `${user.name} added ${_id} successfully`,
@@ -209,4 +200,46 @@ exports.applyFilter = async (req, res) => {
   }
 
   res.json({ success: true, filtered_users: filteredUsers });
+};
+
+exports.respondToRequest = async (req, res) => {
+  const user = req.user;
+  const { _id } = user;
+  const user_id_str = _id.toString();
+  const { action, req_user_id } = req.body;
+
+  // console.log(`_id: ${_id}`);
+  // console.log(`req_user_id: ${req_user_id}`);
+
+  if (!action)
+    return res.json({
+      success: false,
+      message: "Action not provided",
+    });
+
+  try {
+    await User.findByIdAndUpdate(user_id_str, {
+      $pull: { friends_req_in: req_user_id },
+    });
+    await User.findByIdAndUpdate(req_user_id, {
+      $pull: { friends_req_out: user_id_str },
+    });
+
+    if (action === "accept") {
+      await User.findByIdAndUpdate(user_id_str, {
+        $push: { friends: req_user_id },
+      });
+      await User.findByIdAndUpdate(req_user_id, {
+        $push: { friends: user_id_str },
+      });
+    } else if (action === "decline") {
+    }
+    res.json({ success: true, message: "Friend request responded" });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Failed to respond to friend request",
+      error: error.message,
+    });
+  }
 };

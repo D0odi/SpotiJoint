@@ -79,8 +79,9 @@ export default Search = ({ route }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: global.background,
+          backgroundColor: global.spotify_white,
           marginBottom: 65,
+          borderRadius: 15,
         }}
       >
         <FlashList
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   search_bar: {
-    marginBottom: 5,
+    marginBottom: 10,
     height: 45,
     borderRadius: 15,
     backgroundColor: global.spotify_white,

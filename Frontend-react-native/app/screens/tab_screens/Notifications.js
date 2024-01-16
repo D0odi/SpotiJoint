@@ -10,7 +10,6 @@ export default Notifications = ({ route }) => {
   const { token } = route.params;
   const [requests, setRequests] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-  const iconSize = 20;
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -28,9 +27,22 @@ export default Notifications = ({ route }) => {
     setRequests(res.data.filtered_users);
   };
 
-  const handleDelete = (itemToDelete) => {
+  const respondToRequest = async (item, action) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setRequests(requests.filter((item) => item !== itemToDelete));
+    setRequests(requests.filter((renderedItem) => renderedItem !== item));
+
+    const res = await client.post(
+      "/respond-to-request",
+      { action: action, req_user_id: item._id },
+      {
+        headers: {
+          Accept: "application/json",
+          Auth: `JWT ${token}`,
+        },
+      }
+    );
+
+    console.log(res.data);
   };
 
   useEffect(() => {
@@ -103,6 +115,7 @@ export default Notifications = ({ route }) => {
                         alignItems: "center",
                         marginRight: 5,
                       }}
+                      onPress={() => respondToRequest(item, "accept")}
                       activeOpacity={0.4}
                     >
                       <View
@@ -126,7 +139,7 @@ export default Notifications = ({ route }) => {
                         marginRight: 5,
                       }}
                       activeOpacity={0.4}
-                      onPress={() => handleDelete(item)}
+                      onPress={() => respondToRequest(item, "decline")}
                     >
                       <View
                         style={{

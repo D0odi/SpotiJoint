@@ -84,7 +84,7 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
       >
         <View
           style={{
-            backgroundColor: clicked ? global.background : global.green_50,
+            backgroundColor: clicked ? global.spotify_white : global.green_50,
             borderRadius: 10,
             padding: 6,
             borderWidth: 1.5,
