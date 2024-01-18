@@ -19,10 +19,16 @@ export default FormInput = ({
       }) => (
         <>
           <Text
-            style={[styles.label, { color: error ? "red" : global.font }]}
+            style={[
+              styles.label,
+              { color: error ? "red" : global.spotify_black },
+            ]}
           >{`${error ? error.message : label}`}</Text>
           <TextInput
-            style={[styles.input, { borderColor: error ? "red" : global.font }]}
+            style={[
+              styles.input,
+              { borderColor: error ? "red" : global.spotify_black },
+            ]}
             placeholder={placeholder}
             onChangeText={onChange}
             onBlur={onBlur}

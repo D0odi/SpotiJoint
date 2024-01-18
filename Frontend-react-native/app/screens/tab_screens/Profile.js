@@ -11,6 +11,7 @@ export default Profile = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

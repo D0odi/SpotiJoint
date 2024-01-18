@@ -4,7 +4,7 @@ import { useState } from "react";
 import global from "../../../styles";
 import client from "../../../api/client";
 
-export default UserCard = ({ name, nickname, _id, avatar, token }) => {
+export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
   const [clicked, setClicked] = useState(false);
 
   const sendFriendRequest = async () => {
@@ -21,7 +21,6 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
           },
         }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +36,6 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
       style={{
         flexDirection: "row",
         flex: 1,
-        backgroundColor: "white",
         borderRadius: 15,
         marginVertical: 3,
       }}
@@ -52,19 +50,23 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
         <Image
           source={{ uri: avatar }}
           style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
+            width: 35,
+            height: 35,
+            borderRadius: 10,
           }}
         />
       </View>
       <View style={{ justifyContent: "center", flex: 1 }}>
-        <Text style={{ fontSize: 14, color: global.font, fontWeight: "bold" }}>
+        <Text
+          style={{
+            fontSize: 14,
+            color: global.spotify_blue,
+            fontWeight: "bold",
+          }}
+        >
           {name}
         </Text>
-        <Text style={{ fontSize: 11, color: global.font_light }}>
-          {nickname}
-        </Text>
+        <Text style={{ fontSize: 11, color: global.blue_50 }}>{nickname}</Text>
       </View>
       <TouchableOpacity
         style={{
@@ -72,7 +74,7 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
           alignItems: "center",
           width: 50,
           height: 50,
-          marginRight: 5,
+          marginRight: 10,
         }}
         onPress={() => {
           handlePress(name);
@@ -82,14 +84,17 @@ export default UserCard = ({ name, nickname, _id, avatar, token }) => {
       >
         <View
           style={{
-            backgroundColor: global.background,
+            backgroundColor: clicked ? global.spotify_white : global.green_50,
             borderRadius: 10,
             padding: 6,
+            borderWidth: 1.5,
+            borderColor: global.green_50,
           }}
         >
           <Ionicons
-            name={clicked ? "checkmark-outline" : "person-add"}
+            name={clicked ? "checkmark" : "person-add"}
             size={20}
+            color={clicked ? global.green_50 : global.spotify_white}
           />
         </View>
       </TouchableOpacity>

@@ -1,5 +1,6 @@
 import React from "react";
 import "react-native-gesture-handler";
+import { Platform, UIManager } from "react-native";
 import LoginScreen from "./app/screens/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,6 +8,12 @@ import AvatarUpload from "./app/screens/AvatarUpload";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserDomain from "./app/screens/UserDomain";
 import global from "./app/styles";
+
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const Stack = createStackNavigator();
 

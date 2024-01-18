@@ -20,19 +20,6 @@ export default LoginScreen = ({ navigation }) => {
   const animation = useRef(new Animated.Value(0)).current;
   const scrollview = useRef();
 
-  const fetchApi = async () => {
-    try {
-      const res = await axios.get("http://100.64.1.230:8000");
-      console.log(res.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
   const rightHeaderOpacity = animation.interpolate({
     inputRange: [0, width],
     outputRange: [1, 0],
@@ -45,17 +32,17 @@ export default LoginScreen = ({ navigation }) => {
 
   const leftHeaderTransalteX = animation.interpolate({
     inputRange: [0, width],
-    outputRange: [0, 40],
+    outputRange: [0, 30],
   });
 
   const loginColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: ["rgba(27,27,51,1)", "#rgba(27,27,51,0.6)"],
+    outputRange: [global.blue, global.blue_50],
   });
 
   const signUpColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: ["rgba(27,27,51,0.6)", "#rgba(27,27,51,1)"],
+    outputRange: [global.blue_50, global.blue],
   });
 
   return (

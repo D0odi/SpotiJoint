@@ -1,4 +1,5 @@
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import global from "../../../styles";
 
 export default FormSubmitBtn = ({ label, onPress }) => {
   return (
@@ -10,8 +11,8 @@ export default FormSubmitBtn = ({ label, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 39,
-    backgroundColor: "rgba(27,27,51,1)",
+    height: 40,
+    backgroundColor: global.blue,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",

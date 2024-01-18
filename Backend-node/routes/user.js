@@ -8,6 +8,8 @@ const {
   uplaodProfilePicture,
   getTokens,
   addFriend,
+  applyFilter,
+  respondToRequest,
 } = require("../controllers/user.js");
 const {
   userValidation_signup,
@@ -44,23 +46,19 @@ router.post(
   upload.single("profile"),
   uplaodProfilePicture
 );
-router.get("/users", isAuth, retrieveUsers);
+router.get("/users", isAuth, retrieveUsers, applyFilter);
 router.post("/exchange", isAuth, getTokens);
 router.post("/add-friend", isAuth, addFriend);
-router.get("/friends", isAuth, async (req, res) => {
-  const { user } = req;
-  try {
-    const friends_and_req_out = await User.findById(user._id).select(
-      "friends_req_out friends"
-    );
-    res.json({ success: true, data: friends_and_req_out });
-  } catch (error) {
-    res.json({
-      success: false,
-      message: "Error while retrieving friends and friends requests!",
-      message: error.message,
-    });
-  }
-});
+router.post("/respond-to-request", isAuth, respondToRequest);
+
+// router.get("/friend-request", isAuth, (req, res) => {
+//   const user = req.user;
+//   const { friends_req_in } = user;
+//   res.json({
+//     success: true,
+//     message: "Friend requests recieved",
+//     friend_reqests: friends_req_in,
+//   });
+// });
 
 module.exports = router;
