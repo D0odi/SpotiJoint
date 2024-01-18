@@ -7,9 +7,11 @@ import client from "../api/client";
 import global from "../styles";
 import axios from "axios";
 
-export default AvatarUplaod = (props) => {
+export default AvatarUplaod = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
-  const { token, name, nickname, _id } = props.route.params;
+  const params = route.params;
+  const { name } = params.user;
+  const { token } = params;
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -43,8 +45,10 @@ export default AvatarUplaod = (props) => {
         },
       });
 
+      //fix image passing
+
       if (res.data.success) {
-        props.navigation.dispatch(
+        navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [
@@ -52,10 +56,7 @@ export default AvatarUplaod = (props) => {
                 name: "UserDomain",
                 params: {
                   imageUri: uri,
-                  name: name,
-                  nickname: nickname,
-                  token: token,
-                  _id: _id,
+                  user: res.data.user,
                 },
               },
             ],

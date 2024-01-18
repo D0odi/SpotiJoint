@@ -10,7 +10,8 @@ import global from "../styles";
 const Tab = createBottomTabNavigator();
 
 export default UserDomain = ({ route, navigation }) => {
-  const { imageUri, name, nickname, token, _id } = route.params;
+  const { avatar, _id } = route.params.user;
+  const { token } = route.params;
   const iconSize = 27;
 
   return (
@@ -96,7 +97,7 @@ export default UserDomain = ({ route, navigation }) => {
                       height: 26,
                       width: 26,
                     }}
-                    source={{ uri: imageUri }}
+                    source={{ uri: avatar }}
                   ></Image>
                 </View>
               </TouchableOpacity>

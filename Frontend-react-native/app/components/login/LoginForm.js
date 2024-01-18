@@ -21,16 +21,11 @@ const LoginForm = ({ navigation }) => {
       console.log(res.data);
 
       if (res.data.success) {
-        // console.log(res.data.token);
-        const avatarUri = res.data.user.avatar ? res.data.user.avatar : "";
         const navigateAction = CommonActions.navigate({
           name: "UserDomain",
           params: {
-            imageUri: avatarUri,
-            name: res.data.user.name,
-            nickname: res.data.user.nickname,
             token: res.data.token,
-            _id: res.data.user._id,
+            user: res.data.user,
           },
         });
         navigation.dispatch(navigateAction);

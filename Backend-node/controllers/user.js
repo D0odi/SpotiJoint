@@ -80,10 +80,17 @@ exports.uplaodProfilePicture = async (req, res) => {
       crop: "fill",
     });
 
-    await User.findByIdAndUpdate(user._id, { avatar: result.url });
-    res
-      .status(201)
-      .json({ success: true, message: "Profile avatar uploaded successfully" });
+    const updateddUser = await User.findByIdAndUpdate(user._id, {
+      avatar: result.url,
+    });
+
+    console.log(updateddUser);
+
+    res.status(201).json({
+      success: true,
+      message: "Profile avatar uploaded successfully",
+      user: updateddUser,
+    });
   } catch (error) {
     res
       .status(500)

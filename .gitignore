@@ -5,3 +5,4 @@ Backend-node/build/
 Frontend-react-native/.env
 Frontend-react-native/node_modules/
 Frontend-react-native/build/
+Frontend-react-native/app/api/client.js
