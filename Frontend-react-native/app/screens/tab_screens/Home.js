@@ -11,6 +11,7 @@ import global from "../../styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import client from "../../api/client";
 import SpotifyBtn from "./components/SpotifyBtn";
+import Spotify from "../../api/spotify";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -20,6 +21,9 @@ const discovery = {
 export default Home = ({ route }) => {
   const { token } = route.params;
   const [token_s, setToken_s] = useState(null);
+  const [userInfo_s, setUserInfo_s] = useState({});
+  const [spotifyAPI, setSpotifyAPI] = useState(null);
+
   const [request, response, promptAsync] = useAuthRequest(
     {
       responseType: ResponseType.Code,
@@ -38,66 +42,28 @@ export default Home = ({ route }) => {
     discovery
   );
 
-  const getAccessToken = async (code) => {
-    console.log("code:", code);
-    const res = await client.post(
-      "/exchange",
-      {
-        code: code,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          Auth: `JWT ${token}`,
-        },
-      }
-    );
-
-    console.log(code);
-
-    return res.data.access_token;
-  };
-
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      if (response?.type === "success") {
-        const { code } = response.params;
-        try {
-          const access_token = await getAccessToken(code);
-          console.log(access_token);
-          setToken_s(access_token);
-        } catch (error) {
-          console.error("Error fetching refresh token:", error);
-        }
-      }
+    const connect = async () => {
+      const api = await Spotify(token);
+      setSpotifyAPI(api);
+
+      const access_token = await api.fetchAccessToken(response);
+      setToken_s(access_token);
     };
 
-    fetchAccessToken();
+    connect();
   }, [response]);
-
-  const [userInfo_s, setUserInfo_s] = useState({});
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      try {
-        const response = await fetch("https://api.spotify.com/v1/me", {
-          headers: {
-            Authorization: `Bearer ${token_s}`,
-          },
-        });
-        const data = await response.json();
-        console.log("User Profile:", data);
-        setUserInfo_s({
-          avatar: data.images[0].url,
-          name: data.display_name,
-          location: data.country,
-        });
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
+      if (token_s && spotifyAPI) {
+        console.log("spotifyApi check: ", spotifyAPI.check());
+        const userInfo = await spotifyAPI.fetchUserProfile(token_s);
+        setUserInfo_s(userInfo);
       }
     };
 
-    if (token_s) {
+    if (token_s && spotifyAPI) {
       fetchUserProfile();
     }
   }, [token_s]);
