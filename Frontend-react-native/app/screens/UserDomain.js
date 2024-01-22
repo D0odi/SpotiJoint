@@ -1,18 +1,52 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useState, useContext } from "react";
 import Home from "./tab_screens/Home";
 import Notifications from "./tab_screens/Notifications";
 import Search from "./tab_screens/Search";
 import Profile from "./tab_screens/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import global from "../styles";
+import Spotify from "../api/spotify";
+import {
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_CLIENT_SECRET,
+  SPOTIFY_REDIRECT_URI,
+} from "@env";
+import { useAuthRequest, ResponseType } from "expo-auth-session";
+import { AppContext } from "../contexts/AppContext";
+
 const Tab = createBottomTabNavigator();
 
+const discovery = {
+  authorizationEndpoint: "https://accounts.spotify.com/authorize",
+  tokenEndpoint: "https://accounts.spotify.com/api/token",
+};
+
 export default UserDomain = ({ route, navigation }) => {
-  const { avatar, _id } = route.params.user;
-  const { token } = route.params;
+  const { setToken_s, setSpotifyAPI, loggedInUser, token } =
+    useContext(AppContext);
+  const { avatar } = loggedInUser;
   const iconSize = 27;
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      responseType: ResponseType.Code,
+      clientId: SPOTIFY_CLIENT_ID,
+      clientSecret: SPOTIFY_CLIENT_SECRET,
+      scopes: [
+        "user-read-email",
+        "user-library-read",
+        "user-read-playback-state",
+        "user-read-currently-playing",
+        "user-read-private",
+      ],
+      usePKCE: false,
+      redirectUri: SPOTIFY_REDIRECT_URI,
+    },
+    discovery
+  );
 
   return (
     <View style={styles.container}>
@@ -35,14 +69,12 @@ export default UserDomain = ({ route, navigation }) => {
         <Tab.Screen
           name="Home"
           component={Home}
-          initialParams={{ token: token }}
           options={{
             tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name="home"
-                color={focused ? global.green_50 : global.blue}
-                size={iconSize}
-              />
+              <>
+                {focused && <View style={styles.line}></View>}
+                <Ionicons name="home" color={global.blue} size={iconSize} />
+              </>
             ),
             headerShown: false,
           }}
@@ -50,14 +82,12 @@ export default UserDomain = ({ route, navigation }) => {
         <Tab.Screen
           name="Search"
           component={Search}
-          initialParams={{ token: token, _id: _id }}
           options={{
             tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name="search"
-                color={focused ? global.green_50 : global.blue}
-                size={iconSize}
-              />
+              <>
+                {focused && <View style={styles.line}></View>}
+                <Ionicons name="search" color={global.blue} size={iconSize} />
+              </>
             ),
             headerShown: false,
           }}
@@ -65,11 +95,16 @@ export default UserDomain = ({ route, navigation }) => {
         <Tab.Screen
           name="Spotify"
           component={Home}
-          initialParams={{ token: token }}
           listeners={{
-            tabPress: (e) => {
+            tabPress: async (e) => {
               e.preventDefault();
-              console.log("pressed");
+              const response = await promptAsync();
+              const api = await Spotify(token);
+              setSpotifyAPI(api);
+
+              console.log("UserrDomain Spotify connected: ", api.check());
+              const access_token = await api.fetchAccessToken(response);
+              setToken_s(access_token);
             },
           }}
           options={{
@@ -97,14 +132,16 @@ export default UserDomain = ({ route, navigation }) => {
         <Tab.Screen
           name="Notifications"
           component={Notifications}
-          initialParams={{ token: token }}
           options={{
             tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name="notifications"
-                color={focused ? global.green_50 : global.blue}
-                size={iconSize}
-              />
+              <>
+                {focused && <View style={styles.line}></View>}
+                <Ionicons
+                  name="notifications"
+                  color={global.blue}
+                  size={iconSize}
+                />
+              </>
             ),
             headerShown: false,
           }}
@@ -114,23 +151,24 @@ export default UserDomain = ({ route, navigation }) => {
           component={Profile}
           options={{
             tabBarIcon: ({ focused }) => (
-              <View
-                style={{
-                  backgroundColor: focused
-                    ? global.green_50
-                    : global.background,
-                  padding: 5,
-                  borderRadius: 10,
-                }}
-              >
-                <Image
+              <>
+                {focused && <View style={styles.line}></View>}
+                <View
                   style={{
-                    height: 26,
-                    width: 26,
+                    backgroundColor: global.blue,
+                    padding: 5,
+                    borderRadius: 10,
                   }}
-                  source={{ uri: avatar }}
-                ></Image>
-              </View>
+                >
+                  <Image
+                    style={{
+                      height: 26,
+                      width: 26,
+                    }}
+                    source={{ uri: avatar }}
+                  ></Image>
+                </View>
+              </>
             ),
             headerShown: false,
           }}
@@ -154,5 +192,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.5,
     elevation: 5,
+  },
+  line: {
+    position: "absolute",
+    width: 27,
+    height: 3,
+    backgroundColor: global.blue,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    top: 0,
   },
 });

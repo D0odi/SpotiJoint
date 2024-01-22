@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useAuthRequest, ResponseType } from "expo-auth-session";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import SongDisplay from "./components/SongDisplay";
 import {
   SPOTIFY_CLIENT_ID,
@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import client from "../../api/client";
 import SpotifyBtn from "./components/SpotifyBtn";
 import Spotify from "../../api/spotify";
+import { AppContext } from "../../contexts/AppContext";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
@@ -19,40 +20,10 @@ const discovery = {
 };
 
 export default Home = ({ route }) => {
-  const { token } = route.params;
-  const [token_s, setToken_s] = useState(null);
+  const { token_s, spotifyAPI, setToken_s, setSpotifyAPI } =
+    useContext(AppContext);
+
   const [userInfo_s, setUserInfo_s] = useState({});
-  const [spotifyAPI, setSpotifyAPI] = useState(null);
-
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      responseType: ResponseType.Code,
-      clientId: SPOTIFY_CLIENT_ID,
-      clientSecret: SPOTIFY_CLIENT_SECRET,
-      scopes: [
-        "user-read-email",
-        "user-library-read",
-        "user-read-playback-state",
-        "user-read-currently-playing",
-        "user-read-private",
-      ],
-      usePKCE: false,
-      redirectUri: SPOTIFY_REDIRECT_URI,
-    },
-    discovery
-  );
-
-  useEffect(() => {
-    const connect = async () => {
-      const api = await Spotify(token);
-      setSpotifyAPI(api);
-
-      const access_token = await api.fetchAccessToken(response);
-      setToken_s(access_token);
-    };
-
-    connect();
-  }, [response]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -70,7 +41,7 @@ export default Home = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {token_s && userInfo_s ? (
+      {token_s && userInfo_s && (
         <>
           <View style={styles.outerContainer}>
             <View style={styles.userContainer}>
@@ -101,11 +72,9 @@ export default Home = ({ route }) => {
           <View style={styles.currentSong}>
             <SongDisplay token_s={token_s} />
           </View>
-          <View style={styles.friends}></View>
         </>
-      ) : (
-        <SpotifyBtn promptAsync={promptAsync} />
       )}
+      <View style={styles.friends}></View>
     </View>
   );
 };
@@ -113,14 +82,14 @@ export default Home = ({ route }) => {
 const styles = StyleSheet.create({
   currentSong: {
     height: 70,
-    backgroundColor: "#fff",
+    backgroundColor: global.spotify_white,
     padding: 10,
     borderRadius: 15,
     marginBottom: 10,
   },
   friends: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: global.spotify_white,
     padding: 10,
     borderRadius: 15,
     marginBottom: 65,
@@ -132,7 +101,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     flex: 1,
-    backgroundColor: global.background,
+    backgroundColor: global.spotify_white,
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 15,
@@ -141,7 +110,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     flexDirection: "row",
     padding: 2,
-    backgroundColor: global.spotify_black,
     marginBottom: 10,
     borderRadius: 17,
   },

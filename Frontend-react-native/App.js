@@ -8,6 +8,7 @@ import AvatarUpload from "./app/screens/AvatarUpload";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UserDomain from "./app/screens/UserDomain";
 import global from "./app/styles";
+import { ContextProvider } from "./app/contexts/AppContext.js";
 
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -29,10 +30,12 @@ const StackNavigator = () => {
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: global.background }}>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </SafeAreaView>
+    <ContextProvider>
+      <SafeAreaView style={{ flex: 1, backgroundColor: global.background }}>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </SafeAreaView>
+    </ContextProvider>
   );
 }

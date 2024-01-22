@@ -25,6 +25,7 @@ export default Spotify = async (token) => {
   };
 
   const fetchAccessToken = async (response) => {
+    console.log("call");
     if (response?.type === "success") {
       const { code } = response.params;
       try {
@@ -34,6 +35,8 @@ export default Spotify = async (token) => {
       } catch (error) {
         console.error("Error fetching refresh token:", error);
       }
+    } else {
+      console.log("Error fetching refresh token");
     }
   };
 

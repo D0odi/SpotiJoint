@@ -1,18 +1,20 @@
 import { View, Text, StyleSheet } from "react-native";
 import global from "../../styles";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { FlashList } from "@shopify/flash-list";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import client from "../../api/client";
 import { set } from "react-hook-form";
 import UserCardSearch from "./components/UserCardSearch";
+import { AppContext } from "../../contexts/AppContext";
 
 export default Search = ({ route }) => {
   const [users, setUsers] = useState([]);
   const [input, setInput] = useState("");
   const [time, setTime] = useState(Date.now());
-  const { token, _id } = route.params;
+  const { token, loggedInUser } = useContext(AppContext);
+  const { _id } = loggedInUser;
 
   const debounce = (func, wait) => {
     let timeout;

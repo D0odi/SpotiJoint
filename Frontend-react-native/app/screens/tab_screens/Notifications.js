@@ -1,13 +1,14 @@
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LayoutAnimation } from "react-native";
 import global from "../../styles";
 import client from "../../api/client";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { AppContext } from "../../contexts/AppContext";
 
 export default Notifications = ({ route }) => {
-  const { token } = route.params;
+  const { token } = useContext(AppContext);
   const [requests, setRequests] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 

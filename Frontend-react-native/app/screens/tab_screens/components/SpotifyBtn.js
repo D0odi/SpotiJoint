@@ -1,16 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import global from "../../../styles";
 
-export default SpotifyBtn = ({ promptAsync }) => {
+export default SpotifyBtn = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <View style={{ alignSelf: "center" }}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => {
-            promptAsync();
-          }}
-        >
+        <TouchableOpacity activeOpacity={0.5}>
           <View
             style={{
               backgroundColor: "white",

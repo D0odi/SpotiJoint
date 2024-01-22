@@ -6,12 +6,15 @@ import { useState } from "react";
 import client from "../api/client";
 import global from "../styles";
 import axios from "axios";
+import { useContext } from "react";
+import { AppContext } from "../contexts/AppContext";
 
 export default AvatarUplaod = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
   const params = route.params;
   const { name } = params.user;
   const { token } = params;
+  const { setLoggedInUser, setToken } = useContext(AppContext);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -45,19 +48,17 @@ export default AvatarUplaod = ({ route, navigation }) => {
         },
       });
 
-      //fix image passing
-
       if (res.data.success) {
+        const user = res.data.user;
+        user.avatar = uri;
+        setToken(token);
+        setLoggedInUser(user);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [
               {
                 name: "UserDomain",
-                params: {
-                  imageUri: uri,
-                  user: res.data.user,
-                },
               },
             ],
           })

@@ -4,10 +4,13 @@ import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
 import { StyleSheet } from "react-native";
+import { AppContext } from "../../contexts/AppContext";
 
 const LoginForm = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
+  const { setLoggedInUser, setToken } = useContext(AppContext);
 
   // data
   const onSubmit = async () => {
@@ -18,15 +21,13 @@ const LoginForm = ({ navigation }) => {
         password: "1234",
       });
 
-      console.log(res.data);
+      console.log("LOGIN: ", res.data);
 
       if (res.data.success) {
+        setLoggedInUser(res.data.user);
+        setToken(res.data.token);
         const navigateAction = CommonActions.navigate({
           name: "UserDomain",
-          params: {
-            token: res.data.token,
-            user: res.data.user,
-          },
         });
         navigation.dispatch(navigateAction);
       } else {
