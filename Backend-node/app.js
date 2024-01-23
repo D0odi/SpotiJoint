@@ -1,21 +1,35 @@
-const express = require("express");
 require("./models/database.js");
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
 const userRouter = require("./routes/user.js");
-const User = require("./models/user.js");
+
+const PORT = 8000;
 
 const app = express();
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://100.64.1.230:8000",
+  },
+});
 
+io.on("connection", (socket) => {
+  console.log(`Socket ${socket.id} connected`);
+
+  socket.on("currently-playing", (data, socket_id, user_id) => {
+    console.log(data);
+  });
+});
+
+app.use(cors());
 app.use(express.json());
 app.use(userRouter);
-
-// const test = async (email, password) => {
-//     const user = await User.findOne({email: email});
-//     const result = await user.comparePassword(password);
-//     console.log(result);
-// }
 
 app.get("/", (req, res) => {
   res.json({ success: true, message: "Welcome to my API" });
 });
 
-app.listen(8000);
+server.listen(PORT, () => {
+  console.log(`Server listening on ${PORT}`);
+});

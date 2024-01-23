@@ -1,47 +1,43 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { useAuthRequest, ResponseType } from "expo-auth-session";
+import { View, Text, StyleSheet, Image, FlatList } from "react-native";
 import { useEffect, useState, useContext } from "react";
+import { ActivityIndicator } from "react-native";
 import SongDisplay from "./components/SongDisplay";
-import {
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_REDIRECT_URI,
-} from "@env";
 import global from "../../styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import client from "../../api/client";
-import SpotifyBtn from "./components/SpotifyBtn";
-import Spotify from "../../api/spotify";
 import { AppContext } from "../../contexts/AppContext";
-
-const discovery = {
-  authorizationEndpoint: "https://accounts.spotify.com/authorize",
-  tokenEndpoint: "https://accounts.spotify.com/api/token",
-};
+import client from "../../api/client";
 
 export default Home = ({ route }) => {
-  const { token_s, spotifyAPI, setToken_s, setSpotifyAPI } =
-    useContext(AppContext);
+  const { token_s, spotifyAPI, loggedInUser, token } = useContext(AppContext);
 
   const [userInfo_s, setUserInfo_s] = useState({});
+  const [friendsData, setFriendsData] = useState(null);
+
+  const fetchRequests = async () => {
+    const res = await client.get("/users", {
+      headers: {
+        Auth: `JWT ${token}`,
+        Filter: "home-screen",
+      },
+    });
+    console.log(`Home Screen Friends: ${res.data.filtered_users}`);
+    setFriendsData(res.data.filtered_users);
+  };
+
+  const fetchUserProfile = async () => {
+    if (token_s && spotifyAPI) {
+      const userInfo = await spotifyAPI.fetchUserProfile(token_s);
+      setUserInfo_s(userInfo);
+    }
+  };
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (token_s && spotifyAPI) {
-        console.log("spotifyApi check: ", spotifyAPI.check());
-        const userInfo = await spotifyAPI.fetchUserProfile(token_s);
-        setUserInfo_s(userInfo);
-      }
-    };
-
-    if (token_s && spotifyAPI) {
-      fetchUserProfile();
-    }
-  }, [token_s]);
+    fetchUserProfile();
+    fetchRequests();
+  }, []);
 
   return (
     <View style={styles.container}>
-      {token_s && userInfo_s && (
+      {token_s && userInfo_s && spotifyAPI && (
         <>
           <View style={styles.outerContainer}>
             <View style={styles.userContainer}>
@@ -70,11 +66,27 @@ export default Home = ({ route }) => {
             </View>
           </View>
           <View style={styles.currentSong}>
-            <SongDisplay token_s={token_s} />
+            <SongDisplay />
           </View>
         </>
       )}
-      <View style={styles.friends}></View>
+      <View style={styles.friends}>
+        <FlatList
+          data={friendsData}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                padding: 5,
+              }}
+            >
+              <Text>{item.name}</Text>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -89,10 +101,10 @@ const styles = StyleSheet.create({
   },
   friends: {
     flex: 1,
-    backgroundColor: global.spotify_white,
-    padding: 10,
-    borderRadius: 15,
+    padding: 5,
     marginBottom: 65,
+    backgroundColor: global.spotify_white,
+    borderRadius: 15,
   },
   container: {
     padding: 10,

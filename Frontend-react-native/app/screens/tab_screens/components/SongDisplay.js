@@ -1,50 +1,29 @@
-import { useEffect, useState } from "react";
-import { set } from "react-hook-form";
-import { View, Text, StyleSheet, Touchable } from "react-native";
+import { useEffect, useState, useContext } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import global from "../../../styles";
+import { AppContext } from "../../../contexts/AppContext";
+import { socket } from "../../../api/client";
 
-const formatTime = (ms) => {
-  let totalSeconds = Math.floor(ms / 1000);
-  let minutes = Math.floor(totalSeconds / 60);
-  let seconds = totalSeconds % 60;
-
-  minutes = String(minutes).padStart(2, "0");
-  seconds = String(seconds).padStart(2, "0");
-
-  return `${minutes}:${seconds}`;
-};
-
-export default SongDisplay = ({ token_s }) => {
+export default SongDisplay = () => {
   const [songInfo, setSongInfo] = useState({});
+  const { token_s, loggedInUser, spotifyAPI } = useContext(AppContext);
+  const user_id = loggedInUser._id;
+  const socket_id = socket.id;
+
   const fetchCurrentPlaying = async () => {
-    console.log("token_s: ", token_s);
-    try {
-      const response = await fetch(
-        "https://api.spotify.com/v1/me/player/currently-playing",
-        {
-          headers: {
-            Authorization: `Bearer ${token_s}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Currently Playing:", data);
-      setSongInfo({
-        name: data.item.name,
-        progress_ms: formatTime(data.progress_ms),
-      });
-    } catch (error) {
-      console.error("Error fetching currently playing track:", error);
-    }
+    const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
+    setSongInfo(songInfo);
   };
+
   useEffect(() => {
     fetchCurrentPlaying();
-  }, []);
+  }, [spotifyAPI]);
+
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity onPress={fetchCurrentPlaying}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity>
           <View
             style={{
               backgroundColor: "white",
@@ -59,10 +38,23 @@ export default SongDisplay = ({ token_s }) => {
           </View>
         </TouchableOpacity>
         {songInfo && (
-          <>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              flex: 1,
+              marginLeft: 15,
+              alignItems: "center",
+              padding: 10,
+            }}
+          >
             <Text style={styles.songInfo}>{songInfo.name}</Text>
             <Text style={styles.songInfo}>{songInfo.progress_ms}</Text>
-          </>
+            <Image
+              source={{ uri: songInfo.songImage }}
+              style={{ width: 54, height: 54, borderRadius: 15 }}
+            />
+          </View>
         )}
       </View>
     </View>

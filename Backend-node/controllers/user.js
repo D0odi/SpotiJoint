@@ -199,6 +199,13 @@ exports.applyFilter = async (req, res) => {
         dbUser._id.toString() !== user._id.toString()
       );
     });
+  } else if (filterType === "home-screen") {
+    filteredUsers = users.filter((dbUser) => {
+      return (
+        friends.includes(dbUser._id.toString()) &&
+        dbUser._id.toString() !== user._id.toString()
+      );
+    });
   } else {
     res.json({
       success: false,

@@ -1,6 +1,11 @@
 import axios from "axios";
+import { io } from "socket.io-client";
+import { Platform } from "react-native";
 
-export default axios.create({ baseURL: "http://100.64.1.230:8000" });
+const baseURL =
+  Platform.OS === "android"
+    ? "http://100.64.1.230:8000"
+    : "http://localhost:8000";
 
-//10.157.116.1 - asu
-//100.64.1.230 - home
+export default axios.create({ baseURL });
+export const socket = io(baseURL);

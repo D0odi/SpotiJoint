@@ -1,6 +1,17 @@
 import client from "./client";
 
-export default Spotify = async (token) => {
+const formatTime = (ms) => {
+  let totalSeconds = Math.floor(ms / 1000);
+  let minutes = Math.floor(totalSeconds / 60);
+  let seconds = totalSeconds % 60;
+
+  minutes = String(minutes).padStart(2, "0");
+  seconds = String(seconds).padStart(2, "0");
+
+  return `${minutes}:${seconds}`;
+};
+
+export default Spotify = async (user_token) => {
   const check = () => {
     return "Connected";
   };
@@ -14,7 +25,7 @@ export default Spotify = async (token) => {
       {
         headers: {
           Accept: "application/json",
-          Auth: `JWT ${token}`,
+          Auth: `JWT ${user_token}`,
         },
       }
     );
@@ -40,11 +51,11 @@ export default Spotify = async (token) => {
     }
   };
 
-  const fetchUserProfile = async (spotify_token) => {
+  const fetchUserProfile = async (token_s) => {
     try {
       const response = await fetch("https://api.spotify.com/v1/me", {
         headers: {
-          Authorization: `Bearer ${spotify_token}`,
+          Authorization: `Bearer ${token_s}`,
         },
       });
       const data = await response.json();
@@ -59,5 +70,27 @@ export default Spotify = async (token) => {
     }
   };
 
-  return { fetchAccessToken, fetchUserProfile, check };
+  const fetchCurrentPlaying = async (token_s) => {
+    try {
+      const response = await fetch(
+        "https://api.spotify.com/v1/me/player/currently-playing",
+        {
+          headers: {
+            Authorization: `Bearer ${token_s}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      return {
+        name: data.item.name,
+        progress_ms: formatTime(data.progress_ms),
+        songImage: data.item.album.images[2].url,
+      };
+    } catch (error) {
+      console.error("Error fetching currently playing track:", error);
+    }
+  };
+
+  return { fetchAccessToken, fetchUserProfile, fetchCurrentPlaying, check };
 };
