@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.isAuth = async (req, res, next) => {
+  console.log(req.headers);
   if (req.headers && req.headers.auth) {
     console.log(req.headers.auth);
     const token = req.headers.auth.split(" ")[1];
@@ -33,6 +34,7 @@ exports.isAuth = async (req, res, next) => {
       res.json({ success: false, message: "Unauthorized access 3" });
     }
   } else {
+    console.log("Unauthorized access, no headers?");
     res.json({ success: false, message: "Unauthorized access 4" });
   }
 };
