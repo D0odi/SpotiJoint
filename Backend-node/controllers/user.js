@@ -34,6 +34,8 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email);
+  console.log(password);
   const user = await User.findOne({ email: email });
 
   if (!user) return res.json({ success: false, message: "Email not found" });
