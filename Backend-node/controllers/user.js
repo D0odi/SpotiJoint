@@ -144,6 +144,7 @@ exports.getTokens = async (req, res) => {
       access_token: access_token,
     });
   } catch (error) {
+    console.error(error.response.data);
     console.log("Get tokens - Error: ", error.message);
     res.json({
       success: false,
