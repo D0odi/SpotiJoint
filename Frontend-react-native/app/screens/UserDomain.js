@@ -98,13 +98,22 @@ export default UserDomain = ({ route, navigation }) => {
           listeners={{
             tabPress: async (e) => {
               e.preventDefault();
+              console.log("Tab press event triggered. ", SPOTIFY_REDIRECT_URI);
+
               const response = await promptAsync();
+              console.log("Authentication prompt opened.");
+
               const api = await Spotify(token);
               setSpotifyAPI(api);
+              console.log("Spotify API set.");
 
               console.log("UserrDomain Spotify connected: ", api.check());
+
               const access_token = await api.fetchAccessToken(response);
+              console.log("Access token fetched:", access_token);
+
               setToken_s(access_token);
+              console.log("Access token set.");
             },
           }}
           options={{

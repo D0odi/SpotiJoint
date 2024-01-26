@@ -126,6 +126,8 @@ exports.getTokens = async (req, res) => {
     );
     const { access_token, refresh_token } = response.data;
 
+    console.log("Get tokens: ", access_token, refresh_token);
+
     const dbResponse = await User.findByIdAndUpdate(user._id, {
       spotify_refresh_token: refresh_token,
     });

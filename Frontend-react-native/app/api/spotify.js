@@ -16,23 +16,27 @@ export default Spotify = async (user_token) => {
     return "Connected";
   };
   const callToExchange = async (code) => {
-    console.log("code:", code);
-    const res = await client.post(
-      "/exchange",
-      {
-        code: code,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          Auth: `JWT ${user_token}`,
+    try {
+      console.log("code:", code);
+      const res = await client.post(
+        "/exchange",
+        {
+          code: code,
         },
-      }
-    );
+        {
+          headers: {
+            Accept: "application/json",
+            Auth: `JWT ${user_token}`,
+          },
+        }
+      );
 
-    console.log(code);
+      console.log("res.data:", res.data);
 
-    return res.data.access_token;
+      return res.data.access_token;
+    } catch (error) {
+      console.error("Error exchanging code:", error);
+    }
   };
 
   const fetchAccessToken = async (response) => {
