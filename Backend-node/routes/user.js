@@ -47,7 +47,16 @@ router.post(
   uplaodProfilePicture
 );
 router.get("/users", isAuth, retrieveUsers, applyFilter);
-router.post("/exchange", isAuth, getTokens);
+router.get("/exchange", getTokens, isAuth, (req, res) => {
+  console.log("router access", req.access_token);
+  console.log("router refresh", req.refresh_token);
+  res.json({
+    success: true,
+    message: "Exchange route",
+    access_token: req.access_token,
+    refresh_token: req.refresh_token,
+  });
+});
 router.post("/add-friend", isAuth, addFriend);
 router.post("/respond-to-request", isAuth, respondToRequest);
 

@@ -44,6 +44,7 @@ export default UserDomain = ({ route, navigation }) => {
       ],
       usePKCE: false,
       redirectUri: SPOTIFY_REDIRECT_URI,
+      state: token,
     },
     discovery
   );

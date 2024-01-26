@@ -100,12 +100,13 @@ exports.uplaodProfilePicture = async (req, res) => {
   }
 };
 
-exports.getTokens = async (req, res) => {
-  const { code } = req.body;
+exports.getTokens = async (req, res, next) => {
+  const { code, state } = req.query;
   const user = req.user;
 
   console.log("Get tokens - code: ", code);
   console.log("Get tokens - user: ", user);
+  console.log("Get tokens - jwt: ", state);
 
   const requestBody = {
     grant_type: "authorization_code",
@@ -138,11 +139,10 @@ exports.getTokens = async (req, res) => {
 
     console.log("Get tokens - DB Response: ", dbResponse);
 
-    res.json({
-      success: true,
-      message: "Token exchange successful",
-      access_token: access_token,
-    });
+    req.access_token = access_token;
+    req.refresh_token = refresh_token;
+    req.jwt_token = state;
+    next();
   } catch (error) {
     console.error(error.response.data);
     console.log("Get tokens - Error: ", error.message);
