@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useState, useContext } from "react";
 import Home from "./tab_screens/Home";
 import Notifications from "./tab_screens/Notifications";
@@ -14,7 +13,11 @@ import {
   SPOTIFY_CLIENT_SECRET,
   SPOTIFY_REDIRECT_URI,
 } from "@env";
-import { useAuthRequest, ResponseType } from "expo-auth-session";
+import {
+  useAuthRequest,
+  ResponseType,
+  makeRedirectUri,
+} from "expo-auth-session";
 import { AppContext } from "../contexts/AppContext";
 
 const Tab = createBottomTabNavigator();
@@ -23,6 +26,12 @@ const discovery = {
   authorizationEndpoint: "https://accounts.spotify.com/authorize",
   tokenEndpoint: "https://accounts.spotify.com/api/token",
 };
+
+const redirectUri = makeRedirectUri({
+  useProxy: true,
+  scheme: "my-scheme",
+  path: "/callback",
+});
 
 export default UserDomain = ({ route, navigation }) => {
   const { setToken_s, setSpotifyAPI, loggedInUser, token } =
@@ -43,7 +52,7 @@ export default UserDomain = ({ route, navigation }) => {
         "user-read-private",
       ],
       usePKCE: false,
-      redirectUri: SPOTIFY_REDIRECT_URI,
+      redirectUri: redirectUri, //SPOTIFY_REDIRECT_URI,
       state: token,
     },
     discovery
@@ -99,7 +108,7 @@ export default UserDomain = ({ route, navigation }) => {
           listeners={{
             tabPress: async (e) => {
               e.preventDefault();
-              console.log("Tab press event triggered. ", SPOTIFY_REDIRECT_URI);
+              console.log("Tab press event triggered. ", redirectUri);
 
               const response = await promptAsync();
               console.log("Authentication prompt opened.");

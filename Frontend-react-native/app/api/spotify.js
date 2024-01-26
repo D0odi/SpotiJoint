@@ -18,7 +18,7 @@ export default Spotify = async (user_token) => {
   const callToExchange = async (code) => {
     try {
       console.log("code:", code);
-      const res = await client.post(
+      const res = await client.get(
         "/exchange",
         {
           code: code,
