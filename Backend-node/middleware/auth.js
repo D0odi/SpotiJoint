@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.isAuth = async (req, res, next) => {
-  console.log(req.headers);
-  console.log(req.headers.auth);
+  console.log("Auth jwt: ", req.headers.auth);
   const token = req.headers.auth.split(" ")[1];
+  console.log(token);
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decode.userId);

@@ -18,18 +18,16 @@ export default Spotify = async (user_token) => {
   const callToExchange = async (code) => {
     try {
       console.log("code:", code);
-      const res = await client.get(
-        "/exchange",
-        {
+      console.log("user_token:", user_token);
+      const res = await client.get("/exchange", {
+        params: {
           code: code,
         },
-        {
-          headers: {
-            Accept: "application/json",
-            Auth: `JWT ${user_token}`,
-          },
-        }
-      );
+        headers: {
+          Accept: "application/json",
+          Auth: `JWT ${user_token}`,
+        },
+      });
 
       console.log("res.data:", res.data);
 
