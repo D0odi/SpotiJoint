@@ -104,6 +104,9 @@ exports.getTokens = async (req, res) => {
   const { code } = req.body;
   const user = req.user;
 
+  console.log("Get tokens - code: ", code);
+  console.log("Get tokens - user: ", user);
+
   const requestBody = {
     grant_type: "authorization_code",
     code: code,
@@ -126,11 +129,14 @@ exports.getTokens = async (req, res) => {
     );
     const { access_token, refresh_token } = response.data;
 
-    console.log("Get tokens: ", access_token, refresh_token);
+    console.log("Get tokens - Access Token: ", access_token);
+    console.log("Get tokens - Refresh Token: ", refresh_token);
 
     const dbResponse = await User.findByIdAndUpdate(user._id, {
       spotify_refresh_token: refresh_token,
     });
+
+    console.log("Get tokens - DB Response: ", dbResponse);
 
     res.json({
       success: true,
@@ -138,6 +144,7 @@ exports.getTokens = async (req, res) => {
       access_token: access_token,
     });
   } catch (error) {
+    console.log("Get tokens - Error: ", error.message);
     res.json({
       success: false,
       message: "Token exchange failed",
