@@ -19,13 +19,13 @@ export default Home = ({ route }) => {
         Filter: "home-screen",
       },
     });
-    console.log(`Home Screen Friends: ${res.data.filtered_users}`);
     setFriendsData(res.data.filtered_users);
   };
 
   const fetchUserProfile = async () => {
     if (token_s && spotifyAPI) {
       const userInfo = await spotifyAPI.fetchUserProfile(token_s);
+      console.log("USERINFO: ", userInfo);
       setUserInfo_s(userInfo);
     }
   };

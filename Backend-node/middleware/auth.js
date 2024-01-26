@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.isAuth = async (req, res, next) => {
-  console.log(req.headers.auth);
   if (req.headers && req.headers.auth) {
     const token = req.headers.auth.split(" ")[1];
     try {

@@ -23,7 +23,11 @@ export default SongDisplay = () => {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            fetchCurrentPlaying();
+          }}
+        >
           <View
             style={{
               backgroundColor: "white",
