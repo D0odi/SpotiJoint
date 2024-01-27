@@ -15,13 +15,14 @@ export default Spotify = async (user_token) => {
   const check = () => {
     return "Connected";
   };
-  const callToExchange = async (code) => {
+  const callToExchange = async (code, redirect_uri) => {
     try {
       console.log("code:", code);
       console.log("user_token:", user_token);
       const res = await client.get("/exchange", {
         params: {
           code: code,
+          redirect_uri: redirect_uri,
         },
         headers: {
           Accept: "application/json",
@@ -37,12 +38,12 @@ export default Spotify = async (user_token) => {
     }
   };
 
-  const fetchAccessToken = async (response) => {
+  const fetchAccessToken = async (response, redirect_uri) => {
     console.log("call");
     if (response?.type === "success") {
       const { code } = response.params;
       try {
-        const access_token = await callToExchange(code);
+        const access_token = await callToExchange(code, redirect_uri);
         console.log("access_token:", access_token);
         return access_token;
       } catch (error) {

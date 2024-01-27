@@ -119,7 +119,10 @@ export default UserDomain = ({ route, navigation }) => {
 
               console.log("UserrDomain Spotify connected: ", api.check());
 
-              const access_token = await api.fetchAccessToken(response);
+              const access_token = await api.fetchAccessToken(
+                response,
+                redirectUri
+              );
               console.log("Access token fetched:", access_token);
 
               setToken_s(access_token);

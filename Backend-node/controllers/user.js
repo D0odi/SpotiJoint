@@ -101,15 +101,16 @@ exports.uplaodProfilePicture = async (req, res) => {
 };
 
 exports.getTokens = async (req, res) => {
-  const code = req.query.code;
+  const { code, redirect_uri } = req.query.code;
   const user = req.user;
 
   console.log("Get tokens - code: ", code);
+  console.log("Get tokens - redirect url: ", redirect_uri);
 
   const requestBody = {
     grant_type: "authorization_code",
     code: code,
-    redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+    redirect_uri: redirect_uri,
     client_id: process.env.SPOTIFY_CLIENT_ID,
     client_secret: process.env.SPOTIFY_CLIENT_SECRET,
   };
