@@ -13,7 +13,7 @@ const formatTime = (ms) => {
 
 export default Spotify = async (user_token) => {
   const check = () => {
-    return "Connected";
+    return "Spotify.js connected";
   };
   const callToExchange = async (code, redirect_uri) => {
     try {
@@ -83,13 +83,17 @@ export default Spotify = async (user_token) => {
           },
         }
       );
-      const data = await response.json();
 
-      return {
-        name: data.item.name,
-        progress_ms: formatTime(data.progress_ms),
-        songImage: data.item.album.images[2].url,
-      };
+      if (response.status == 200) {
+        const data = await response.json();
+        return {
+          name: data.item.name,
+          progress_ms: formatTime(data.progress_ms),
+          songImage: data.item.album.images[2].url,
+        };
+      } else {
+        return null;
+      }
     } catch (error) {
       console.error("Error fetching currently playing track:", error);
     }

@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://100.64.1.230:8000",
+    origin: "*",
   },
 });
 

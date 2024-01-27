@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "myapp",
     "name": "Frontend-react-native",
     "slug": "Frontend-react-native",
     "version": "1.0.0",

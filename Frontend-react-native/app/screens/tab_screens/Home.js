@@ -12,28 +12,32 @@ export default Home = ({ route }) => {
   const [userInfo_s, setUserInfo_s] = useState({});
   const [friendsData, setFriendsData] = useState(null);
 
-  const fetchRequests = async () => {
-    const res = await client.get("/users", {
-      headers: {
-        Auth: `JWT ${token}`,
-        Filter: "home-screen",
-      },
-    });
-    setFriendsData(res.data.filtered_users);
-  };
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await client.get("/users", {
+        headers: {
+          Auth: `JWT ${token}`,
+          Filter: "home-screen",
+        },
+      });
+      setFriendsData(res.data.filtered_users);
+    };
 
-  const fetchUserProfile = async () => {
-    if (token_s && spotifyAPI) {
-      const userInfo = await spotifyAPI.fetchUserProfile(token_s);
-      console.log("USERINFO: ", userInfo);
-      setUserInfo_s(userInfo);
-    }
-  };
+    fetch();
+  }, []);
 
   useEffect(() => {
-    fetchUserProfile();
-    fetchRequests();
-  }, []);
+    const fetch = async () => {
+      if (token_s && spotifyAPI) {
+        const userInfo = await spotifyAPI.fetchUserProfile(token_s);
+        console.log("USERINFO: ", userInfo);
+
+        setUserInfo_s(userInfo);
+      }
+    };
+
+    fetch();
+  }, [token_s, spotifyAPI]);
 
   return (
     <View style={styles.container}>

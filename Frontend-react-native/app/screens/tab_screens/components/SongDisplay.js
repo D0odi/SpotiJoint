@@ -13,6 +13,7 @@ export default SongDisplay = () => {
 
   const fetchCurrentPlaying = async () => {
     const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
+    console.log("SONGINFO: ", songInfo);
     setSongInfo(songInfo);
   };
 

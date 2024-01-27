@@ -108,7 +108,10 @@ export default UserDomain = ({ route, navigation }) => {
           listeners={{
             tabPress: async (e) => {
               e.preventDefault();
-              console.log("Tab press event triggered. ", redirectUri);
+              console.log(
+                "Tab press event triggered. Redirect uri: ",
+                redirectUri
+              );
 
               const response = await promptAsync();
               console.log("Authentication prompt opened.");
@@ -117,16 +120,15 @@ export default UserDomain = ({ route, navigation }) => {
               setSpotifyAPI(api);
               console.log("Spotify API set.");
 
-              console.log("UserrDomain Spotify connected: ", api.check());
+              console.log(api.check());
 
               const access_token = await api.fetchAccessToken(
                 response,
                 redirectUri
               );
-              console.log("Access token fetched:", access_token);
 
+              console.log("Access token fetched ans set:", access_token);
               setToken_s(access_token);
-              console.log("Access token set.");
             },
           }}
           options={{
@@ -135,14 +137,14 @@ export default UserDomain = ({ route, navigation }) => {
                 style={{
                   backgroundColor: global.blue,
                   borderRadius: 20,
-                  padding: 10,
-                  bottom: 15,
+                  padding: 7,
+                  bottom: 10,
                 }}
               >
                 <Image
                   style={{
-                    height: 45,
-                    width: 45,
+                    height: 35,
+                    width: 35,
                   }}
                   source={require("./tab_screens/components/assets/spotify_icon.png")}
                 ></Image>
@@ -175,13 +177,7 @@ export default UserDomain = ({ route, navigation }) => {
             tabBarIcon: ({ focused }) => (
               <>
                 {focused && <View style={styles.line}></View>}
-                <View
-                  style={{
-                    backgroundColor: global.blue,
-                    padding: 5,
-                    borderRadius: 10,
-                  }}
-                >
+                <View>
                   <Image
                     style={{
                       height: 26,
