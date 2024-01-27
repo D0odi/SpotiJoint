@@ -101,7 +101,7 @@ exports.uplaodProfilePicture = async (req, res) => {
 };
 
 exports.getTokens = async (req, res) => {
-  const { code, redirect_uri } = req.query.code;
+  const { code, redirect_uri } = req.query;
   const user = req.user;
 
   console.log("Get tokens - code: ", code);
