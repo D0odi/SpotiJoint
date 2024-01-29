@@ -10,45 +10,31 @@ export default SongDisplay = () => {
   const { token_s, loggedInUser, spotifyAPI } = useContext(AppContext);
   const user_id = loggedInUser._id;
   const friends = loggedInUser.friends;
+
   const fetchCurrentPlaying = async () => {
     const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
     if (songInfo) {
       socket.emit("currently-playing", { songInfo, friends });
-      console.log("SONGINFO: ", songInfo);
+      console.log("Song emitted: ", songInfo.name);
       setSongInfo(songInfo);
+    } else {
+      setSongInfo(null);
     }
   };
 
   useEffect(() => {
     fetchCurrentPlaying();
+    const intervalId = setInterval(fetchCurrentPlaying, 5000);
+    return () => clearInterval(intervalId);
   }, [spotifyAPI]);
 
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TouchableOpacity
-          onPress={() => {
-            fetchCurrentPlaying();
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              borderRadius: 15,
-              justifyContent: "center",
-              alignItems: "center",
-              marginHorizontal: 10,
-              backgroundColor: global.spotify_black,
-            }}
-          >
-            <Text style={styles.fetch}>Fetch</Text>
-          </View>
-        </TouchableOpacity>
         {songInfo && (
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
               flex: 1,
               marginLeft: 15,
               alignItems: "center",

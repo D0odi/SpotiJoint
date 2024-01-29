@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { ActivityIndicator } from "react-native";
 import SongDisplay from "./components/SongDisplay";
@@ -6,6 +13,9 @@ import global from "../../styles";
 import { AppContext } from "../../contexts/AppContext";
 import client from "../../api/client";
 import { socket } from "../../api/client";
+import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
+import { Entypo } from "@expo/vector-icons";
+import TextTicker from "react-native-text-ticker";
 
 export default Home = ({ route }) => {
   const { token_s, spotifyAPI, loggedInUser, token } = useContext(AppContext);
@@ -21,6 +31,7 @@ export default Home = ({ route }) => {
           Filter: "home-screen",
         },
       });
+      console.log("FRIENDS: ", JSON.stringify(res.data.filtered_users));
       setFriendsData(res.data.filtered_users);
     };
 
@@ -39,6 +50,15 @@ export default Home = ({ route }) => {
 
     fetch();
   }, [token_s, spotifyAPI]);
+
+  const [expandedItems, setExpandedItems] = useState({});
+
+  const handlePress = (index) => {
+    setExpandedItems((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the expanded state for this item
+    }));
+  };
 
   return (
     <View style={styles.container}>
@@ -63,10 +83,7 @@ export default Home = ({ route }) => {
                   alignItems: "flex-end",
                 }}
               >
-                <Image
-                  style={{ width: 25, height: 25 }}
-                  source={require("./components/assets/spotify_icon.png")}
-                />
+                <Entypo name="spotify" size={30} color={global.spotify_green} />
               </View>
             </View>
           </View>
@@ -75,20 +92,31 @@ export default Home = ({ route }) => {
           </View>
         </>
       )}
-      <View style={styles.friends}>
-        <FlatList
+      <View style={styles.friendsContainer}>
+        <MasonryFlashList
+          estimatedItemSize={5}
+          numColumns={3}
           data={friendsData}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                padding: 5,
-              }}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => handlePress(index)}
+              style={styles.friends}
             >
-              <Text>{item.name}</Text>
-            </View>
+              <Image source={{ uri: item.avatar }} style={styles.avatar} />
+              <TextTicker
+                style={{ fontSize: 12 }}
+                duration={20000}
+                loop
+                bounce
+                repeatSpacer={30}
+                marqueeDelay={0}
+              >
+                Super long piece of text is long. The quick brown fox jumps over
+                the lazy dog.
+              </TextTicker>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -97,6 +125,14 @@ export default Home = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
+  friends: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10,
+    backgroundColor: global.blue_50,
+    borderRadius: 5,
+    margin: 3,
+  },
   currentSong: {
     height: 70,
     backgroundColor: global.spotify_white,
@@ -104,12 +140,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
   },
-  friends: {
+  friendsContainer: {
     flex: 1,
     padding: 5,
-    marginBottom: 65,
     backgroundColor: global.spotify_white,
     borderRadius: 15,
+    marginBottom: 65,
   },
   container: {
     padding: 10,
@@ -143,6 +179,8 @@ const styles = StyleSheet.create({
   name: {
     textAlign: "right",
     marginLeft: 10,
+    color: global.blue,
+    fontWeight: "bold",
   },
   location: {
     textAlign: "left",

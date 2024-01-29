@@ -20,6 +20,7 @@ import {
 } from "expo-auth-session";
 import { AppContext } from "../contexts/AppContext";
 import { socket } from "../api/client";
+import { Entypo } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -153,19 +154,11 @@ export default UserDomain = ({ route, navigation }) => {
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
-                  backgroundColor: global.blue,
                   borderRadius: 20,
                   padding: 7,
-                  bottom: 10,
                 }}
               >
-                <Image
-                  style={{
-                    height: 35,
-                    width: 35,
-                  }}
-                  source={require("./tab_screens/components/assets/spotify_icon.png")}
-                ></Image>
+                <Entypo name="spotify" size={40} color={global.blue} />
               </View>
             ),
             headerShown: false,

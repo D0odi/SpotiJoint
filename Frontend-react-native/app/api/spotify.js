@@ -1,16 +1,5 @@
 import client from "./client";
 
-const formatTime = (ms) => {
-  let totalSeconds = Math.floor(ms / 1000);
-  let minutes = Math.floor(totalSeconds / 60);
-  let seconds = totalSeconds % 60;
-
-  minutes = String(minutes).padStart(2, "0");
-  seconds = String(seconds).padStart(2, "0");
-
-  return `${minutes}:${seconds}`;
-};
-
 export default Spotify = async (user_token) => {
   const check = () => {
     return "Spotify.js connected";
@@ -88,7 +77,7 @@ export default Spotify = async (user_token) => {
         const data = await response.json();
         return {
           name: data.item.name,
-          progress_ms: formatTime(data.progress_ms),
+          progress_ms: data.progress_ms,
           songImage: data.item.album.images[2].url,
         };
       } else {
