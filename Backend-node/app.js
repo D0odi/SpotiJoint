@@ -23,7 +23,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("currently-playing", ({ songInfo, friends }) => {
-    console.log(`Currently playing ${songInfo}, share to ${friends}`);
+    console.log(
+      `Currently playing ${JSON.stringify(songInfo)}, share to ${friends}`
+    );
   });
 
   socket.on("disconnect", () => {
