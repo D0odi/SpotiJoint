@@ -60,17 +60,22 @@ export default UserDomain = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    socket.connect();
-
-    // Listen for the 'connect' event
-    socket.on("connect", () => {
+    const handleConnect = () => {
       socket.emit("user-connected", loggedInUser._id);
-    });
+      console.log(
+        `Emmited: user-connected ${loggedInUser._id}, socket.id: ${socket.id}`
+      );
+    };
+
+    socket.connect();
+    socket.on("connect", handleConnect);
+
     return () => {
+      console.log("Disconnecting socket...");
+      socket.off("connect", handleConnect);
       socket.disconnect();
     };
   }, []);
-
   return (
     <View style={styles.container}>
       <Tab.Navigator

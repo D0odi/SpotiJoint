@@ -10,19 +10,17 @@ export default SongDisplay = () => {
   const { token_s, loggedInUser, spotifyAPI } = useContext(AppContext);
   const user_id = loggedInUser._id;
   const friends = loggedInUser.friends;
-
-  useEffect(() => {
-    const fetchCurrentPlaying = async () => {
-      const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
-      console.log("SONGINFO: ", songInfo);
-      setSongInfo(songInfo);
-      return songInfo;
-    };
-
-    const songInfo = fetchCurrentPlaying();
+  const fetchCurrentPlaying = async () => {
+    const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
     if (songInfo) {
       socket.emit("currently-playing", { songInfo, friends });
+      console.log("SONGINFO: ", songInfo);
+      setSongInfo(songInfo);
     }
+  };
+
+  useEffect(() => {
+    fetchCurrentPlaying();
   }, [spotifyAPI]);
 
   return (

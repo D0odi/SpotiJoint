@@ -34,8 +34,6 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email);
-  console.log(password);
   const user = await User.findOne({ email: email });
 
   if (!user) return res.json({ success: false, message: "Email not found" });
@@ -86,8 +84,6 @@ exports.uplaodProfilePicture = async (req, res) => {
       avatar: result.url,
     });
 
-    console.log(updateddUser);
-
     res.status(201).json({
       success: true,
       message: "Profile avatar uploaded successfully",
@@ -135,8 +131,6 @@ exports.getTokens = async (req, res) => {
     const dbResponse = await User.findByIdAndUpdate(user._id, {
       spotify_refresh_token: refresh_token,
     });
-
-    console.log("Get tokens - DB Response: ", dbResponse);
 
     res.json({
       success: true,

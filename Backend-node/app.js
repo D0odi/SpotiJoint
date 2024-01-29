@@ -22,7 +22,9 @@ io.on("connection", (socket) => {
     userSockets[userId] = socket.id;
   });
 
-  socket.on("currently-playing", ({ songInfo, friends }) => {});
+  socket.on("currently-playing", ({ songInfo, friends }) => {
+    console.log(`Currently playing ${songInfo}, share to ${friends}`);
+  });
 
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
