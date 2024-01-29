@@ -6,6 +6,8 @@ const userRouter = require("./routes/user.js");
 
 const PORT = 8000;
 
+const userSockets = {};
+
 const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
@@ -15,10 +17,15 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`Socket ${socket.id} connected`);
+  socket.on("user-connected", (userId) => {
+    console.log(`User ${userId} connected, socket id: ${socket.id}`);
+    userSockets[userId] = socket.id;
+  });
 
-  socket.on("currently-playing", (data, socket_id, user_id) => {
-    console.log(data);
+  socket.on("currently-playing", ({ songInfo, friends }) => {});
+
+  socket.on("disconnect", () => {
+    console.log(`${socket.id} disconnected`);
   });
 });
 

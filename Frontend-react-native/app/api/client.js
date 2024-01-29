@@ -10,4 +10,4 @@ import { Platform } from "react-native";
 const baseURL = "https://spoti-joint.onrender.com";
 
 export default axios.create({ baseURL });
-export const socket = io(baseURL);
+export const socket = io(baseURL, { autoConnect: false });

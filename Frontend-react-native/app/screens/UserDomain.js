@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Home from "./tab_screens/Home";
 import Notifications from "./tab_screens/Notifications";
 import Search from "./tab_screens/Search";
@@ -19,6 +19,7 @@ import {
   makeRedirectUri,
 } from "expo-auth-session";
 import { AppContext } from "../contexts/AppContext";
+import { socket } from "../api/client";
 
 const Tab = createBottomTabNavigator();
 
@@ -57,6 +58,18 @@ export default UserDomain = ({ route, navigation }) => {
     },
     discovery
   );
+
+  useEffect(() => {
+    socket.connect();
+
+    // Listen for the 'connect' event
+    socket.on("connect", () => {
+      socket.emit("user-connected", loggedInUser._id);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -5,6 +5,7 @@ import SongDisplay from "./components/SongDisplay";
 import global from "../../styles";
 import { AppContext } from "../../contexts/AppContext";
 import client from "../../api/client";
+import { socket } from "../../api/client";
 
 export default Home = ({ route }) => {
   const { token_s, spotifyAPI, loggedInUser, token } = useContext(AppContext);
