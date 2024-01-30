@@ -67,13 +67,13 @@ export default Search = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.search_bar, styles.shadow]}>
+      <View style={styles.search_bar}>
         <View style={{ justifyContent: "center", marginHorizontal: 10 }}>
-          <Ionicons name="search" size={22} color={global.blue} />
+          <Ionicons name="search" size={22} color={global.spotify_white} />
         </View>
         <TextInput
-          placeholder="Search"
-          placeholderTextColor={global.spotify_black}
+          placeholder="Search . . ."
+          placeholderTextColor={global.spotify_light_grey}
           style={styles.search_input}
           onChangeText={(text) => handleTextInputChange(text)}
         />
@@ -81,9 +81,9 @@ export default Search = ({ route }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: global.spotify_white,
-          marginBottom: 65,
-          borderRadius: 15,
+          backgroundColor: global.spotify_grey,
+          borderRadius: 10,
+          marginTop: 3.5,
         }}
       >
         <FlashList
@@ -106,21 +106,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   search_bar: {
-    marginBottom: 10,
+    marginBottom: 3.5,
     height: 45,
-    borderRadius: 15,
-    backgroundColor: global.spotify_white,
+    borderRadius: 10,
+    borderColor: global.spotify_white,
+    borderWidth: 1,
+    backgroundColor: global.spotify_grey,
     alignContent: "center",
     flexDirection: "row",
   },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
+  search_input: {
+    color: global.spotify_white,
+    fontSize: 13,
+    flex: 1,
   },
 });

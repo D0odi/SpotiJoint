@@ -1,11 +1,12 @@
 import React from "react";
 import "react-native-gesture-handler";
-import { Platform, UIManager } from "react-native";
+import { Platform, UIManager, StatusBar } from "react-native";
+import * as NavigationBar from "expo-navigation-bar";
 import LoginScreen from "./app/screens/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AvatarUpload from "./app/screens/AvatarUpload";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import UserDomain from "./app/screens/UserDomain";
 import global from "./app/styles";
 import { ContextProvider } from "./app/contexts/AppContext.js";
@@ -29,13 +30,20 @@ const StackNavigator = () => {
 };
 
 export default function App() {
+  const changeColor = async () => {
+    await NavigationBar.setBackgroundColorAsync(global.background);
+  };
+  changeColor();
   return (
     <ContextProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: global.background }}>
-        <NavigationContainer>
-          <StackNavigator />
-        </NavigationContainer>
-      </SafeAreaView>
+      <SafeAreaProvider>
+        <StatusBar backgroundColor={global.background} />
+        <SafeAreaView style={{ flex: 1 }}>
+          <NavigationContainer>
+            <StackNavigator />
+          </NavigationContainer>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </ContextProvider>
   );
 }

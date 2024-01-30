@@ -87,9 +87,7 @@ export default Home = ({ route }) => {
               </View>
             </View>
           </View>
-          <View style={styles.currentSong}>
-            <SongDisplay />
-          </View>
+          <SongDisplay />
         </>
       )}
       <View style={styles.friendsContainer}>
@@ -133,19 +131,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 3,
   },
-  currentSong: {
-    height: 70,
-    backgroundColor: global.spotify_white,
-    padding: 10,
-    borderRadius: 15,
-    marginBottom: 10,
-  },
   friendsContainer: {
     flex: 1,
     padding: 5,
-    backgroundColor: global.spotify_white,
+    backgroundColor: global.spotify_grey,
     borderRadius: 15,
-    marginBottom: 65,
   },
   container: {
     padding: 10,
@@ -163,7 +153,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     flexDirection: "row",
     padding: 2,
-    marginBottom: 10,
     borderRadius: 17,
   },
   avatar: {

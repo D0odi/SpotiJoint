@@ -1,5 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 import { useState, useContext, useEffect } from "react";
 import Home from "./tab_screens/Home";
 import Notifications from "./tab_screens/Notifications";
@@ -21,6 +28,7 @@ import {
 import { AppContext } from "../contexts/AppContext";
 import { socket } from "../api/client";
 import { Entypo } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +68,24 @@ export default UserDomain = ({ route, navigation }) => {
     discovery
   );
 
+  const spotifyConnect = async () => {
+    console.log("Tab press event triggered. Redirect uri: ", redirectUri);
+
+    const response = await promptAsync();
+    console.log("Authentication prompt opened.");
+
+    const api = await Spotify(token);
+    setSpotifyAPI(api);
+    console.log("Spotify API set.");
+
+    console.log(api.check());
+
+    const access_token = await api.fetchAccessToken(response, redirectUri);
+
+    console.log("Access token fetched ans set:", access_token);
+    setToken_s(access_token);
+  };
+
   useEffect(() => {
     const handleConnect = () => {
       socket.emit("user-connected", loggedInUser._id);
@@ -79,128 +105,135 @@ export default UserDomain = ({ route, navigation }) => {
   }, []);
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={["transparent", global.background]}
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 10,
+          height: 60,
+          zIndex: 1,
+        }}
+      />
       <Tab.Navigator
         screenOptions={{
           tabBarShowLabel: false,
           tabBarStyle: {
-            backgroundColor: global.spotify_white,
+            backgroundColor: "transparent",
+            borderColor: "transparent",
+            heigth: 60,
             position: "absolute",
-            bottom: 10,
-            left: 10,
-            right: 10,
+            bottom: 0,
+            left: 0,
+            right: 0,
             elevation: 0,
-            height: 55,
-            borderRadius: 15,
-            ...styles.shadow,
+            height: 60,
+            zIndex: 2,
           },
         }}
       >
         <Tab.Screen
           name="Home"
           component={Home}
-          options={{
+          options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <>
-                {focused && <View style={styles.line}></View>}
-                <Ionicons name="home" color={global.blue} size={iconSize} />
-              </>
+              <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+                <Ionicons
+                  name="home"
+                  color={
+                    focused ? global.spotify_white : global.spotify_light_grey
+                  }
+                  size={iconSize}
+                />
+              </TouchableOpacity>
             ),
             headerShown: false,
-          }}
+          })}
         />
         <Tab.Screen
           name="Search"
           component={Search}
-          options={{
+          options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <>
-                {focused && <View style={styles.line}></View>}
-                <Ionicons name="search" color={global.blue} size={iconSize} />
-              </>
+              <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+                <Ionicons
+                  name="search"
+                  color={
+                    focused ? global.spotify_white : global.spotify_light_grey
+                  }
+                  size={iconSize}
+                />
+              </TouchableOpacity>
             ),
             headerShown: false,
-          }}
+          })}
         />
         <Tab.Screen
           name="Spotify"
           component={Home}
-          listeners={{
-            tabPress: async (e) => {
-              e.preventDefault();
-              console.log(
-                "Tab press event triggered. Redirect uri: ",
-                redirectUri
-              );
-
-              const response = await promptAsync();
-              console.log("Authentication prompt opened.");
-
-              const api = await Spotify(token);
-              setSpotifyAPI(api);
-              console.log("Spotify API set.");
-
-              console.log(api.check());
-
-              const access_token = await api.fetchAccessToken(
-                response,
-                redirectUri
-              );
-
-              console.log("Access token fetched ans set:", access_token);
-              setToken_s(access_token);
-            },
-          }}
-          options={{
+          options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <View
-                style={{
-                  borderRadius: 20,
-                  padding: 7,
+              <TouchableOpacity
+                onPress={() => {
+                  spotifyConnect();
+                  navigation.navigate("Home");
                 }}
               >
-                <Entypo name="spotify" size={40} color={global.blue} />
-              </View>
+                <View style={{ width: 50, height: 50 }}>
+                  <Entypo
+                    name="spotify"
+                    size={50}
+                    color={global.spotify_green}
+                  />
+                </View>
+              </TouchableOpacity>
             ),
             headerShown: false,
-          }}
+          })}
         />
         <Tab.Screen
           name="Notifications"
           component={Notifications}
-          options={{
+          options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <>
-                {focused && <View style={styles.line}></View>}
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Notifications")}
+              >
                 <Ionicons
                   name="notifications"
-                  color={global.blue}
+                  color={
+                    focused ? global.spotify_white : global.spotify_light_grey
+                  }
                   size={iconSize}
                 />
-              </>
+              </TouchableOpacity>
             ),
             headerShown: false,
-          }}
+          })}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          options={{
+          options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <>
-                {focused && <View style={styles.line}></View>}
-                <View>
-                  <Image
-                    style={{
-                      height: 26,
-                      width: 26,
-                    }}
-                    source={{ uri: avatar }}
-                  ></Image>
-                </View>
-              </>
+              <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+                <Image
+                  style={{
+                    height: iconSize,
+                    width: iconSize,
+                    borderWidth: 1,
+                    borderColor: focused
+                      ? global.spotify_white
+                      : global.spotify_light_grey,
+                    borderRadius: 15,
+                  }}
+                  source={{ uri: avatar }}
+                />
+              </TouchableOpacity>
             ),
             headerShown: false,
-          }}
+          })}
         />
       </Tab.Navigator>
     </View>
@@ -211,24 +244,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: global.background,
-  },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.5,
-    elevation: 5,
-  },
-  line: {
-    position: "absolute",
-    width: 27,
-    height: 3,
-    backgroundColor: global.blue,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    top: 0,
   },
 });

@@ -172,8 +172,7 @@ const styles = StyleSheet.create({
   notifications: {
     flex: 1,
     padding: 5,
-    marginBottom: 65,
-    backgroundColor: global.spotify_white,
+    backgroundColor: global.spotify_grey,
     borderRadius: 15,
   },
 });
