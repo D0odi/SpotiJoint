@@ -7,5 +7,6 @@ export default global = {
   spotify_black: "rgba(18,18,18,255)",
   spotify_grey: "rgba(53,53,53,1)",
   spotify_white: "rgba(255,255,255,255)",
+  spotify_white_50: "rgba(255,255,255,0.5)",
   spotify_light_grey: "rgba(179,179,179,1)",
 };

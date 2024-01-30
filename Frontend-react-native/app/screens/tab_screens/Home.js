@@ -16,12 +16,19 @@ import { socket } from "../../api/client";
 import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
 import { Entypo } from "@expo/vector-icons";
 import TextTicker from "react-native-text-ticker";
+import { generateRandom } from "expo-auth-session/build/PKCE";
 
 export default Home = ({ route }) => {
   const { token_s, spotifyAPI, loggedInUser, token } = useContext(AppContext);
-
+  const [refreshing, setRefreshing] = useState(false);
   const [userInfo_s, setUserInfo_s] = useState({});
   const [friendsData, setFriendsData] = useState(null);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    // fetch friends
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -51,47 +58,70 @@ export default Home = ({ route }) => {
     fetch();
   }, [token_s, spotifyAPI]);
 
-  const [expandedItems, setExpandedItems] = useState({});
-
   const handlePress = (index) => {
-    setExpandedItems((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index], // Toggle the expanded state for this item
-    }));
+    // modal of user
   };
 
   return (
     <View style={styles.container}>
       {token_s && userInfo_s && spotifyAPI && (
         <>
-          <View style={styles.outerContainer}>
-            <View style={styles.userContainer}>
-              <Image
-                style={styles.avatar}
-                source={{ uri: userInfo_s.avatar }}
-              />
-              <Text style={[styles.name, styles.text_info]}>
-                {userInfo_s.name}
-              </Text>
+          <View style={styles.userContainer}>
+            <Image style={styles.avatar} source={{ uri: userInfo_s.avatar }} />
+            <View
+              style={{
+                flex: 1,
+                marginLeft: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.text}>{userInfo_s.name}</Text>
               <View style={styles.dot} />
-              <Text style={[styles.location, styles.text_info]}>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: global.spotify_light_grey,
+                    fontWeight: "normal",
+                    fontSize: 11,
+                  },
+                ]}
+              >
                 {userInfo_s.location}
               </Text>
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: "flex-end",
-                }}
-              >
-                <Entypo name="spotify" size={30} color={global.spotify_green} />
-              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "flex-end",
+              }}
+            >
+              <Entypo name="spotify" size={30} color={global.spotify_green} />
             </View>
           </View>
           <SongDisplay />
         </>
       )}
+      <View
+        style={{
+          marginVertical: 10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            color: global.spotify_white,
+          }}
+        >
+          Friends
+        </Text>
+      </View>
       <View style={styles.friendsContainer}>
         <MasonryFlashList
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           estimatedItemSize={5}
           numColumns={3}
           data={friendsData}
@@ -99,20 +129,27 @@ export default Home = ({ route }) => {
           renderItem={({ item, index }) => (
             <TouchableOpacity
               activeOpacity={0.6}
-              onPress={() => handlePress(index)}
-              style={styles.friends}
+              onPress={() => handlePress()}
+              style={styles.friend}
             >
               <Image source={{ uri: item.avatar }} style={styles.avatar} />
+              <Text
+                style={[
+                  styles.text,
+                  { textAlign: "center", fontSize: 11, marginVertical: 5 },
+                ]}
+              >
+                {item.name}
+              </Text>
               <TextTicker
-                style={{ fontSize: 12 }}
-                duration={20000}
+                style={{ fontSize: 11, color: global.spotify_white_50 }}
+                duration={10000}
                 loop
                 bounce
                 repeatSpacer={30}
-                marqueeDelay={0}
+                marqueeDelay={3000}
               >
-                Super long piece of text is long. The quick brown fox jumps over
-                the lazy dog.
+                Puk pukileo ss
               </TextTicker>
             </TouchableOpacity>
           )}
@@ -123,19 +160,17 @@ export default Home = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  friends: {
+  friend: {
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    backgroundColor: global.blue_50,
+    padding: 13,
+    backgroundColor: global.spotify_grey,
     borderRadius: 5,
-    margin: 3,
+    marginRight: 6,
+    marginBottom: 6,
   },
   friendsContainer: {
     flex: 1,
-    padding: 5,
-    backgroundColor: global.spotify_grey,
-    borderRadius: 15,
   },
   container: {
     padding: 10,
@@ -143,42 +178,31 @@ const styles = StyleSheet.create({
     backgroundColor: global.background,
   },
   userContainer: {
-    flex: 1,
-    backgroundColor: global.spotify_white,
+    backgroundColor: "transparent",
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 15,
-    padding: 15,
+    padding: 10,
+    paddingLeft: 0,
+    borderRadius: 7,
   },
   outerContainer: {
     flexDirection: "row",
-    padding: 2,
-    borderRadius: 17,
   },
   avatar: {
     width: 50,
     height: 50,
-    borderRadius: 50,
+    borderRadius: 10,
   },
-  text_info: {
-    fontSize: 13,
-    fontWeight: "bold",
-    color: global.spotify_black,
-  },
-  name: {
+  text: {
     textAlign: "right",
-    marginLeft: 10,
-    color: global.blue,
+    color: global.spotify_white,
     fontWeight: "bold",
-  },
-  location: {
-    textAlign: "left",
   },
   dot: {
     width: 3,
     height: 3,
     borderRadius: 2.5,
-    backgroundColor: global.spotify_black_light,
+    backgroundColor: global.spotify_light_grey,
     marginHorizontal: 10,
   },
 });

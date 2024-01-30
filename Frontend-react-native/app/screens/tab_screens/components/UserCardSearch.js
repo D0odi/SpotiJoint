@@ -36,7 +36,6 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
       style={{
         flexDirection: "row",
         flex: 1,
-        borderRadius: 15,
         marginVertical: 3,
       }}
     >
@@ -52,21 +51,22 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
           style={{
             width: 35,
             height: 35,
-            borderRadius: 10,
           }}
         />
       </View>
       <View style={{ justifyContent: "center", flex: 1 }}>
         <Text
           style={{
-            fontSize: 14,
-            color: global.spotify_blue,
+            fontSize: 13,
+            color: global.spotify_white,
             fontWeight: "bold",
           }}
         >
-          {name}
+          {name.length > 20 ? name.substring(0, 20) + "..." : name}
         </Text>
-        <Text style={{ fontSize: 11, color: global.blue_50 }}>{nickname}</Text>
+        <Text style={{ fontSize: 11, color: global.spotify_light_grey }}>
+          {nickname.length > 20 ? nickname.substring(0, 20) + "..." : nickname}
+        </Text>
       </View>
       <TouchableOpacity
         style={{
@@ -77,24 +77,26 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
           marginRight: 10,
         }}
         onPress={() => {
-          handlePress(name);
+          handlePress();
         }}
         disabled={clicked}
         activeOpacity={0.4}
       >
         <View
           style={{
-            backgroundColor: clicked ? global.spotify_white : global.green_50,
+            backgroundColor: clicked
+              ? global.spotify_white
+              : global.spotify_grey,
             borderRadius: 10,
             padding: 6,
             borderWidth: 1.5,
-            borderColor: global.green_50,
+            borderColor: clicked ? global.spotify_grey : global.spotify_white,
           }}
         >
           <Ionicons
             name={clicked ? "checkmark" : "person-add"}
             size={20}
-            color={clicked ? global.green_50 : global.spotify_white}
+            color={clicked ? global.spotify_black : global.spotify_white}
           />
         </View>
       </TouchableOpacity>

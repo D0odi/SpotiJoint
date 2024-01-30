@@ -81,8 +81,6 @@ export default Search = ({ route }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: global.spotify_grey,
-          borderRadius: 10,
           marginTop: 3.5,
         }}
       >
