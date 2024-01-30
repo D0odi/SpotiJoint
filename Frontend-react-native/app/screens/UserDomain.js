@@ -44,7 +44,7 @@ const redirectUri = makeRedirectUri({
 });
 
 export default UserDomain = ({ route, navigation }) => {
-  const { setToken_s, setSpotifyAPI, loggedInUser, token } =
+  const { setToken_s, setSpotifyAPI, loggedInUser, token, token_s } =
     useContext(AppContext);
   const { avatar } = loggedInUser;
   const iconSize = 27;
@@ -179,6 +179,7 @@ export default UserDomain = ({ route, navigation }) => {
                   spotifyConnect();
                   navigation.navigate("Home");
                 }}
+                style={{ display: token_s ? "none" : "flex" }}
               >
                 <View style={{ width: 50, height: 50 }}>
                   <Entypo

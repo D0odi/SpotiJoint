@@ -26,23 +26,26 @@ export default Home = ({ route }) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    // fetch friends
-    setRefreshing(false);
+    fetchFriends().then(() => setRefreshing(false));
+  };
+
+  const fetchFriends = async () => {
+    const res = await client.get("/users", {
+      headers: {
+        Auth: `JWT ${token}`,
+        Filter: "home-screen",
+      },
+    });
+    console.log("FRIENDS: ", JSON.stringify(res.data.filtered_users));
+    setFriendsData(res.data.filtered_users);
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const res = await client.get("/users", {
-        headers: {
-          Auth: `JWT ${token}`,
-          Filter: "home-screen",
-        },
-      });
-      console.log("FRIENDS: ", JSON.stringify(res.data.filtered_users));
-      setFriendsData(res.data.filtered_users);
+    const fetchFriendsHelper = async () => {
+      await fetchFriends();
     };
 
-    fetch();
+    fetchFriendsHelper();
   }, []);
 
   useEffect(() => {
