@@ -1,16 +1,40 @@
 import { TouchableOpacity, View, Text, StyleSheet, Image } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextTicker from "react-native-text-ticker";
 import global from "../../../styles.js";
+import { socket } from "../../../api/client.js";
+import { CollapsableContainer } from "./CollapsableContainer.js";
 export const UserCardFriend = ({ item, index }) => {
   const [expanded, setExpanded] = useState(false);
+
+  const onItemPress = () => {
+    setExpanded(!expanded);
+  };
+  const [currentSong, setCurrentSong] = useState(null);
+
+  useEffect(() => {
+    const handleFriendSong = ({ songInfo, user_id }) => {
+      if (!songInfo) {
+        setCurrentSong(null);
+        return;
+      }
+      console.log("Received friends-song event", songInfo.name);
+      if (user_id === item._id) {
+        setCurrentSong(songInfo);
+      }
+    };
+    socket.on("friends-song", handleFriendSong);
+    return () => {
+      socket.off("friends-song", handleFriendSong);
+    };
+  }, [socket]);
 
   return (
     <View>
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.friend}
-        onPress={() => setExpanded(!expanded)}
+        onPress={onItemPress}
       >
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
           <Image source={{ uri: item.avatar }} style={styles.avatar} />
@@ -30,14 +54,13 @@ export const UserCardFriend = ({ item, index }) => {
               repeatSpacer={50}
               marqueeDelay={50}
             >
-              Puk pukileo ss Puk pukileo ssPuk pukileo ssPuk pukileo ssPuk
-              pukileo ssPuk pukileo ssPuk pukileo ssPuk pukileo ssPuk pukileo
-              ssPuk pukileo ssPuk pukileo ss
+              {currentSong ? currentSong.name : "..nothing playing"}
             </TextTicker>
           </View>
         </View>
-
-        {expanded && <View style={{ height: 100 }}></View>}
+        <CollapsableContainer expanded={expanded}>
+          <Text style={{}}>Expanded</Text>
+        </CollapsableContainer>
       </TouchableOpacity>
     </View>
   );

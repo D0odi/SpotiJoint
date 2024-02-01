@@ -30,9 +30,8 @@ export default SongDisplay = () => {
 
   const fetchCurrentPlaying = async () => {
     const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
-    console.log("SongInfo: ", songInfo);
+    socket.emit("currently-playing", { user_id, songInfo, friends });
     if (songInfo) {
-      socket.emit("currently-playing", { user_id, songInfo, friends });
       console.log("Song emitted: ", songInfo.name);
       setSongInfo(songInfo);
     } else {

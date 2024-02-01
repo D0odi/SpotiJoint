@@ -44,6 +44,7 @@ export default Spotify = async (user_token) => {
   };
 
   const fetchUserProfile = async (token_s) => {
+    console.log("fetchUserProfile called ", token_s);
     try {
       const response = await fetch("https://api.spotify.com/v1/me", {
         headers: {
