@@ -20,13 +20,14 @@ io.on("connection", (socket) => {
   socket.on("user-connected", (userId) => {
     console.log(`User ${userId} connected, socket id: ${socket.id}`);
     userSockets[userId] = socket.id;
+    console.log(userSockets);
   });
 
   socket.on("currently-playing", ({ user_id, songInfo, friends }) => {
     console.log(
       `Currently playing ${JSON.stringify(
         songInfo
-      )}, share to ${friends} from ${socket.id} aka ${userSockets[socket.id]}`
+      )}, share to ${friends} from ${socket.id} aka ${user_id}`
     );
 
     friends.forEach((friendId) => {
