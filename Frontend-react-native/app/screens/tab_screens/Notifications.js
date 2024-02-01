@@ -94,7 +94,7 @@ export default Notifications = ({ route }) => {
                     <Text
                       style={{
                         fontSize: 14,
-                        color: global.blue,
+                        color: global.spotify_white,
                         fontWeight: "bold",
                       }}
                     >
@@ -103,7 +103,7 @@ export default Notifications = ({ route }) => {
                     <Text
                       style={{
                         fontSize: 11,
-                        color: global.blue_50,
+                        color: global.spotify_light_grey,
                       }}
                     >
                       Wants to connect
@@ -121,7 +121,7 @@ export default Notifications = ({ route }) => {
                     >
                       <View
                         style={{
-                          backgroundColor: global.green_50,
+                          backgroundColor: global.spotify_white_50,
                           borderRadius: 10,
                           padding: 6,
                         }}
@@ -129,7 +129,7 @@ export default Notifications = ({ route }) => {
                         <Ionicons
                           name={"checkmark"}
                           size={20}
-                          color={"white"}
+                          color={global.spotify_white}
                         />
                       </View>
                     </TouchableOpacity>
@@ -144,12 +144,16 @@ export default Notifications = ({ route }) => {
                     >
                       <View
                         style={{
-                          backgroundColor: global.red_light,
+                          backgroundColor: global.spotify_grey,
                           borderRadius: 10,
                           padding: 6,
                         }}
                       >
-                        <Ionicons name={"close"} size={20} color={"white"} />
+                        <Ionicons
+                          name={"close"}
+                          size={20}
+                          color={global.spotify_white}
+                        />
                       </View>
                     </TouchableOpacity>
                   </View>

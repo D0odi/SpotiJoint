@@ -21,7 +21,6 @@ import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
 import { Entypo } from "@expo/vector-icons";
 import TextTicker from "react-native-text-ticker";
 import { generateRandom } from "expo-auth-session/build/PKCE";
-import { HomeBackground } from "./components/HomeBackground";
 import ActionSheet from "react-native-actions-sheet";
 import { UserCardFriend } from "./components/UserCardFriend";
 

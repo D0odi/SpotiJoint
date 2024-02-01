@@ -39,12 +39,12 @@ export default LoginScreen = ({ navigation }) => {
 
   const loginColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: [global.blue, global.blue_50],
+    outputRange: [global.spotify_light_grey, global.spotify_grey],
   });
 
   const signUpColorInterpolate = animation.interpolate({
     inputRange: [0, width],
-    outputRange: [global.blue_50, global.blue],
+    outputRange: [global.spotify_grey, global.spotify_light_grey],
   });
 
   return (
@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   borderLeft: {
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 7,
+    borderBottomLeftRadius: 7,
   },
   borderRight: {
-    borderTopRightRadius: 8,
-    borderBottomRightRadius: 8,
+    borderTopRightRadius: 7,
+    borderBottomRightRadius: 7,
   },
 });

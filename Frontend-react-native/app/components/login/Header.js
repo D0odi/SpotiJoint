@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 25,
     fontWeight: "bold",
-    color: global.blue,
+    color: global.spotify_white,
   },
   sub_header: {
     fontSize: 15,
-    color: global.blue,
+    color: global.spotify_white,
     textAlign: "center",
   },
 });

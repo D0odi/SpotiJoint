@@ -12,6 +12,7 @@ export default SelectorBtn = ({ text, backgroundColor, style, onPress }) => {
     text: {
       color: "white",
       fontSize: 13,
+      fontWeight: "bold",
     },
   };
 

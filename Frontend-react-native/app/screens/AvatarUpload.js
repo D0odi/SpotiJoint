@@ -93,9 +93,9 @@ export default AvatarUplaod = ({ route, navigation }) => {
             <Text
               style={{
                 textAlign: "center",
-                opacity: 0.4,
                 fontSize: 18,
                 fontWeight: "bold",
+                color: global.spotify_white,
               }}
             >
               Upload Image
@@ -113,7 +113,7 @@ export default AvatarUplaod = ({ route, navigation }) => {
           <TouchableOpacity
             onPress={() => uploadImage(image, false)}
             style={{
-              backgroundColor: "rgba(27, 27, 51, 0.7)",
+              backgroundColor: global.spotify_grey,
               paddingVertical: 10,
               paddingHorizontal: 20,
               borderRadius: 10,
@@ -139,23 +139,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   avatarContainer: {
-    backgroundColor: "rgba(128, 128, 97, 0.5)",
+    backgroundColor: global.spotify_grey,
     height: 160,
     width: 160,
     borderRadius: 100,
     borderWidth: 2,
-    borderColor: "rgba(27, 27, 51, 0.7)",
+    borderColor: global.spotify_white,
     alignItems: "center",
     justifyContent: "center",
   },
   uplaodBtn: {
-    color: "white",
+    color: global.spotify_white,
     fontSize: 18,
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 2,
   },
   skipBtn: {
+    color: global.spotify_white_50,
     margin: 17,
     fontSize: 18,
     fontWeight: "bold",

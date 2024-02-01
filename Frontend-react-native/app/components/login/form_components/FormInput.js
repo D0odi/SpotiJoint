@@ -21,18 +21,23 @@ export default FormInput = ({
           <Text
             style={[
               styles.label,
-              { color: error ? "red" : global.spotify_black },
+              { color: error ? global.spotify_green : global.spotify_white },
             ]}
           >{`${error ? error.message : label}`}</Text>
           <TextInput
             style={[
               styles.input,
-              { borderColor: error ? "red" : global.spotify_black },
+              {
+                borderColor: error
+                  ? global.spotify_green
+                  : global.spotify_white,
+              },
             ]}
             placeholder={placeholder}
             onChangeText={onChange}
             onBlur={onBlur}
             value={value}
+            placeholderTextColor={global.spotify_white_50}
           />
         </>
       )}
@@ -44,12 +49,12 @@ export default FormInput = ({
 const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
+    fontSize: 11,
     paddingBottom: 3,
-    color: "#1b1b33",
   },
   input: {
+    color: global.spotify_white,
     borderWidth: 1,
-    borderColor: "#1b1b33",
     height: 35,
     borderRadius: 8,
     fontSize: 13,

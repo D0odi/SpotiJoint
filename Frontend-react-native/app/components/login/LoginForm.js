@@ -40,6 +40,60 @@ const LoginForm = ({ navigation }) => {
     }
   };
 
+  const onSubmit1 = async () => {
+    console.log("LOGIN:");
+    try {
+      const res = await client.post("/login", {
+        // ...data
+        email: "1@gmail.com",
+        password: "1234",
+      });
+
+      console.log("LOGIN: ", res.data);
+
+      if (res.data.success) {
+        setLoggedInUser(res.data.user);
+        setToken(res.data.token);
+        const navigateAction = CommonActions.navigate({
+          name: "UserDomain",
+        });
+        navigation.dispatch(navigateAction);
+      } else {
+        console.log(res.data.message);
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSubmit2 = async () => {
+    console.log("LOGIN:");
+    try {
+      const res = await client.post("/login", {
+        // ...data
+        email: "f@gmail.com",
+        password: "1234",
+      });
+
+      console.log("LOGIN: ", res.data);
+
+      if (res.data.success) {
+        setLoggedInUser(res.data.user);
+        setToken(res.data.token);
+        const navigateAction = CommonActions.navigate({
+          name: "UserDomain",
+        });
+        navigation.dispatch(navigateAction);
+      } else {
+        console.log(res.data.message);
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <FormContainer>
       <FormInput
@@ -69,7 +123,8 @@ const LoginForm = ({ navigation }) => {
         }}
       />
       {/* handleSubmit(onSubmit) */}
-      <FormSubmitBtn label={"Login"} onPress={onSubmit} />
+      <FormSubmitBtn label={"1"} onPress={onSubmit1} />
+      <FormSubmitBtn label={"friend1"} onPress={onSubmit2} />
     </FormContainer>
   );
 };
