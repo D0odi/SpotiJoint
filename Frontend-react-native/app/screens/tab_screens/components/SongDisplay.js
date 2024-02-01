@@ -7,6 +7,13 @@ import { socket } from "../../../api/client";
 import TextTicker from "react-native-text-ticker";
 import * as Progress from "react-native-progress";
 import { set } from "react-hook-form";
+import Animated, {
+  FadeIn,
+  FadeInUp,
+  FadeOut,
+  FadeOutUp,
+  Layout,
+} from "react-native-reanimated";
 
 export default SongDisplay = () => {
   const [songInfo, setSongInfo] = useState({});
@@ -25,7 +32,7 @@ export default SongDisplay = () => {
     const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
     console.log("SongInfo: ", songInfo);
     if (songInfo) {
-      socket.emit("currently-playing", { songInfo, friends });
+      socket.emit("currently-playing", { user_id, songInfo, friends });
       console.log("Song emitted: ", songInfo.name);
       setSongInfo(songInfo);
     } else {
@@ -45,7 +52,12 @@ export default SongDisplay = () => {
         songInfo.name &&
         songInfo.progress_ms &&
         songInfo.duration_ms && (
-          <View style={styles.container}>
+          <Animated.View
+            entering={FadeInUp}
+            exiting={FadeOut}
+            layout={Layout}
+            style={styles.container}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -109,7 +121,7 @@ export default SongDisplay = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </Animated.View>
         )}
     </>
   );
@@ -118,11 +130,6 @@ export default SongDisplay = () => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    height: 80,
-  },
-  fetch: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "white",
+    marginVertical: 10,
   },
 });

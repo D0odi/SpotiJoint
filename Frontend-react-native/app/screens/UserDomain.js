@@ -32,22 +32,22 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const Tab = createBottomTabNavigator();
 
-const discovery = {
-  authorizationEndpoint: "https://accounts.spotify.com/authorize",
-  tokenEndpoint: "https://accounts.spotify.com/api/token",
-};
-
-const redirectUri = makeRedirectUri({
-  useProxy: true,
-  scheme: "my-scheme",
-  path: "/callback",
-});
-
 export default UserDomain = ({ route, navigation }) => {
   const { setToken_s, setSpotifyAPI, loggedInUser, token, token_s } =
     useContext(AppContext);
   const { avatar } = loggedInUser;
   const iconSize = 27;
+
+  const discovery = {
+    authorizationEndpoint: "https://accounts.spotify.com/authorize",
+    tokenEndpoint: "https://accounts.spotify.com/api/token",
+  };
+
+  const redirectUri = makeRedirectUri({
+    useProxy: true,
+    scheme: "my-scheme",
+    path: "/callback",
+  });
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -62,32 +62,31 @@ export default UserDomain = ({ route, navigation }) => {
         "user-read-private",
       ],
       usePKCE: false,
-      redirectUri: redirectUri, //SPOTIFY_REDIRECT_URI,
+      redirectUri: redirectUri,
       state: token,
     },
     discovery
   );
 
   const spotifyConnect = async () => {
-    console.log("Tab press event triggered. Redirect uri: ", redirectUri);
+    try {
+      const response = await promptAsync();
+      //console.log("Authentication prompt opened.");
+      const api = await Spotify(token);
+      setSpotifyAPI(api);
+      //console.log("Spotify API set.", api.check());
 
-    const response = await promptAsync();
-    console.log("Authentication prompt opened.");
+      const access_token = await api.fetchAccessToken(response, redirectUri);
+      //console.log("Access token fetched ans set:", access_token);
 
-    const api = await Spotify(token);
-    setSpotifyAPI(api);
-    console.log("Spotify API set.");
-
-    console.log(api.check());
-
-    const access_token = await api.fetchAccessToken(response, redirectUri);
-
-    console.log("Access token fetched ans set:", access_token);
-    setToken_s(access_token);
+      setToken_s(access_token);
+    } catch (error) {
+      console.error("Error in spotifyConnect:", error);
+    }
   };
 
   useEffect(() => {
-    const handleConnect = () => {
+    const handleConnect = async () => {
       socket.emit("user-connected", loggedInUser._id);
       console.log(
         `Emmited: user-connected ${loggedInUser._id}, socket.id: ${socket.id}`
@@ -106,14 +105,14 @@ export default UserDomain = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["transparent", global.background]}
+        colors={["transparent", global.background_40]}
         style={{
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: 10,
-          height: 60,
-          zIndex: 1,
+          bottom: 0,
+          height: 110,
+          zIndex: 2,
         }}
       />
       <Tab.Navigator

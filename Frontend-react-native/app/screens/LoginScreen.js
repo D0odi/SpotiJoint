@@ -13,6 +13,8 @@ import { useEffect, useRef } from "react";
 import axios from "axios";
 import global from "../styles";
 import { SafeAreaView } from "react-native";
+import { AppContext } from "../contexts/AppContext";
+import { useContext } from "react";
 
 const { width } = Dimensions.get("window");
 

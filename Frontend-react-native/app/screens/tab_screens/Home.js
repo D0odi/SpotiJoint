@@ -5,9 +5,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ImageBackground,
+  Modal,
+  LayoutAnimation,
 } from "react-native";
-import { useEffect, useState, useContext } from "react";
-import { ActivityIndicator } from "react-native";
+import { BlurView } from "expo-blur";
+import { useEffect, useState, useContext, useRef } from "react";
+import Animated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
 import SongDisplay from "./components/SongDisplay";
 import global from "../../styles";
 import { AppContext } from "../../contexts/AppContext";
@@ -17,9 +21,13 @@ import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
 import { Entypo } from "@expo/vector-icons";
 import TextTicker from "react-native-text-ticker";
 import { generateRandom } from "expo-auth-session/build/PKCE";
+import { HomeBackground } from "./components/HomeBackground";
+import ActionSheet from "react-native-actions-sheet";
+import { UserCardFriend } from "./components/UserCardFriend";
 
 export default Home = ({ route }) => {
-  const { token_s, spotifyAPI, loggedInUser, token } = useContext(AppContext);
+  const { token_s, spotifyAPI, loggedInUser, token, homeBackground } =
+    useContext(AppContext);
   const [refreshing, setRefreshing] = useState(false);
   const [userInfo_s, setUserInfo_s] = useState({});
   const [friendsData, setFriendsData] = useState(null);
@@ -61,14 +69,10 @@ export default Home = ({ route }) => {
     fetch();
   }, [token_s, spotifyAPI]);
 
-  const handlePress = (index) => {
-    // modal of user
-  };
-
   return (
     <View style={styles.container}>
       {token_s && userInfo_s && spotifyAPI && (
-        <>
+        <Animated.View entering={FadeInUp} layout={Layout}>
           <View style={styles.userContainer}>
             <Image style={styles.avatar} source={{ uri: userInfo_s.avatar }} />
             <View
@@ -104,11 +108,12 @@ export default Home = ({ route }) => {
             </View>
           </View>
           <SongDisplay />
-        </>
+        </Animated.View>
       )}
-      <View
+      <Animated.View
+        layout={Layout}
         style={{
-          marginVertical: 10,
+          marginBottom: 5,
         }}
       >
         <Text
@@ -120,56 +125,31 @@ export default Home = ({ route }) => {
         >
           Friends
         </Text>
-      </View>
-      <View style={styles.friendsContainer}>
+      </Animated.View>
+      <Animated.View style={styles.friendsContainer} layout={Layout}>
         <MasonryFlashList
           refreshing={refreshing}
           onRefresh={onRefresh}
           estimatedItemSize={5}
-          numColumns={3}
           data={friendsData}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index }) => (
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => handlePress()}
-              style={styles.friend}
-            >
-              <Image source={{ uri: item.avatar }} style={styles.avatar} />
-              <Text
-                style={[
-                  styles.text,
-                  { textAlign: "center", fontSize: 11, marginVertical: 5 },
-                ]}
-              >
-                {item.name}
-              </Text>
-              <TextTicker
-                style={{ fontSize: 11, color: global.spotify_white_50 }}
-                duration={10000}
-                loop
-                bounce
-                repeatSpacer={30}
-                marqueeDelay={3000}
-              >
-                Puk pukileo ss
-              </TextTicker>
-            </TouchableOpacity>
+            <UserCardFriend index={index} item={item} />
           )}
         />
-      </View>
+      </Animated.View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
   friend: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 13,
+    padding: 7,
     backgroundColor: global.spotify_grey,
     borderRadius: 5,
-    marginRight: 6,
     marginBottom: 6,
   },
   friendsContainer: {
@@ -181,12 +161,10 @@ const styles = StyleSheet.create({
     backgroundColor: global.background,
   },
   userContainer: {
-    backgroundColor: "transparent",
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: 3,
     paddingLeft: 0,
-    borderRadius: 7,
   },
   outerContainer: {
     flexDirection: "row",
@@ -197,7 +175,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    textAlign: "right",
     color: global.spotify_white,
     fontWeight: "bold",
   },

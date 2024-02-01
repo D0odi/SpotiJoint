@@ -30,10 +30,7 @@ const StackNavigator = () => {
 };
 
 export default function App() {
-  const changeColor = async () => {
-    await NavigationBar.setBackgroundColorAsync(global.background);
-  };
-  changeColor();
+  NavigationBar.setBackgroundColorAsync(global.background);
   return (
     <ContextProvider>
       <SafeAreaProvider>

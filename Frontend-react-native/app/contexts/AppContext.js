@@ -7,8 +7,11 @@ export const ContextProvider = ({ children }) => {
   const [spotifyAPI, setSpotifyAPI] = useState(null);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [homeBackground, setHomeBackground] = useState(null);
 
   const params = {
+    homeBackground,
+    setHomeBackground,
     token_s,
     spotifyAPI,
     setToken_s,

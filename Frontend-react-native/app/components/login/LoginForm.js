@@ -14,6 +14,7 @@ const LoginForm = ({ navigation }) => {
 
   // data
   const onSubmit = async () => {
+    console.log("LOGIN:");
     try {
       const res = await client.post("/login", {
         // ...data
