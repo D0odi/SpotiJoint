@@ -47,6 +47,12 @@ export default LoginScreen = ({ navigation }) => {
     outputRange: [global.spotify_grey, global.spotify_light_grey],
   });
 
+  const autoLogin = () => {};
+
+  useEffect(() => {
+    autoLogin();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header

@@ -1,5 +1,5 @@
 import { CommonActions } from "@react-navigation/native";
-import client from "../../api/client";
+import client, { login } from "../../api/client";
 import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
@@ -13,26 +13,22 @@ const LoginForm = ({ navigation }) => {
   const { setLoggedInUser, setToken } = useContext(AppContext);
 
   // data
-  const onSubmit = async () => {
-    console.log("LOGIN:");
+  const onSubmit = async (data) => {
     try {
-      const res = await client.post("/login", {
-        // ...data
-        email: "1@gmail.com",
-        password: "1234",
-      });
+      const { user, token, err } = login(...data);
+      console.log(`LOGIN: ${user}`);
 
-      console.log("LOGIN: ", res.data);
-
-      if (res.data.success) {
-        setLoggedInUser(res.data.user);
-        setToken(res.data.token);
-        const navigateAction = CommonActions.navigate({
-          name: "UserDomain",
-        });
-        navigation.dispatch(navigateAction);
+      if (!err) {
+        setLoggedInUser(user);
+        setToken(token);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "UserDomain" }],
+          })
+        );
       } else {
-        console.log(res.data.message);
+        console.log(err);
         reset();
       }
     } catch (error) {
