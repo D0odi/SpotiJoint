@@ -27,19 +27,13 @@ export default Spotify = async (user_token) => {
     }
   };
 
-  const fetchAccessToken = async (response, redirect_uri) => {
-    console.log("call");
-    if (response?.type === "success") {
-      const { code } = response.params;
-      try {
-        const access_token = await callToExchange(code, redirect_uri);
-        console.log("access_token:", access_token);
-        return access_token;
-      } catch (error) {
-        console.error("Error fetching refresh token:", error);
-      }
-    } else {
-      console.log("Error fetching refresh token");
+  const fetchAccessToken = async (code, redirect_uri) => {
+    try {
+      const access_token = await callToExchange(code, redirect_uri);
+      console.log("access_token:", access_token);
+      return access_token;
+    } catch (error) {
+      console.error("Error fetching refresh token:", error);
     }
   };
 

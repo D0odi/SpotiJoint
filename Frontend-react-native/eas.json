@@ -8,15 +8,14 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
-    },
-    "production": {
+      "distribution": "internal",
       "env": {
         "SPOTIFY_CLIENT_ID": "1c486b0e9c6e4e5bbd541dfe192282eb",
         "SPOTIFY_CLIENT_SECRET": "1012dc1a31104508aa1cf352fbbe2ba0",
-        "SPOTIFY_REDIRECT_URI": "exp://100.64.1.230:8081/--/callback"
+        "SPOTIFY_REDIRнECT_URI": "exp://100.64.1.230:8081/--/callback"
       }
-    }
+    },
+    "production": {}
   },
   "submit": {
     "production": {}

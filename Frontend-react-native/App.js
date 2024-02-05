@@ -11,6 +11,9 @@ import UserDomain from "./app/screens/UserDomain";
 import global from "./app/styles";
 import { ContextProvider } from "./app/contexts/AppContext.js";
 
+import * as WebBrowser from "expo-web-browser";
+WebBrowser.maybeCompleteAuthSession();
+
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);

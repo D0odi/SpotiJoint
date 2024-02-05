@@ -15,16 +15,8 @@ import Profile from "./tab_screens/Profile";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import global from "../styles";
 import Spotify from "../api/spotify";
-import {
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_CLIENT_SECRET,
-  SPOTIFY_REDIRECT_URI,
-} from "@env";
-import {
-  useAuthRequest,
-  ResponseType,
-  makeRedirectUri,
-} from "expo-auth-session";
+import { SPOTIFY_CLIENT_ID } from "@env";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { AppContext } from "../contexts/AppContext";
 import { socket } from "../api/client";
 import { Entypo } from "@expo/vector-icons";
@@ -43,17 +35,20 @@ export default UserDomain = ({ route, navigation }) => {
     tokenEndpoint: "https://accounts.spotify.com/api/token",
   };
 
+  // const redirectUri = makeRedirectUri({
+  //   useProxy: true,
+  //   scheme: "my-scheme",
+  //   path: "/callback",
+  // });
+
   const redirectUri = makeRedirectUri({
-    useProxy: true,
-    scheme: "my-scheme",
-    path: "/callback",
+    scheme: "com.sjoint",
   });
 
   const [request, response, promptAsync] = useAuthRequest(
     {
-      responseType: ResponseType.Code,
       clientId: SPOTIFY_CLIENT_ID,
-      clientSecret: SPOTIFY_CLIENT_SECRET,
+      //clientSecret: SPOTIFY_CLIENT_SECRET,
       scopes: [
         "user-read-email",
         "user-library-read",
@@ -61,6 +56,8 @@ export default UserDomain = ({ route, navigation }) => {
         "user-read-currently-playing",
         "user-read-private",
       ],
+      // useProxy: false,
+      // showInRecents: true,
       usePKCE: false,
       redirectUri: redirectUri,
       state: token,
@@ -68,23 +65,37 @@ export default UserDomain = ({ route, navigation }) => {
     discovery
   );
 
-  const spotifyConnect = async () => {
+  const loginWithSpotify = async () => {
     console.log(redirectUri);
-    try {
-      const response = await promptAsync();
-      //console.log("Authentication prompt opened.");
-      const api = await Spotify(token);
-      setSpotifyAPI(api);
-      //console.log("Spotify API set.", api.check());
-
-      const access_token = await api.fetchAccessToken(response, redirectUri);
-      //console.log("Access token fetched ans set:", access_token);
-
-      setToken_s(access_token);
-    } catch (error) {
-      console.error("Error in spotifyConnect:", error);
-    }
+    promptAsync();
   };
+
+  useEffect(() => {
+    const setupSpotifyConnection = async () => {
+      if (response?.type === "success") {
+        try {
+          const { code } = response.params;
+          console.log("Authentication prompt opened, code: ", code);
+
+          const api = await Spotify(token);
+          setSpotifyAPI(api);
+          //console.log("Spotify API set.", api.check());
+
+          const access_token = await api.fetchAccessToken(code, redirectUri);
+          //console.log("Access token fetched ans set:", access_token);
+
+          setToken_s(access_token);
+          navigation.navigate("Home");
+        } catch (error) {
+          console.error("Error in spotifyConnect:", error);
+        }
+      } else {
+        console.log("Response type:", response?.type);
+      }
+    };
+
+    setupSpotifyConnection();
+  }, [response]);
 
   useEffect(() => {
     const handleConnect = async () => {
@@ -174,13 +185,7 @@ export default UserDomain = ({ route, navigation }) => {
           component={Home}
           options={({ navigation }) => ({
             tabBarIcon: ({ focused }) => (
-              <TouchableOpacity
-                onPress={() => {
-                  spotifyConnect();
-                  navigation.navigate("Home");
-                }}
-                style={{ display: token_s ? "none" : "flex" }}
-              >
+              <TouchableOpacity disabled={!request} onPress={loginWithSpotify}>
                 <View style={{ width: 50, height: 50 }}>
                   <Entypo
                     name="spotify"
