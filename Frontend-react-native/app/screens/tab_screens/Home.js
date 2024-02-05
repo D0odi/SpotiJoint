@@ -15,8 +15,7 @@ import Animated, { FadeIn, FadeInUp, Layout } from "react-native-reanimated";
 import SongDisplay from "./components/SongDisplay";
 import global from "../../styles";
 import { AppContext } from "../../contexts/AppContext";
-import client from "../../api/client";
-import { socket } from "../../api/client";
+import { client, socket } from "../../api/client";
 import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
 import { Entypo } from "@expo/vector-icons";
 import TextTicker from "react-native-text-ticker";
@@ -73,7 +72,12 @@ export default Home = ({ route }) => {
       {token_s && userInfo_s && spotifyAPI && (
         <Animated.View entering={FadeInUp} layout={Layout}>
           <View style={styles.userContainer}>
-            <Image style={styles.avatar} source={{ uri: userInfo_s.avatar }} />
+            {userInfo_s.avatar && (
+              <Image
+                style={styles.avatar}
+                source={{ uri: userInfo_s.avatar }}
+              />
+            )}
             <View
               style={{
                 flex: 1,

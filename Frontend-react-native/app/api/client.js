@@ -1,7 +1,3 @@
-import axios from "axios";
-import { io } from "socket.io-client";
-import { Platform } from "react-native";
-
 // const baseURL =
 //   Platform.OS === "android"
 //     ? "http://100.64.1.230:8000"
@@ -17,7 +13,7 @@ const socket = io(baseURL, { autoConnect: false });
 
 const login = async ({ email, password }) => {
   try {
-    const res = await api.post("/login", { email, password });
+    const res = await client.post("/login", { email, password });
     if (res.data.success) {
       return {
         user: res.data.user,

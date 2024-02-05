@@ -1,5 +1,5 @@
 import { CommonActions } from "@react-navigation/native";
-import client, { login } from "../../api/client";
+import { client, login } from "../../api/client";
 import FormContainer from "./form_components/FormContainer";
 import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
@@ -90,6 +90,33 @@ const LoginForm = ({ navigation }) => {
     }
   };
 
+  const onSubmit3 = async () => {
+    console.log("LOGIN:");
+    try {
+      const res = await client.post("/login", {
+        // ...data
+        email: "leo@gmail.com",
+        password: "1234",
+      });
+
+      console.log("LOGIN: ", res.data);
+
+      if (res.data.success) {
+        setLoggedInUser(res.data.user);
+        setToken(res.data.token);
+        const navigateAction = CommonActions.navigate({
+          name: "UserDomain",
+        });
+        navigation.dispatch(navigateAction);
+      } else {
+        console.log(res.data.message);
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <FormContainer>
       <FormInput
@@ -120,7 +147,8 @@ const LoginForm = ({ navigation }) => {
       />
       {/* handleSubmit(onSubmit) */}
       <FormSubmitBtn label={"1"} onPress={onSubmit1} />
-      <FormSubmitBtn label={"friend1"} onPress={onSubmit2} />
+      <FormSubmitBtn label={"zinan"} onPress={onSubmit2} />
+      <FormSubmitBtn label={"Leo"} onPress={onSubmit3} />
     </FormContainer>
   );
 };

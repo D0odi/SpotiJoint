@@ -1,4 +1,4 @@
-import client from "./client";
+import { client } from "./client";
 
 export default Spotify = async (user_token) => {
   const check = () => {
@@ -52,14 +52,14 @@ export default Spotify = async (user_token) => {
         },
       });
       const data = await response.json();
-      console.log("User Profile:", data);
+      console.log("User Profile name:", data.display_name);
       return {
-        avatar: data.images[0].url,
+        avatar: data.images.length !== 0 ? data.images[0].url : null,
         name: data.display_name,
         location: data.country,
       };
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error("Error fetching user profile:", error.message);
     }
   };
 

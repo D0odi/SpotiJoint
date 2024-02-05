@@ -4,6 +4,7 @@ import TextTicker from "react-native-text-ticker";
 import global from "../../../styles.js";
 import { socket } from "../../../api/client.js";
 import { CollapsableContainer } from "./CollapsableContainer.js";
+import Animated, { FadeInUp, FadeOutUp, Layout } from "react-native-reanimated";
 export const UserCardFriend = ({ item, index }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -30,7 +31,7 @@ export const UserCardFriend = ({ item, index }) => {
   }, [socket]);
 
   return (
-    <View>
+    <Animated.View entering={FadeInUp} exiting={FadeOutUp} layout={Layout}>
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.friend}
@@ -54,15 +55,24 @@ export const UserCardFriend = ({ item, index }) => {
               repeatSpacer={50}
               marqueeDelay={50}
             >
-              {currentSong ? currentSong.name : "..nothing playing"}
+              {currentSong ? currentSong.name : "Nothing playing..."}
             </TextTicker>
           </View>
+          {/* <View style={{ flex: 1 }}>
+            <Image
+              style={{ width: 50, height: 50 }}
+              source={{ uri: currentSong.songImage }}
+            />
+          </View> */}
         </View>
         <CollapsableContainer expanded={expanded}>
-          <Text style={{}}>Expanded</Text>
+          {/* <Image
+            style={{ width: 50, height: 50 }}
+            source={{ uri: currentSong.songImage }}
+          /> */}
         </CollapsableContainer>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 

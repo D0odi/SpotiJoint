@@ -22,7 +22,7 @@ export const CollapsableContainer = ({ children, expanded }) => {
     animatedHeight.value = expanded ? withTiming(height) : withTiming(0);
 
     return {
-      height: animatedHeight.value,
+      height: expanded ? withTiming(height) : withTiming(0),
     };
   }, [expanded, height]);
 

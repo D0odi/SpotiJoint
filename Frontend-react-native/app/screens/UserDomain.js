@@ -69,6 +69,7 @@ export default UserDomain = ({ route, navigation }) => {
   );
 
   const spotifyConnect = async () => {
+    console.log(redirectUri);
     try {
       const response = await promptAsync();
       //console.log("Authentication prompt opened.");

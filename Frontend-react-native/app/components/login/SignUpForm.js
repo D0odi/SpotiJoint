@@ -3,7 +3,7 @@ import FormInput from "./form_components/FormInput";
 import FormSubmitBtn from "./form_components/FormSubmitBtn";
 import { useForm } from "react-hook-form";
 import { CommonActions } from "@react-navigation/native";
-import client from "../../api/client";
+import { client } from "../../api/client";
 
 const SignUpForm = ({ navigation }) => {
   const { control, handleSubmit } = useForm();

@@ -10,13 +10,21 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.doodi.sjoint"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6b712a72-57b1-46a0-a195-e30395a3e952"
       }
     }
   }

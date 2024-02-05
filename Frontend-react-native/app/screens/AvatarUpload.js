@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { CommonActions } from "@react-navigation/native";
 import { useState } from "react";
-import client from "../api/client";
+import { client } from "../api/client";
 import global from "../styles";
 import axios from "axios";
 import { useContext } from "react";

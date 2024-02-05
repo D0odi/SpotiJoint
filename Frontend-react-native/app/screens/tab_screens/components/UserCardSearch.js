@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useState } from "react";
 import global from "../../../styles";
-import client from "../../../api/client";
+import { client } from "../../../api/client";
 
 export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
   const [clicked, setClicked] = useState(false);

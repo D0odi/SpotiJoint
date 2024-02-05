@@ -4,7 +4,7 @@ import React, { useState, useCallback, useContext } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { FlashList } from "@shopify/flash-list";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import client from "../../api/client";
+import { client } from "../../api/client";
 import { set } from "react-hook-form";
 import UserCardSearch from "./components/UserCardSearch";
 import { AppContext } from "../../contexts/AppContext";

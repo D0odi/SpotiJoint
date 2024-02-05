@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { LayoutAnimation } from "react-native";
 import global from "../../styles";
-import client from "../../api/client";
+import { client } from "../../api/client";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { AppContext } from "../../contexts/AppContext";
