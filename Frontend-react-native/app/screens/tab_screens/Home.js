@@ -16,7 +16,11 @@ import SongDisplay from "./components/SongDisplay";
 import global from "../../styles";
 import { AppContext } from "../../contexts/AppContext";
 import { client, socket } from "../../api/client";
-import { AnimatedFlashList, MasonryFlashList } from "@shopify/flash-list";
+import {
+  AnimatedFlashList,
+  FlashList,
+  MasonryFlashList,
+} from "@shopify/flash-list";
 import { Entypo } from "@expo/vector-icons";
 import TextTicker from "react-native-text-ticker";
 import { generateRandom } from "expo-auth-session/build/PKCE";
@@ -130,7 +134,7 @@ export default Home = ({ route }) => {
         </Text>
       </Animated.View>
       <Animated.View style={styles.friendsContainer} layout={Layout}>
-        <MasonryFlashList
+        <FlashList
           refreshing={refreshing}
           onRefresh={onRefresh}
           estimatedItemSize={5}

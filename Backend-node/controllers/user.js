@@ -80,8 +80,10 @@ exports.uplaodProfilePicture = async (req, res) => {
       crop: "fill",
     });
 
+    const secureAvatarUrl = result.url.replace("http", "https");
+
     const updateddUser = await User.findByIdAndUpdate(user._id, {
-      avatar: result.url,
+      avatar: secureAvatarUrl,
     });
 
     res.status(201).json({
