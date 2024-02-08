@@ -10,17 +10,19 @@ import SelectorBtn from "../components/login/form_components/SelectorBtn";
 import SignUpForm from "../components/login/SignUpForm";
 import LoginForm from "../components/login/LoginForm";
 import { useEffect, useRef } from "react";
-import axios from "axios";
 import global from "../styles";
 import { SafeAreaView } from "react-native";
 import { AppContext } from "../contexts/AppContext";
 import { useContext } from "react";
+import { client } from "../api/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
 export default LoginScreen = ({ navigation }) => {
   const animation = useRef(new Animated.Value(0)).current;
   const scrollview = useRef();
+  const { setToken, setLoggedInUser } = useContext(AppContext);
 
   const rightHeaderOpacity = animation.interpolate({
     inputRange: [0, width],
@@ -47,9 +49,48 @@ export default LoginScreen = ({ navigation }) => {
     outputRange: [global.spotify_grey, global.spotify_light_grey],
   });
 
-  const autoLogin = () => {};
-
   useEffect(() => {
+    const autoLogin = async () => {
+      const { token, time_stamp, email, password } =
+        await AsyncStorage.multiGet([
+          "token",
+          "time_stamp",
+          "email",
+          "password",
+        ]);
+      if (token && Date.now() - time_stamp < 4.32e8) {
+        const res = await client.post(
+          "/update-token",
+          {
+            email,
+            pawword,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              Auth: `JWT ${token}`,
+            },
+          }
+        );
+
+        if (res.data.success) {
+          const { user, token } = res.data;
+          setLoggedInUser(user);
+          setToken(token);
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "UserDomain",
+                },
+              ],
+            })
+          );
+        }
+      }
+    };
+
     autoLogin();
   }, []);
 

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { StyleSheet } from "react-native";
 import { AppContext } from "../../contexts/AppContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginForm = ({ navigation }) => {
   const { control, handleSubmit, reset } = useForm();
@@ -65,22 +66,37 @@ const LoginForm = ({ navigation }) => {
 
   const onSubmit2 = async () => {
     console.log("LOGIN:");
+    const email = "f@gmail.com";
+    const password = "1234";
     try {
       const res = await client.post("/login", {
         // ...data
-        email: "f@gmail.com",
-        password: "1234",
+        email,
+        password,
       });
 
       console.log("LOGIN: ", res.data);
+      const { user, token, success } = res.data;
 
-      if (res.data.success) {
-        setLoggedInUser(res.data.user);
-        setToken(res.data.token);
-        const navigateAction = CommonActions.navigate({
-          name: "UserDomain",
-        });
-        navigation.dispatch(navigateAction);
+      if (success) {
+        setLoggedInUser(user);
+        setToken(token);
+        await AsyncStorage.multiSet([
+          ["time_stamp", Date.now()],
+          ["token", res.data.token],
+          ["email", email],
+          ["password", password],
+        ]);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: "UserDomain",
+              },
+            ],
+          })
+        );
       } else {
         console.log(res.data.message);
         reset();

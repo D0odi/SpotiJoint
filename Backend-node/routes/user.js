@@ -40,6 +40,7 @@ router.post(
   createUser
 );
 router.post("/login", userValidation_login, userValidation_result, loginUser);
+router.get("/update-token", isAuth, loginUser);
 router.post(
   "/upload-profile-pic",
   isAuth,

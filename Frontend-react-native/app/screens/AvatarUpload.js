@@ -11,9 +11,7 @@ import { AppContext } from "../contexts/AppContext";
 
 export default AvatarUplaod = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
-  const params = route.params;
-  const { name } = params.user;
-  const { token } = params;
+  const { token, name } = route.params;
   const { setLoggedInUser, setToken } = useContext(AppContext);
 
   const pickImage = async () => {

@@ -24,7 +24,7 @@ const SignUpForm = ({ navigation }) => {
             name: "AvatarUpload",
             params: {
               token: signInRes.data.token,
-              user: signInRes.data.user,
+              name: signInRes.data.user.name,
             },
           });
           navigation.dispatch(navigateAction);
