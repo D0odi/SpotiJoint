@@ -51,42 +51,52 @@ export default LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     const autoLogin = async () => {
-      const { token, time_stamp, email, password } =
-        await AsyncStorage.multiGet([
-          "token",
-          "time_stamp",
-          "email",
-          "password",
-        ]);
-      if (token && Date.now() - time_stamp < 4.32e8) {
-        const res = await client.post(
-          "/update-token",
-          {
-            email,
-            pawword,
-          },
-          {
-            headers: {
-              Accept: "application/json",
-              Auth: `JWT ${token}`,
-            },
-          }
-        );
+      console.log("auto login");
+      const values = await AsyncStorage.multiGet([
+        "token",
+        "time_stamp",
+        "email",
+        "password",
+      ]);
 
-        if (res.data.success) {
-          const { user, token } = res.data;
-          setLoggedInUser(user);
-          setToken(token);
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [
-                {
-                  name: "UserDomain",
-                },
-              ],
-            })
-          );
+      let token, time_stamp, email, password;
+
+      values.map((v) => {
+        if (v[0] === "token") {
+          token = v[1];
+        } else if (v[0] === "time_stamp") {
+          time_stamp = v[1];
+        } else if (v[0] === "email") {
+          email = v[1];
+        } else if (v[0] === "password") {
+          password = v[1];
+        }
+      });
+      console.log(token, time_stamp, email, password);
+      if (token && Date.now() - parseInt(time_stamp) < 4.32e8) {
+        try {
+          const res = await client.get("/update-token", {
+            email,
+            password,
+          });
+
+          if (res.data.success) {
+            const { user, token } = res.data;
+            setLoggedInUser(user);
+            setToken(token);
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: "UserDomain",
+                  },
+                ],
+              })
+            );
+          }
+        } catch (error) {
+          console.log(error.message);
         }
       }
     };

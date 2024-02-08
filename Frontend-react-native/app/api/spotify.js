@@ -10,8 +10,8 @@ export default Spotify = async (user_token) => {
       console.log("user_token:", user_token);
       const res = await client.get("/exchange", {
         params: {
-          code: code,
-          redirect_uri: redirect_uri,
+          code,
+          redirect_uri,
         },
         headers: {
           Accept: "application/json",

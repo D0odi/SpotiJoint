@@ -81,12 +81,15 @@ const LoginForm = ({ navigation }) => {
       if (success) {
         setLoggedInUser(user);
         setToken(token);
-        await AsyncStorage.multiSet([
-          ["time_stamp", Date.now()],
+        const storage_res = await AsyncStorage.multiSet([
+          ["time_stamp", Date.now().toString()],
           ["token", res.data.token],
           ["email", email],
           ["password", password],
         ]);
+        if (!storage_res) {
+          console.log("storage success");
+        }
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
