@@ -26,8 +26,8 @@ export const UserCardFriend = ({ item, index }) => {
   const toggleAnimation = () => {
     Animated.timing(offset, {
       toValue: expanded ? 50 : 0,
-      duration: 450,
-      useNativeDriver: false,
+      duration: 500,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -44,6 +44,11 @@ export const UserCardFriend = ({ item, index }) => {
   const rythmOpacity = offset.interpolate({
     inputRange: [0, 50],
     outputRange: [0, 1],
+  });
+
+  songImageOpacity = offset.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0],
   });
 
   const rythmOffset = offset.interpolate({
@@ -126,44 +131,40 @@ export const UserCardFriend = ({ item, index }) => {
               {currentSong ? currentSong.name : "Nothing playing..."}
             </TextTicker>
           </View>
-          <Animated.View
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-end",
-              opacity: rythmOpacity,
-              transform: [{ translateX: rythmOffset }],
-            }}
-          >
-            <LottieView
-              loop
-              autoPlay
-              style={{ width: 20, aspectRatio: 1 }}
-              source={require("./assets/rythm.json")}
-              speed={Math.random() * 0.5 + 0.3}
-            />
-          </Animated.View>
+          {currentSong && (
+            <Animated.View
+              style={{
+                justifyContent: "center",
+                alignItems: "flex-end",
+                opacity: rythmOpacity,
+                transform: [{ translateX: rythmOffset }],
+              }}
+            >
+              <LottieView
+                loop
+                autoPlay
+                style={{ width: 20, aspectRatio: 1 }}
+                source={require("./assets/rythm.json")}
+                speed={Math.random() * 0.5 + 0.3}
+              />
+            </Animated.View>
+          )}
         </View>
         {currentSong && (
-          <Animated.View
+          <Animated.Image
             style={{
               overflow: "hidden",
               borderRadius,
               position: "absolute",
               right: 0,
-              top: 0,
-              width: 64,
-              height: 64,
+              bottom: 0,
+              width: 65,
+              height: 65,
+              opacity: songImageOpacity,
               transform: [{ translateX: offset }],
             }}
-          >
-            <Image
-              style={{
-                width: 64,
-                height: 64,
-              }}
-              source={{ uri: currentSong.songImage }}
-            />
-          </Animated.View>
+            source={{ uri: currentSong.songImage }}
+          />
         )}
         <CollapsableContainer expanded={expanded}></CollapsableContainer>
       </TouchableOpacity>
