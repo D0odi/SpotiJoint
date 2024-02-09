@@ -14,6 +14,7 @@ import { socket } from "../../../api/client.js";
 import { CollapsableContainer } from "./CollapsableContainer.js";
 import * as Progress from "react-native-progress";
 import { FlashList } from "@shopify/flash-list";
+import LottieView from "lottie-react-native";
 
 const barWidth = Dimensions.get("window").width - 74;
 export const UserCardFriend = ({ item, index }) => {
@@ -21,7 +22,6 @@ export const UserCardFriend = ({ item, index }) => {
   const [currentSong, setCurrentSong] = useState(null);
 
   const offset = useRef(new Animated.Value(50)).current;
-  // const barOffset = useRef(new Animated.Value(-barWidth)).current;
 
   const toggleAnimation = () => {
     Animated.timing(offset, {
@@ -29,21 +29,26 @@ export const UserCardFriend = ({ item, index }) => {
       duration: 450,
       useNativeDriver: false,
     }).start();
-    // Animated.timing(barOffset, {
-    //   toValue: expanded ? -barWidth : 0,
-    //   duration: 450,
-    //   useNativeDriver: true,
-    // }).start();
   };
 
   const borderRadius = offset.interpolate({
     inputRange: [0, 50],
-    outputRange: [0, 20],
+    outputRange: [5, 20],
   });
 
   const barY = offset.interpolate({
     inputRange: [0, 50],
     outputRange: [0, -4],
+  });
+
+  const rythmOpacity = offset.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, 1],
+  });
+
+  const rythmOffset = offset.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, -20],
   });
 
   const onItemPress = () => {
@@ -52,10 +57,7 @@ export const UserCardFriend = ({ item, index }) => {
   };
 
   useEffect(() => {
-    let timeout;
     const handleFriendSong = ({ songInfo, user_id }) => {
-      clearTimeout(timeout);
-
       if (!songInfo) {
         return setCurrentSong(null);
       }
@@ -63,10 +65,6 @@ export const UserCardFriend = ({ item, index }) => {
       if (user_id === item._id) {
         setCurrentSong(songInfo);
       }
-
-      timeout = setTimeout(() => {
-        setCurrentSong(null);
-      }, 8000);
     };
     socket.on("friends-song", handleFriendSong);
     return () => {
@@ -94,7 +92,6 @@ export const UserCardFriend = ({ item, index }) => {
               height={4}
               width={barWidth}
               color={global.spotify_light_grey}
-              borderRadius={4}
               borderWidth={0}
             />
           </Animated.View>
@@ -111,9 +108,10 @@ export const UserCardFriend = ({ item, index }) => {
           <Image source={{ uri: item.avatar }} style={styles.avatar} />
           <View
             style={{
-              flex: 1,
+              flex: 2,
               justifyContent: "center",
               marginLeft: 7,
+              marginRight: 44,
             }}
           >
             <Text style={[styles.text, { fontSize: 13 }]}>{item.name}</Text>
@@ -128,6 +126,22 @@ export const UserCardFriend = ({ item, index }) => {
               {currentSong ? currentSong.name : "Nothing playing..."}
             </TextTicker>
           </View>
+          <Animated.View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-end",
+              opacity: rythmOpacity,
+              transform: [{ translateX: rythmOffset }],
+            }}
+          >
+            <LottieView
+              loop
+              autoPlay
+              style={{ width: 20, aspectRatio: 1 }}
+              source={require("./assets/rythm.json")}
+              speed={Math.random() * 0.5 + 0.3}
+            />
+          </Animated.View>
         </View>
         {currentSong && (
           <Animated.View
@@ -151,9 +165,7 @@ export const UserCardFriend = ({ item, index }) => {
             />
           </Animated.View>
         )}
-        <CollapsableContainer expanded={expanded}>
-          <View style={{ height: 40 }}></View>
-        </CollapsableContainer>
+        <CollapsableContainer expanded={expanded}></CollapsableContainer>
       </TouchableOpacity>
     </View>
   );
