@@ -5,6 +5,7 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
+import { CommonActions } from "@react-navigation/native";
 import Header from "../components/login/Header";
 import SelectorBtn from "../components/login/form_components/SelectorBtn";
 import SignUpForm from "../components/login/SignUpForm";
@@ -75,7 +76,7 @@ export default LoginScreen = ({ navigation }) => {
       console.log(token, time_stamp, email, password);
       if (token && Date.now() - parseInt(time_stamp) < 4.32e8) {
         try {
-          const res = await client.get("/update-token", {
+          const res = await client.post("/update-token", {
             email,
             password,
           });

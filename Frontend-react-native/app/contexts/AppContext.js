@@ -9,6 +9,13 @@ export const ContextProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [homeBackground, setHomeBackground] = useState(null);
 
+  const flushContext = () => {
+    setToken_s(null);
+    setSpotifyAPI(null);
+    setLoggedInUser(null);
+    setToken(null);
+  };
+
   const params = {
     homeBackground,
     setHomeBackground,
@@ -20,6 +27,7 @@ export const ContextProvider = ({ children }) => {
     setLoggedInUser,
     token,
     setToken,
+    flushContext,
   };
 
   return <AppContext.Provider value={params}>{children}</AppContext.Provider>;

@@ -27,7 +27,7 @@ const Tab = createBottomTabNavigator();
 export default UserDomain = ({ route, navigation }) => {
   const { setToken_s, setSpotifyAPI, loggedInUser, token, token_s } =
     useContext(AppContext);
-  const { avatar } = loggedInUser;
+  const avatar = loggedInUser ? loggedInUser.avatar : null;
   const iconSize = 27;
 
   const discovery = {

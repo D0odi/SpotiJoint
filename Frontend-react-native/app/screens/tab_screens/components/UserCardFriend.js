@@ -52,15 +52,21 @@ export const UserCardFriend = ({ item, index }) => {
   };
 
   useEffect(() => {
+    let timeout;
     const handleFriendSong = ({ songInfo, user_id }) => {
+      clearTimeout(timeout);
+
       if (!songInfo) {
-        setCurrentSong(null);
-        return;
+        return setCurrentSong(null);
       }
       console.log("Received friends-song event", songInfo.name);
       if (user_id === item._id) {
         setCurrentSong(songInfo);
       }
+
+      timeout = setTimeout(() => {
+        setCurrentSong(null);
+      }, 8000);
     };
     socket.on("friends-song", handleFriendSong);
     return () => {
