@@ -1,5 +1,6 @@
 import {
   TouchableOpacity,
+  Touchable,
   View,
   Text,
   StyleSheet,
@@ -7,13 +8,14 @@ import {
   Animated,
   Dimensions,
 } from "react-native";
-import { useEffect, useState, useRef, memo } from "react";
+import { useEffect, useState, useRef } from "react";
 import TextTicker from "react-native-text-ticker";
 import global from "../../../styles.js";
 import { socket } from "../../../api/client.js";
 import { CollapsableContainer } from "./CollapsableContainer.js";
 import * as Progress from "react-native-progress";
 import LottieView from "lottie-react-native";
+import ExpandedControls from "./ExpandedControls.js";
 
 const barWidth = Dimensions.get("window").width - 74;
 export const UserCardFriend = ({ item, index }) => {
@@ -59,8 +61,10 @@ export const UserCardFriend = ({ item, index }) => {
   });
 
   const onItemPress = () => {
-    toggleAnimation();
-    setExpanded(!expanded);
+    if (currentSong) {
+      toggleAnimation();
+      setExpanded(!expanded);
+    }
   };
 
   useEffect(() => {
@@ -70,6 +74,7 @@ export const UserCardFriend = ({ item, index }) => {
       }
       if (user_id === item._id) {
         setOnline(true);
+        console.log(songInfo);
         if (currentSong === null || songName.current != songInfo.name) {
           console.log("Song changed: ", songInfo.name, songName.current);
           setCurrentSong(songInfo);
@@ -93,13 +98,14 @@ export const UserCardFriend = ({ item, index }) => {
     socket.on("friends-song", handleFriendSong);
     return () => {
       socket.off("friends-song", handleFriendSong);
+      setOnline(false);
     };
   }, [socket]);
 
   return (
     <View>
       <TouchableOpacity
-        activeOpacity={0.6}
+        activeOpacity={1}
         style={styles.friend}
         onPress={onItemPress}
       >
@@ -109,8 +115,8 @@ export const UserCardFriend = ({ item, index }) => {
             aspectRatio: 1,
             backgroundColor: online ? global.spotify_green : "grey",
             position: "absolute",
-            left: 2,
-            top: 2,
+            left: 6,
+            top: 6,
             borderRadius: 10,
             zIndex: 2,
           }}
@@ -173,48 +179,15 @@ export const UserCardFriend = ({ item, index }) => {
               {
                 opacity: animatedOpacity,
                 transform: [{ translateX: offset }],
-                borderRadius: imageborderRadius,
+                borderTopLeftRadius: imageborderRadius,
+                borderBottomLeftRadius: imageborderRadius,
               },
             ]}
             source={{ uri: currentSong.songImage }}
           />
         )}
         <CollapsableContainer expanded={expanded}>
-          <View
-            style={{
-              height: 50,
-              margin: 7,
-              flexDirection: "row",
-              backgroundColor: "red",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <View style={styles.pic1}>
-              <Image
-                source={{
-                  uri: "https://i.scdn.co/image/ab67616d00001e024fe0b5be5a42d53d5bc645f7",
-                }}
-                style={styles.pic}
-              />
-            </View>
-            <View style={styles.pic2}>
-              <Image
-                source={{
-                  uri: "https://i.scdn.co/image/ab67616d00001e024fe0b5be5a42d53d5bc645f7",
-                }}
-                style={styles.pic}
-              />
-            </View>
-            <View style={styles.pic3}>
-              <Image
-                source={{
-                  uri: "https://i.scdn.co/image/ab67616d00001e024fe0b5be5a42d53d5bc645f7",
-                }}
-                style={styles.pic}
-              />
-            </View>
-          </View>
+          <ExpandedControls />
         </CollapsableContainer>
       </TouchableOpacity>
     </View>
@@ -230,44 +203,6 @@ const dummyPics = [
 ];
 
 const styles = StyleSheet.create({
-  pic: {
-    width: 40,
-    aspectRatio: 1,
-    borderRadius: 30,
-  },
-  pic1: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: global.spotify_grey,
-    width: 50,
-    aspectRatio: 1,
-    borderRadius: 30,
-    position: "absolute",
-    left: 0,
-    zIndex: 1,
-  },
-  pic2: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: global.spotify_grey,
-    width: 50,
-    aspectRatio: 1,
-    borderRadius: 30,
-    position: "absolute",
-    left: 20,
-    zIndex: 2,
-  },
-  pic3: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: global.spotify_grey,
-    width: 50,
-    aspectRatio: 1,
-    borderRadius: 30,
-    position: "absolute",
-    left: 40,
-    zIndex: 3,
-  },
   avatar: {
     width: 50,
     height: 50,
@@ -285,8 +220,8 @@ const styles = StyleSheet.create({
   },
   bar: {
     position: "absolute",
-    top: 4,
-    left: 10,
+    top: 64,
+    left: 7,
   },
   friend_info: {
     margin: 7,

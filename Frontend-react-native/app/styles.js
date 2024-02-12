@@ -1,5 +1,3 @@
-import { StyleSheet } from "react-native";
-
 export default global = {
   background: "rgba(18,18,18,255)",
   background_40: "rgba(33,33,33,0.4)",

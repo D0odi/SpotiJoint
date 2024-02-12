@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { LayoutChangeEvent, View, Text } from "react-native";
 import Animated, {
@@ -27,8 +28,20 @@ export const CollapsableContainer = ({ children, expanded }) => {
   }, [expanded, height]);
 
   return (
-    <Animated.View style={[collapsableStyle, { overflow: "hidden" }]}>
-      <View style={{ position: "absolute" }} onLayout={onLayout}>
+    <Animated.View
+      style={[
+        collapsableStyle,
+        { overflow: "hidden", backgroundColor: "transparent" },
+      ]}
+    >
+      <View
+        style={{
+          position: "absolute",
+          width: "100%",
+          flexDirection: "row",
+        }}
+        onLayout={onLayout}
+      >
         {children}
       </View>
     </Animated.View>
