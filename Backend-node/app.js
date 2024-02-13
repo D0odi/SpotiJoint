@@ -14,12 +14,14 @@ const io = require("socket.io")(server, {
   },
 });
 
-const userSockets = {};
+const userSockets = new Map();
+const socketUsers = new Map();
 
 io.on("connection", (socket) => {
   socket.on("user-connected", (userId) => {
     console.log(`User ${userId} connected, socket id: ${socket.id}`);
-    userSockets[userId] = socket.id;
+    userSockets.set(userId, socket.id);
+    socketUsers.set(socket.id, userId);
     console.log(userSockets);
   });
 
@@ -31,7 +33,7 @@ io.on("connection", (socket) => {
     );
 
     friends.forEach((friendId) => {
-      const friendSocketId = userSockets[friendId];
+      const friendSocketId = userSockets.get(friendId);
       if (friendSocketId) {
         io.to(friendSocketId).emit("friends-song", { user_id, songInfo });
         console.log(`User ${friendId} has recieved the song`);
@@ -43,7 +45,11 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
-    delete userSockets[socket.id];
+    const idToClear = socketUsers.get(socket.id);
+
+    socketUsers.delete(socket.id);
+    userSockets.delete(idToClear);
+
     console.log(userSockets);
   });
 });
