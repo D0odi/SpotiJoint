@@ -37,36 +37,8 @@ const LoginForm = ({ navigation }) => {
     }
   };
 
-  const onSubmit1 = async () => {
-    console.log("LOGIN:");
-    try {
-      const res = await client.post("/login", {
-        // ...data
-        email: "1@gmail.com",
-        password: "1234",
-      });
-
-      console.log("LOGIN: ", res.data);
-
-      if (res.data.success) {
-        setLoggedInUser(res.data.user);
-        setToken(res.data.token);
-        const navigateAction = CommonActions.navigate({
-          name: "UserDomain",
-        });
-        navigation.dispatch(navigateAction);
-      } else {
-        console.log(res.data.message);
-        reset();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onSubmit2 = async () => {
-    console.log("LOGIN:");
-    const email = "f@gmail.com";
+  const onSubmit1 = async (email) => {
+    console.log(`LOGIN: ${email}`);
     const password = "1234";
     try {
       const res = await client.post("/login", {
@@ -109,33 +81,6 @@ const LoginForm = ({ navigation }) => {
     }
   };
 
-  const onSubmit3 = async () => {
-    console.log("LOGIN:");
-    try {
-      const res = await client.post("/login", {
-        // ...data
-        email: "leo@gmail.com",
-        password: "1234",
-      });
-
-      console.log("LOGIN: ", res.data);
-
-      if (res.data.success) {
-        setLoggedInUser(res.data.user);
-        setToken(res.data.token);
-        const navigateAction = CommonActions.navigate({
-          name: "UserDomain",
-        });
-        navigation.dispatch(navigateAction);
-      } else {
-        console.log(res.data.message);
-        reset();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <FormContainer>
       <FormInput
@@ -165,9 +110,18 @@ const LoginForm = ({ navigation }) => {
         }}
       />
       {/* handleSubmit(onSubmit) */}
-      <FormSubmitBtn label={"1"} onPress={onSubmit1} />
-      <FormSubmitBtn label={"zinan"} onPress={onSubmit2} />
-      <FormSubmitBtn label={"Leo"} onPress={onSubmit3} />
+      <FormSubmitBtn
+        label={"DooDik"}
+        onPress={() => onSubmit1("d@gmail.com")}
+      />
+      <FormSubmitBtn
+        label={"test1"}
+        onPress={() => onSubmit1("t1@gmail.com")}
+      />
+      <FormSubmitBtn
+        label={"test2"}
+        onPress={() => onSubmit1("t2@gmail.com")}
+      />
     </FormContainer>
   );
 };

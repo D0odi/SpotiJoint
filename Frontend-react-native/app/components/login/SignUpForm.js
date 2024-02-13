@@ -4,22 +4,37 @@ import FormSubmitBtn from "./form_components/FormSubmitBtn";
 import { useForm } from "react-hook-form";
 import { CommonActions } from "@react-navigation/native";
 import { client } from "../../api/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppContext } from "../../contexts/AppContext";
+import { useContext } from "react";
 
 const SignUpForm = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
+  const { setLoggedInUser, setToken } = useContext(AppContext);
   const onSubmit = async (data) => {
     console.log(data);
     try {
       const response = await client.post("/sign-up", { ...data });
-
       if (response.data.success) {
+        const { email, password } = data;
         const login_res = await client.post("/login", {
-          email: data.email,
-          password: data.password,
+          email,
+          password,
         });
 
         if (login_res && login_res.data.success) {
           const { user, token } = login_res.data;
+          setLoggedInUser(user);
+          setToken(token);
+          const storage_res = await AsyncStorage.multiSet([
+            ["time_stamp", Date.now().toString()],
+            ["token", token],
+            ["email", email],
+            ["password", password],
+          ]);
+          if (!storage_res) {
+            console.log("storage success");
+          }
           const navigateAction = CommonActions.navigate({
             name: "AvatarUpload",
             params: {
