@@ -7,14 +7,9 @@ const userSchema = new mongoose.Schema({
   friends_req_out: Array,
   friends_req_in: Array,
   spotify_refresh_token: String,
-  name: {
+  username: {
     type: String,
     required: true,
-    minLength: 3,
-  },
-  nickname: {
-    type: String,
-    required: false,
     minLength: 3,
   },
   email: {

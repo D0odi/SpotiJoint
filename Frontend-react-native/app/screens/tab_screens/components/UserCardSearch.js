@@ -4,7 +4,7 @@ import { useState } from "react";
 import global from "../../../styles";
 import { client } from "../../../api/client";
 
-export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
+export default UserCardSearch = ({ username, _id, avatar, token }) => {
   const [clicked, setClicked] = useState(false);
 
   const sendFriendRequest = async () => {
@@ -62,10 +62,7 @@ export default UserCardSearch = ({ name, nickname, _id, avatar, token }) => {
             fontWeight: "bold",
           }}
         >
-          {name.length > 20 ? name.substring(0, 20) + "..." : name}
-        </Text>
-        <Text style={{ fontSize: 11, color: global.spotify_light_grey }}>
-          {nickname.length > 20 ? nickname.substring(0, 20) + "..." : nickname}
+          {username.length > 20 ? username.substring(0, 20) + "..." : username}
         </Text>
       </View>
       <TouchableOpacity

@@ -140,7 +140,7 @@ export const UserCardFriend = ({ item, index }) => {
         <View style={styles.friend_info}>
           <Image source={{ uri: item.avatar }} style={styles.avatar} />
           <View style={styles.friend_info_text}>
-            <Text style={[styles.text, { fontSize: 13 }]}>{item.name}</Text>
+            <Text style={[styles.text, { fontSize: 13 }]}>{item.username}</Text>
             <TextTicker
               style={{ fontSize: 11, color: global.spotify_white_50 }}
               duration={20000}

@@ -11,7 +11,7 @@ import { AppContext } from "../contexts/AppContext";
 
 export default AvatarUplaod = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
-  const { token, name } = route.params;
+  const { token, username } = route.params;
   const { setLoggedInUser, setToken } = useContext(AppContext);
 
   const pickImage = async () => {
@@ -102,7 +102,7 @@ export default AvatarUplaod = ({ route, navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
-            uploadImage(`https://api.multiavatar.com/${name}.png`, true)
+            uploadImage(`https://api.multiavatar.com/${username}.png`, true)
           }
         >
           <Text style={styles.skipBtn}>Skip</Text>

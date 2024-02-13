@@ -90,7 +90,7 @@ export default Home = ({ route }) => {
                 alignItems: "center",
               }}
             >
-              <Text style={styles.text}>{userInfo_s.name}</Text>
+              <Text style={styles.text}>{userInfo_s.username}</Text>
               <View style={styles.dot} />
               <Text
                 style={[

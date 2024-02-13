@@ -98,7 +98,7 @@ export default Notifications = ({ route }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      {item.name}
+                      {item.username}
                     </Text>
                     <Text
                       style={{
@@ -127,7 +127,7 @@ export default Notifications = ({ route }) => {
                         }}
                       >
                         <Ionicons
-                          name={"checkmark"}
+                          name="checkmark"
                           size={20}
                           color={global.spotify_white}
                         />
@@ -150,7 +150,7 @@ export default Notifications = ({ route }) => {
                         }}
                       >
                         <Ionicons
-                          name={"close"}
+                          name="close"
                           size={20}
                           color={global.spotify_white}
                         />

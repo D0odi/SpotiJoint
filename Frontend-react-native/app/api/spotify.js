@@ -70,14 +70,25 @@ export default Spotify = async (user_token) => {
 
       if (response.status == 200) {
         const data = await response.json();
+        const {
+          is_playing,
+          item: {
+            artists,
+            name,
+            duration_ms,
+            album: { images },
+            external_urls: { spotify },
+          },
+          progress_ms,
+        } = data;
         return {
-          is_playing: data.is_playing,
-          artists: data.item.artists,
-          name: data.item.name,
-          progress_ms: data.progress_ms,
-          duration_ms: data.item.duration_ms,
-          songImage: data.item.album.images[1].url,
-          spotify_redirect: data.item.external_urls.spotify,
+          is_playing,
+          artists,
+          name,
+          progress_ms,
+          duration_ms,
+          songImage: images[1].url,
+          spotify_redirect: spotify,
         };
       } else {
         return null;

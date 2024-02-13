@@ -13,23 +13,23 @@ const SignUpForm = ({ navigation }) => {
       const response = await client.post("/sign-up", { ...data });
 
       if (response.data.success) {
-        console.log(data.email, data.password);
-        const signInRes = await client.post("/login", {
+        const login_res = await client.post("/login", {
           email: data.email,
           password: data.password,
         });
 
-        if (signInRes.data.success) {
+        if (login_res && login_res.data.success) {
+          const { user, token } = login_res.data;
           const navigateAction = CommonActions.navigate({
             name: "AvatarUpload",
             params: {
-              token: signInRes.data.token,
-              name: signInRes.data.user.name,
+              token: token,
+              username: user.username,
             },
           });
           navigation.dispatch(navigateAction);
         } else {
-          console.log(signInRes.data.message);
+          console.log(login_res.data.message);
         }
       }
     } catch (error) {
@@ -42,26 +42,13 @@ const SignUpForm = ({ navigation }) => {
       <FormInput
         control={control}
         placeholder="Big Boy Billy Bob"
-        name="name"
-        label="Name"
+        name="username"
+        label="Username"
         rules={{
-          required: "Name is required",
+          required: "Username is required",
           minLength: {
             value: 3,
-            message: "Name must be at least 3 characters long",
-          },
-        }}
-      />
-      <FormInput
-        control={control}
-        placeholder="BBBB"
-        name="nickname"
-        label="Nickname"
-        rules={{
-          required: "Nickname is required",
-          minLength: {
-            value: 3,
-            message: "Nickname must be at least 3 characters long",
+            message: "Username must be at least 3 characters long",
           },
         }}
       />

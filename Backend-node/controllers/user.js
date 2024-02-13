@@ -5,15 +5,14 @@ const qs = require("qs");
 const cloudinary = require("../helper/imageUpload");
 
 exports.createUser = async (req, res) => {
-  const { name, nickname, email, password } = req.body;
+  const { username, email, password } = req.body;
   const user = await User({
     avatar: "",
     friends: [],
     friends_req_out: [],
     friends_req_in: [],
     spotify_refresh_token: "",
-    name,
-    nickname,
+    username,
     email,
     password,
   });
@@ -47,10 +46,9 @@ exports.loginUser = async (req, res) => {
   });
 
   const userInfo = {
-    name: user.name,
+    username: user.username,
     email: user.email,
     avatar: user.avatar ? user.avatar : "",
-    nickname: user.nickname,
     _id: user._id,
     friends: user.friends,
     friends_req_out: user.friends_req_out,
@@ -163,7 +161,7 @@ exports.addFriend = async (req, res) => {
     });
     res.json({
       success: true,
-      message: `${user.name} added ${_id} successfully`,
+      message: `${user.username} added ${_id} successfully`,
     });
   } catch (error) {
     res.json({ success: false, message: "Failed to add friend" });

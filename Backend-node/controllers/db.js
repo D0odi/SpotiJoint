@@ -8,18 +8,13 @@ exports.retrieveUsers = async (req, res, next) => {
 
       let query = {};
       if (searchQuery) {
-        query = {
-          $or: [
-            { name: { $regex: searchQuery, $options: "i" } },
-            { nickname: { $regex: searchQuery, $options: "i" } },
-          ],
-        };
+        query = { username: { $regex: searchQuery, $options: "i" } };
       }
       users = await User.find(query).select(
-        "name nickname avatar friends_req_in friends_req_out friends"
+        "username avatar friends_req_in friends_req_out friends"
       );
     } else {
-      users = await User.find().select("name nickname avatar");
+      users = await User.find().select("username avatar");
     }
 
     if (!users) return res.json({ success: false, message: "No users found!" });
