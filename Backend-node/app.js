@@ -16,10 +16,6 @@ const io = require("socket.io")(server, {
 
 let userSockets = [];
 
-function getKey(value) {
-  return [...people].find(([key, val]) => val == value)[0];
-}
-
 io.on("connection", (socket) => {
   socket.on("user-connected", (userId) => {
     console.log(`User ${userId} connected, socket id: ${socket.id}`);

@@ -28,8 +28,7 @@ import ActionSheet from "react-native-actions-sheet";
 import { UserCardFriend } from "./components/UserCardFriend";
 
 export default Home = ({ route }) => {
-  const { token_s, spotifyAPI, loggedInUser, token, homeBackground } =
-    useContext(AppContext);
+  const { token_s, spotifyAPI, token } = useContext(AppContext);
   const [refreshing, setRefreshing] = useState(false);
   const [userInfo_s, setUserInfo_s] = useState({});
   const [friendsData, setFriendsData] = useState(null);

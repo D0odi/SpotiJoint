@@ -18,8 +18,8 @@ import Animated, {
 export default SongDisplay = () => {
   const [songInfo, setSongInfo] = useState({});
   const { token_s, loggedInUser, spotifyAPI } = useContext(AppContext);
-  const user_id = loggedInUser._id;
-  const friends = loggedInUser.friends;
+  const user_id = loggedInUser ? loggedInUser._id : null;
+  const friends = loggedInUser ? loggedInUser.friends : [];
 
   const extractArtistNames = (a) => {
     console.log("a: ", a);
@@ -30,8 +30,8 @@ export default SongDisplay = () => {
 
   const fetchCurrentPlaying = async () => {
     const songInfo = await spotifyAPI.fetchCurrentPlaying(token_s);
-    socket.emit("currently-playing", { user_id, songInfo, friends });
     if (songInfo) {
+      socket.emit("currently-playing", { user_id, songInfo, friends });
       console.log("Song emitted: ", songInfo.name);
       setSongInfo(songInfo);
     } else {

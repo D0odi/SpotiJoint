@@ -11,12 +11,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default Profile = ({ navigation }) => {
   const { flushContext } = useContext(AppContext);
   const logout = () => {
-    AsyncStorage.clear();
-    socket.disconnect();
     navigation.reset({
       index: 0,
       routes: [{ name: "LoginScreen" }],
     });
+    socket.disconnect();
+    AsyncStorage.clear();
     flushContext();
   };
   return (

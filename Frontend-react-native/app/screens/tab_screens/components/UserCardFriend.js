@@ -22,18 +22,10 @@ export const UserCardFriend = ({ item, index }) => {
   const [expanded, setExpanded] = useState(false);
   const [currentSong, setCurrentSong] = useState(null);
   const [online, setOnline] = useState(false);
-  const songName = useRef(null);
+  const previousSong = useRef(null);
   const rythmAnimation = useRef(null);
 
   const offset = useRef(new Animated.Value(50)).current;
-
-  const toggleAnimation = () => {
-    Animated.timing(offset, {
-      toValue: expanded ? 50 : 0,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
 
   const imageborderRadius = offset.interpolate({
     inputRange: [0, 50],
@@ -62,26 +54,28 @@ export const UserCardFriend = ({ item, index }) => {
 
   const onItemPress = () => {
     if (currentSong) {
-      toggleAnimation();
       setExpanded(!expanded);
     }
   };
 
   useEffect(() => {
+    const toggleAnimation = () => {
+      Animated.timing(offset, {
+        toValue: !expanded ? 50 : 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    };
+
+    toggleAnimation();
+  }, [expanded]);
+
+  useEffect(() => {
     const handleFriendSong = ({ songInfo, user_id }) => {
-      if (!songInfo) {
-        return setCurrentSong(null);
-      }
       if (user_id === item._id) {
         setOnline(true);
         console.log(songInfo);
-        if (currentSong === null || songName.current != songInfo.name) {
-          console.log("Song changed: ", songInfo.name, songName.current);
-          setCurrentSong(songInfo);
-          songName.current = songInfo.name;
-          rythmAnimation.current?.reset();
-          rythmAnimation.current?.play();
-        } else {
+        if (previousSong.current == songInfo.name) {
           console.log("Song updated: ", songInfo.progress_ms);
           setCurrentSong((prev) => ({
             ...prev,
@@ -92,16 +86,38 @@ export const UserCardFriend = ({ item, index }) => {
           } else {
             rythmAnimation.current?.play();
           }
+        } else {
+          console.log("Song changed: ", songInfo.name, previousSong.current);
+          previousSong.current = songInfo.name;
+          setCurrentSong(songInfo);
+          rythmAnimation.current?.reset();
+          rythmAnimation.current?.play();
         }
       }
     };
+
     socket.on("friends-song", handleFriendSong);
+
     return () => {
       socket.off("friends-song", handleFriendSong);
-      setOnline(false);
     };
   }, [socket]);
 
+  useEffect(() => {
+    let timeout;
+
+    const clearSong = () => {
+      setExpanded(false);
+      previousSong.current = null;
+      setTimeout(() => {
+        setCurrentSong(null);
+      }, 1000);
+    };
+
+    timeout = setTimeout(clearSong, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [currentSong]);
   return (
     <View>
       <TouchableOpacity
