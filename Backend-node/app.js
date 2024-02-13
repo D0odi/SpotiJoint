@@ -14,15 +14,17 @@ const io = require("socket.io")(server, {
   },
 });
 
-const userSockets = new Map();
-const socketUsers = new Map();
+let userSockets = [];
+
+function getKey(value) {
+  return [...people].find(([key, val]) => val == value)[0];
+}
 
 io.on("connection", (socket) => {
   socket.on("user-connected", (userId) => {
     console.log(`User ${userId} connected, socket id: ${socket.id}`);
-    userSockets.set(userId, socket.id);
-    socketUsers.set(socket.id, userId);
-    console.log(userSockets);
+    userSockets.push([userId, socket.id]);
+    console.log("Inserted new socket: ", userSockets);
   });
 
   socket.on("currently-playing", ({ user_id, songInfo, friends }) => {
@@ -33,7 +35,9 @@ io.on("connection", (socket) => {
     );
 
     friends.forEach((friendId) => {
-      const friendSocketId = userSockets.get(friendId);
+      const friendSocketId = userSockets.find(
+        (pair) => pair[0] === friendId
+      )[1];
       if (friendSocketId) {
         io.to(friendSocketId).emit("friends-song", { user_id, songInfo });
         console.log(`User ${friendId} has recieved the song`);
@@ -45,12 +49,8 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`${socket.id} disconnected`);
-    const idToClear = socketUsers.get(socket.id);
-
-    socketUsers.delete(socket.id);
-    userSockets.delete(idToClear);
-
-    console.log(userSockets);
+    userSockets = userSockets.filter((pair) => pair[1] !== socket.id);
+    console.log("Cleanup: ", userSockets);
   });
 });
 
