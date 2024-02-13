@@ -35,9 +35,8 @@ io.on("connection", (socket) => {
     );
 
     friends.forEach((friendId) => {
-      const friendSocketId = userSockets.find(
-        (pair) => pair[0] === friendId
-      )[1];
+      const pair = userSockets.find((pair) => pair[0] === friendId);
+      const friendSocketId = pair ? pair[1] : null;
       if (friendSocketId) {
         io.to(friendSocketId).emit("friends-song", { user_id, songInfo });
         console.log(`User ${friendId} has recieved the song`);
